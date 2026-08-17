@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Cómo usar la Biblioteca de Anuncios de Meta — Angel Bazán</title>
+  <meta name="author" content="Angel Bazán" />
+  <meta name="description" content="Aprende a usar la Biblioteca de Anuncios de Meta para espiar los anuncios de tu competencia, detectar ofertas que ya venden y modelarlas sin reinventar la rueda." />
+<link rel="canonical" href="https://angelbazan.com/blog/como-usar-biblioteca-de-anuncios-meta.html" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Cómo usar la Biblioteca de Anuncios de Meta — Angel Bazán","description":"Aprende a usar la Biblioteca de Anuncios de Meta para espiar los anuncios de tu competencia, detectar ofertas que ya venden y modelarlas sin reinventar la rueda.","datePublished":"2026-08-17","author":{"@type":"Person","name":"Angel Bazan","url":"https://angelbazan.com/sobre-mi.html"},"publisher":{"@type":"Organization","name":"Angel Bazan"},"image":"https://angelbazan.com/assets/covers/biblioteca-meta.svg","mainEntityOfPage":"https://angelbazan.com/blog/como-usar-biblioteca-de-anuncios-meta.html"}</script>
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Cómo usar la Biblioteca de Anuncios de Meta — Angel Bazán" />
+<meta property="og:description" content="Aprende a usar la Biblioteca de Anuncios de Meta para espiar los anuncios de tu competencia, detectar ofertas que ya venden y modelarlas sin reinventar la rueda." />
+<meta property="og:image" content="https://angelbazan.com/assets/covers/biblioteca-meta.svg" />
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a class="logo" href="../index.html"><img class="logo-img" src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+      <nav class="nav" aria-label="Principal">
+        <a href="../index.html">Inicio</a>
+        <a href="index.html" class="active">Blog</a>
+        <a href="../herramientas.html">Herramientas</a>
+        <a href="../recursos-gratis.html">Recursos gratis</a>
+        <a href="../sobre-mi.html">Sobre mí</a>
+        <a href="../libro.html">Libro</a>
+        <a class="icon-link" href="https://www.tiktok.com/@angelbazania" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"></path></svg>
+        </a>
+        <a class="icon-link" href="https://www.instagram.com/angelbazan.ia/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+        </a>
+        <a class="btn btn-green btn-sm" href="https://chat.whatsapp.com/IBZOZhDcjFY7XriErlee6R" target="_blank" rel="noopener noreferrer">Suscribirme</a>
+      </nav>
+      <button class="nav-toggle" onclick="document.getElementById('mobile-menu').classList.toggle('open')" aria-label="Abrir menú">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="../index.html">Inicio</a>
+      <a href="index.html">Blog</a>
+      <a href="../herramientas.html">Herramientas</a>
+      <a href="../recursos-gratis.html">Recursos gratis</a>
+      <a href="../sobre-mi.html">Sobre mí</a>
+        <a href="../libro.html">Libro</a>
+    </div>
+  </header>
+
+  <main>
+    <article class="container article">
+      <div class="breadcrumbs">
+        <a href="../index.html">Inicio</a> <span>/</span> <a href="index.html">Blog</a> <span>/</span> <span>Biblioteca de Anuncios de Meta</span>
+      </div>
+      <a class="back-link" href="index.html">← Volver al blog</a>
+
+      <div class="card-meta"><span class="tag">Marketing</span><span>· 8 min</span></div>
+      <h1>Cómo usar la Biblioteca de Anuncios de Meta para espiar a tu competencia (guía paso a paso)</h1>
+      <p class="subtitle">Aprende a usar la Biblioteca de Anuncios de Meta para espiar los anuncios de tu competencia, detectar ofertas que ya venden y modelarlas sin reinventar la rueda.</p>
+      <div class="meta">
+        <span>Publicado: 17 de agosto de 2026</span>
+        <span>·</span>
+        <span>Por <a href="../sobre-mi.html">Angel Bazán</a></span>
+      </div>
+
+      <div class="toc">
+        <h4>En este artículo</h4>
+        <ol>
+          <li><a href="#que-es">Qué es y por qué es la mejor herramienta gratis</a></li>
+          <li><a href="#buscar">Cómo buscar anuncios de tu competencia</a></li>
+          <li><a href="#que-analizar">Qué analizar de cada anuncio</a></li>
+          <li><a href="#temporalidad">El truco de la temporalidad: anuncios que llevan meses</a></li>
+          <li><a href="#funnel-completo">Del anuncio al funnel completo (incluido WhatsApp)</a></li>
+          <li><a href="#ia">Cierra el círculo con IA</a></li>
+        </ol>
+      </div>
+
+      <p>La Biblioteca de Anuncios de Meta es, sin discusión, la mejor herramienta gratuita de investigación de mercado que existe. Te muestra <strong>todos los anuncios que están corriendo en Facebook, Instagram y Messenger</strong>, con su texto, su creativo y desde cuándo están activos. Es la puerta de entrada del funnel hacking, y en esta guía te llevo paso a paso desde cero.</p>
+
+      <img src="../assets/covers/biblioteca-meta.svg" alt="Biblioteca de Anuncios de Meta" />
+
+      <h2 id="que-es">Qué es y por qué es la mejor herramienta gratis</h2>
+      <p>Desde 2019, Meta está obligada a publicar quién anuncia qué, cuánto gasta en temas políticos y, para todo anunciante, la fecha de inicio de cada anuncio. Eso significa que puedes ver <em>qué está pautando cualquier negocio ahora mismo</em>, sin pagar un centavo.</p>
+      <p>¿Por qué importa la fecha? Porque un anuncio activo desde hace 6 meses con presupuesto detrás es un anuncio que está <strong>generando ventas</strong>. Nadie mantiene vivo un anuncio que pierde dinero durante meses. Esa señal por sí sola vale más que cualquier curso.</p>
+
+      <h2 id="buscar">Cómo buscar anuncios de tu competencia</h2>
+      <ol>
+        <li>Entra a <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener noreferrer">facebook.com/ads/library</a>.</li>
+        <li>Selecciona el país o la región donde opera tu mercado.</li>
+        <li>En "Categorías de anuncios", elige "Todos los anuncios".</li>
+        <li>Busca por palabra clave (ej: "funnel WhatsApp", "curso de repostería") o por página específica de tu competidor.</li>
+        <li>Filtra por "Estado: Activo" y ordena lo que te interese.</li>
+      </ol>
+      <p>El truco está en buscar <strong>por página</strong> una vez que identificas quién vende bien: verás toda su cartera de anuncios, cuáles son los ganadores (los más antiguos) y cómo evolucionan sus mensajes.</p>
+
+      <h2 id="que-analizar">Qué analizar de cada anuncio</h2>
+      <ul>
+        <li><strong>El ángulo del titular:</strong> qué promesa hacen, en qué dolor o deseo se apoyan.</li>
+        <li><strong>El destino del clic:</strong> ¿página de ventas, quiz, formulario o directo a WhatsApp?</li>
+        <li><strong>El tipo de creativo:</strong> foto, carrusel, video UGC, testimonial…</li>
+        <li><strong>La duración:</strong> si lleva 3+ meses activo, es un ganador convalidado.</li>
+        <li><strong>El llamado a la acción:</strong> "Enviar mensaje", "Comprar", "Registrarse" — te dice el objetivo de campaña.</li>
+      </ul>
+
+      <h2 id="temporalidad">El truco de la temporalidad: anuncios que llevan meses</h2>
+      <p>Este es el dato que la mayoría ignora. Cuando veas un anuncio activo desde hace 4, 6 u 8 meses, no estás viendo un anuncio: estás viendo <strong>una máquina de ventas andando</strong>. Ese anuncio pasó la fase de testeo, encontró un público, un mensaje y una oferta que convierten, y sigue escalando.</p>
+      <blockquote>Si el anuncio lleva meses vivo, el funnel detrás convierte. Tu trabajo no es adivinarlo: es copiar la estructura con tu propia salsa.</blockquote>
+
+      <h2 id="funnel-completo">Del anuncio al funnel completo (incluido WhatsApp)</h2>
+      <p>En mi rubro —funnels + Meta Ads + WhatsApp— el análisis no termina en la biblioteca. Hago clic en el anuncio y sigo todo el recorrido:</p>
+      <ul>
+        <li>Si manda a WhatsApp: ¿qué mensaje de bienvenida recibe el lead? ¿Responde una persona o un bot con IA?</li>
+        <li>Si manda a una página: ¿qué secciones tiene, cómo presenta la oferta, qué mecanismo usa?</li>
+        <li>¿Hay retargeting? ¿Qué mensaje recibe quien abandonó el embudo?</li>
+      </ul>
+      <p>Ese recorrido completo —anuncio → WhatsApp → conversación → cierre— es el embudo que vas a modelar.</p>
+
+      <h2 id="ia">Cierra el círculo con IA</h2>
+      <p>Una vez que juntas 10-20 anuncios ganadores, pásalos a la IA (ChatGPT, Claude o Gemini) y pídele que detecte patrones: ángulos repetidos, estructuras de promesa, ganchos. La IA no decide por ti: <strong>te acelera el análisis</strong>. El criterio sigue siendo tuyo.</p>
+      <p>En mi artículo sobre <a href="como-usar-ia-para-espiar-anuncios.html">cómo usar IA para espiar anuncios</a> te dejo el prompt exacto que uso.</p>
+
+      <div class="video-box">
+        <div class="play">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+        <div>
+          <a href="https://www.tiktok.com/@angelbazania" target="_blank" rel="noopener noreferrer"><span class="video-title">▶ Ver el contenido completo en TikTok</span><span class="video-sub">Espionaje en vivo de la Biblioteca de Anuncios de Meta</span></a>
+        </div>
+      </div>
+
+      <div class="author-box">
+        <img src="https://angelbazan.com/wp-content/uploads/2024/09/ANGEL-BAZAN.png" alt="Angel Bazán" />
+        <div>
+          <div class="label">Escrito por</div>
+          <h3>Angel Bazán</h3>
+          <p>Especialista en funnels, Meta Ads y WhatsApp + IA. Ayudo a negocios a vender más combinando tráfico pagado con conversaciones automatizadas.</p>
+          <a class="more" href="../sobre-mi.html">Conoce más sobre mí →</a>
+        </div>
+      </div>
+
+      <div class="notes-cta">
+  <div class="label">Comunidad WhatsApp &middot; Acceso libre</div>
+  <h2>Aprende a crear y vender productos digitales con Meta Ads, WhatsApp e IA</h2>
+  <p>Clases en vivo, estrategias y recursos para construir tu sistema desde cero. &#128640;</p>
+  <a class="btn" href="https://chat.whatsapp.com/IBZOZhDcjFY7XriErlee6R" target="_blank" rel="noopener noreferrer">&#218;nete gratis al grupo</a>
+</div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="copy">© 2026 Angel Bazán. Todos los derechos reservados.</span>
+      <div class="socials">
+        <a href="https://www.instagram.com/angelbazan.ia/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.tiktok.com/@angelbazania" target="_blank" rel="noopener noreferrer">TikTok</a>
+        <a href="https://www.facebook.com/angelbazands" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://chat.whatsapp.com/IBZOZhDcjFY7XriErlee6R" target="_blank" rel="noopener noreferrer" aria-label="Escríbeme por WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg>
+  </a>
+<script src="../assets/app.js"></script>
+</body>
+</html>
