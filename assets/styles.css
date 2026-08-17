@@ -485,6 +485,19 @@ a {
   margin-bottom: 2rem;
 }
 
+.more-link {
+  color: var(--green-deep);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  margin-left: 0.75rem;
+  white-space: nowrap;
+}
+
+.more-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ---------- Post cards ---------- */
 .grid {
   display: grid;
