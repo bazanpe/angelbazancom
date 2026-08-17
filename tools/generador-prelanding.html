@@ -10,6 +10,7 @@
   <title>Generador de prelanding de preventa — Angel Bazán</title>
   <meta name="description" content="Crea páginas de preventa (prelanding) 100% legales para tus anuncios de Meta Ads: gancho, historia, beneficios y CTA. Código listo para pegar." />
   <link rel="canonical" href="https://angelbazan.com/tools/generador-prelanding" />
+<meta name="google-site-verification" content="69uyHfeui36COo1cVOP5gL0XvbMIP-ikIaDxL-3wueE" />
 </head>
 <body>
   <div class="tool-top"><div class="tool-top-inner">
@@ -62,7 +63,8 @@
       var cta = document.getElementById('cta').value.trim() || '#';
       var ctatxt = esc(document.getElementById('ctatxt').value.trim() || 'Quiero empezar');
       var bList = benefits.length ? benefits.map(function(b){ return '<li>' + b + '</li>'; }).join('\n') : '<li>Beneficio claro y medible</li>';
-      var html = '<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="utf-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n<title>' + offer + ' — Preventa</title>\n<style>\n  body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4fdf7;color:#222;}\n  .wrap{max-width:640px;margin:0 auto;padding:40px 20px;text-align:center;}\n  h1{font-size:32px;line-height:1.2;color:#075E54;}\n  p{font-size:17px;line-height:1.6;color:#444;}\n  ul{text-align:left;display:inline-block;font-size:17px;line-height:1.9;}\n  .btn{display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-weight:bold;font-size:18px;padding:16px 38px;border-radius:9999px;margin-top:12px;box-shadow:0 8px 20px rgba(37,211,102,.35);}\n</style>\n</head>\n<body>\n<div class="wrap">\n  <h1>' + offer + ': ' + promise + '</h1>\n  <p>Si eres ' + aud + ', esta es la solución que estabas esperando. Sin complicaciones, sin tecnicismos, con resultados desde la primera semana.</p>\n  <ul>\n' + bList + '\n  </ul>\n  <p>Cupos limitados esta semana. Haz clic y descubre cómo empezar hoy mismo.</p>\n  <a class="btn" href="' + cta + '">' + ctatxt + '</a>\n</div>\n<!-- Widget Popup Skool por Angel Bazan -->
+      var html = '<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="utf-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n<title>' + offer + ' — Preventa</title>\n<style>\n  body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4fdf7;color:#222;}\n  .wrap{max-width:640px;margin:0 auto;padding:40px 20px;text-align:center;}\n  h1{font-size:32px;line-height:1.2;color:#075E54;}\n  p{font-size:17px;line-height:1.6;color:#444;}\n  ul{text-align:left;display:inline-block;font-size:17px;line-height:1.9;}\n  .btn{display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-weight:bold;font-size:18px;padding:16px 38px;border-radius:9999px;margin-top:12px;box-shadow:0 8px 20px rgba(37,211,102,.35);}\n</style>\n<meta name="google-site-verification" content="69uyHfeui36COo1cVOP5gL0XvbMIP-ikIaDxL-3wueE" />
+</head>\n<body>\n<div class="wrap">\n  <h1>' + offer + ': ' + promise + '</h1>\n  <p>Si eres ' + aud + ', esta es la solución que estabas esperando. Sin complicaciones, sin tecnicismos, con resultados desde la primera semana.</p>\n  <ul>\n' + bList + '\n  </ul>\n  <p>Cupos limitados esta semana. Haz clic y descubre cómo empezar hoy mismo.</p>\n  <a class="btn" href="' + cta + '">' + ctatxt + '</a>\n</div>\n<!-- Widget Popup Skool por Angel Bazan -->
 <style>
 .skool-floating-widget {
   position: fixed;
