@@ -517,6 +517,13 @@ a {
   padding: 2rem 0 3rem;
 }
 
+.funnel-gal img {
+  width: 100%;
+  border-radius: 0.875rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 14px 34px -22px rgba(18, 140, 126, 0.4);
+}
+
 /* ---------- Book card ---------- */
 .book-card {
   display: grid;
