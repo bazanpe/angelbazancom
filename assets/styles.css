@@ -422,6 +422,101 @@ a {
   margin-top: 1.5rem;
 }
 
+/* ---------- Funnel ---------- */
+.funnel-hero {
+  text-align: center;
+  padding: 2.5rem 0 1rem;
+}
+
+.funnel-hero h1 {
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  max-width: 44rem;
+  margin: 0 auto 1rem;
+}
+
+.funnel-hero h1 em {
+  font-style: normal;
+  color: var(--green-deep);
+}
+
+.funnel-hero p {
+  font-size: 1.125rem;
+  color: var(--muted-2);
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+}
+
+.funnel-video {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px -30px rgba(18, 140, 126, 0.35);
+}
+
+.funnel-video img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.funnel-modules {
+  max-width: 40rem;
+  margin: 0 auto 2.5rem;
+}
+
+.funnel-modules li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background: #fbfbfb;
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  padding: 1rem 1.125rem;
+  margin-bottom: 0.625rem;
+  font-size: 1rem;
+}
+
+.funnel-modules li::before {
+  content: "✓";
+  color: var(--green-deep);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.accept-box {
+  max-width: 40rem;
+  margin: 1.5rem auto;
+  border: 2px solid var(--green);
+  border-radius: 1.25rem;
+  padding: 1.75rem;
+  text-align: center;
+  background: #f4fdf7;
+}
+
+.accept-box h3 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.accept-box p {
+  color: var(--muted-2);
+  margin-bottom: 1.25rem;
+}
+
+.funnel-foot {
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--muted);
+  padding: 2rem 0 3rem;
+}
+
 /* ---------- Book card ---------- */
 .book-card {
   display: grid;
