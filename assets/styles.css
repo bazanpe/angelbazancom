@@ -1029,8 +1029,22 @@ a {
   transition: border-color 0.15s ease;
 }
 
+a.resource-card {
+  display: block;
+}
+
 .resource-card:hover {
   border-color: var(--green);
+}
+
+.resource-card .link {
+  color: var(--green-deep);
+  font-weight: 700;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
 }
 
 .resource-card .emoji {
