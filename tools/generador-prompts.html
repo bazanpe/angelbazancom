@@ -72,5 +72,64 @@
       setTimeout(function(){ ok.classList.remove('show'); }, 2000);
     }
   </script>
+<!-- Widget Popup Skool por Angel Bazan -->
+<style>
+.skool-floating-widget {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+  width: 320px;
+  max-width: calc(100vw - 32px);
+  background: linear-gradient(165deg, #0e1420 0%, #070a12 100%);
+  border: 1.5px solid rgba(0, 210, 255, 0.4);
+  border-radius: 18px;
+  padding: 26px 18px 18px 18px;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.9), 0 0 30px -5px rgba(0, 210, 255, 0.35);
+  backdrop-filter: blur(16px);
+  color: #ffffff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  transition: all 0.3s ease;
+}
+.skool-badge-top {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #090e17;
+  border: 2px solid #00d2ff;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.skool-btn-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0, 210, 255, 0.45);
+}
+</style>
+<div class="skool-floating-widget" id="skoolWidget">
+  <button onclick="document.getElementById('skoolWidget').style.display='none'" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer;">&times;</button>
+  <div class="skool-badge-top">
+    <svg viewBox="0 0 28 28" width="30" height="30" fill="none"><rect width="28" height="28" rx="8" fill="#00d2ff"/><text x="14" y="19" font-size="16" font-weight="900" fill="#090e17" text-anchor="middle">sk</text></svg>
+  </div>
+  <div style="text-align:center;margin-top:8px;font-weight:700;font-size:0.95rem;">&#9889; Unete a VENDE EN AUTOMATICO</div>
+  <p style="font-size:0.8rem;line-height:1.45;color:rgba(255,255,255,0.85);text-align:center;margin:10px 0 14px;">Vende en Automatico es una comunidad que te ensena paso a paso a vender productos digitales Low Ticket usando Meta Ads, WhatsApp + IA.</p>
+  <a href="https://www.skool.com/vende-en-automatico-vip-8874/" target="_blank" class="skool-btn-cta">Unirme Ahora &rarr;</a>
+</div>
 </body>
 </html>
