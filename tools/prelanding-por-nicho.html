@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Plantillas de prelanding por nicho — Angel Bazán</title>
+  <meta name="description" content="Genera prelandings de preventa adaptadas a tu nicho: salud, educación, ecommerce y servicios locales. Código listo para subir." />
+  <link rel="canonical" href="https://angelbazan.com/tools/prelanding-por-nicho.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Prelanding por nicho</h1>
+    <p class="tool-desc">Páginas de preventa adaptadas a tu nicho: salud, educación, ecommerce y servicios locales. Elige, completa los datos y copia la página lista para subir.</p>
+    <div class="tool-box">
+      <label>Nicho</label>
+      <select id="niche">
+        <option value="salud">Salud y bienestar</option>
+        <option value="educacion">Educación y cursos</option>
+        <option value="ecommerce">Ecommerce / producto físico</option>
+        <option value="servicios">Servicios locales</option>
+      </select>
+      <label>Tu oferta</label>
+      <input type="text" id="offer" placeholder="Plan de alimentación de 4 semanas" />
+      <label>Promesa principal</label>
+      <input type="text" id="promise" placeholder="baja de peso sin dietas extremas" />
+      <label>Para quién es</label>
+      <input type="text" id="aud" placeholder="personas con poco tiempo que quieren resultados reales" />
+      <label>Enlace del CTA</label>
+      <input type="url" id="cta" placeholder="https://tusitio.com/checkout" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar prelanding</button>
+      </div>
+      <div class="preview" id="preview" style="display:none;">
+        <div class="preview-label">Vista previa</div>
+        <iframe id="frame" style="width:100%;height:340px;border:1px solid var(--border);border-radius:10px;background:#fff;"></iframe>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Código HTML (guarda como .html y súbelo a tu hosting)</label>
+        <textarea id="result" readonly style="min-height: 12rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar código</button>
+          <span class="copy-ok" id="ok">Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function esc(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    var copyByNiche = {
+      salud: ['Recupera tu energía en 30 días', 'Nada de dietas imposibles ni gimnasios: un plan simple que se adapta a tu rutina.', 'Sin sacrificios extremos · Resultados visibles en 4 semanas · Método paso a paso'],
+      educacion: ['Aprende en la mitad del tiempo', 'Olvida los cursos interminables: un método directo para dominar la habilidad que necesitas.', 'Sin tecnicismos · Ejemplos reales · Avanza a tu ritmo'],
+      ecommerce: ['El producto que resuelve el problema', 'Diseñado para uso diario real, con la calidad que se nota desde la primera vez.', 'Calidad comprobada · Envío 48h · Garantía de devolución'],
+      servicios: ['El servicio que tu zona necesita', 'Atención cercana y resultados medibles para tu hogar o negocio, con agenda inmediata.', 'Atención personalizada · Presupuesto sin compromiso · Resultados medibles']
+    };
+    function build() {
+      var niche = document.getElementById('niche').value;
+      var offer = esc(document.getElementById('offer').value.trim() || 'nuestra oferta');
+      var promise = esc(document.getElementById('promise').value.trim() || 'resultados reales');
+      var aud = esc(document.getElementById('aud').value.trim() || 'tú');
+      var cta = document.getElementById('cta').value.trim() || '#';
+      var cp = copyByNiche[niche];
+      var benefits = cp[2].split('·').map(function(s){ return esc(s.trim()); });
+      var bList = benefits.map(function(b){ return '<li>' + b + '</li>'; }).join('\n');
+      var html = '<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="utf-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n<title>' + offer + ' — Preventa</title>\n<style>\n  body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4fdf7;color:#222;}\n  .wrap{max-width:640px;margin:0 auto;padding:40px 20px;text-align:center;}\n  h1{font-size:32px;line-height:1.2;color:#075E54;}\n  h2{font-size:22px;color:#128C7E;margin:20px 0 8px;}\n  p{font-size:17px;line-height:1.6;color:#444;}\n  ul{text-align:left;display:inline-block;font-size:17px;line-height:1.9;}\n  .btn{display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-weight:bold;font-size:18px;padding:16px 38px;border-radius:9999px;margin-top:12px;box-shadow:0 8px 20px rgba(37,211,102,.35);}\n</style>\n</head>\n<body>\n<div class="wrap">\n  <h1>' + offer + ': ' + promise + '</h1>\n  <p>Si eres ' + aud + ', sigue leyendo: esto te interesa.</p>\n  <h2>' + cp[0] + '</h2>\n  <p>' + cp[1] + '</p>\n  <ul>\n' + bList + '\n  </ul>\n  <p>Cupos y stock limitados esta semana. Haz clic y empieza hoy.</p>\n  <a class="btn" href="' + cta + '">Quiero empezar</a>\n</div>\n</body>\n</html>';
+      document.getElementById('result').value = html;
+      document.getElementById('out').classList.add('show');
+      document.getElementById('frame').srcdoc = html;
+      document.getElementById('preview').style.display = 'block';
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

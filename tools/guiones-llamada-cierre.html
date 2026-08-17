@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de guiones de llamada de cierre — Angel Bazán</title>
+  <meta name="description" content="Crea tu guion de llamada de ventas: apertura, descubrimiento, presentación, objeciones y cierre. Listo para copiar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/guiones-llamada-cierre.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Guion de llamada de cierre</h1>
+    <p class="tool-desc">El guion completo para llamadas de venta o cierre por WhatsApp: apertura que conecta, descubrimiento, presentación, objeciones y cierre con opciones.</p>
+    <div class="tool-box">
+      <label>Tu negocio</label>
+      <input type="text" id="biz" placeholder="Mi Negocio" />
+      <label>Tu oferta</label>
+      <input type="text" id="offer" placeholder="Programa de 8 semanas" />
+      <label>Precio</label>
+      <input type="text" id="price" placeholder="S/ 499" />
+      <label>Beneficio principal</label>
+      <input type="text" id="benefit" placeholder="resultados en 4 semanas" />
+      <label>Objeciones frecuentes (separadas por |)</label>
+      <input type="text" id="obj" placeholder="es muy caro | no tengo tiempo | lo voy a pensar" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar guion</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu guion de llamada</label>
+        <textarea id="result" readonly style="min-height: 16rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar guion</button>
+          <span class="copy-ok" id="ok">Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var biz = document.getElementById('biz').value.trim() || 'Mi Negocio';
+      var offer = document.getElementById('offer').value.trim() || 'nuestra oferta';
+      var price = document.getElementById('price').value.trim() || 'S/ 499';
+      var ben = document.getElementById('benefit').value.trim() || 'resultados reales';
+      var objs = document.getElementById('obj').value.split('|').map(function(s){ return s.trim(); }).filter(Boolean);
+      var objBlock = objs.length ? objs.map(function(o, i) {
+        return 'OBJECIÓN ' + (i + 1) + ': "' + o + '"\n  → Reconoce: "Entiendo perfectamente, es una pregunta normal."\n  → Reconecta: conecta con un beneficio ya mencionado.\n  → Pregunta de opciones: "Si resolvemos eso, ¿estarías listo para empezar esta semana o la próxima?"';
+      }).join('\n\n') : 'OBJECIÓN: "es muy caro"\n  → Reconoce, reconecta con el beneficio y pregunta con opciones.';
+      var guion = 'GUION DE LLAMADA — ' + biz + '\n\n' +
+        '1. APERTURA (30 seg)\n' +
+        '  "Hola [Nombre], soy [Tu nombre] de ' + biz + '. Te llamo porque vi tu interés en ' + offer + '. ¿Tienes 3 minutos para que te cuente cómo funciona? Perfecto."\n\n' +
+        '2. DESCUBRIMIENTO (3 preguntas)\n' +
+        '  ¿Qué es lo que más te está frenando ahora mismo con [problema]?\n' +
+        '  ¿Qué intentaste antes y qué pasó?\n' +
+        '  Si esto funcionara, ¿qué cambiaría para ti en 30 días?\n\n' +
+        '3. PRESENTACIÓN\n' +
+        '  "Basado en lo que me cuentas, ' + offer + ' está diseñado exactamente para eso: ' + ben + '. No es teoría: es el sistema paso a paso, con acompañamiento."\n' +
+        '  (Menciona 2 beneficios conectados a lo que dijo el cliente.)\n\n' +
+        '4. OBJECIONES\n' + objBlock + '\n\n' +
+        '5. CIERRE (con opciones)\n' +
+        '  "El precio es ' + price + ' con garantía total. ¿Empezamos esta semana o prefieres la siguiente? ¿Y prefieres pagar en una sola exhibición o en 2 partes?"\n\n' +
+        '6. POST-LLAMADA\n' +
+        '  Envía por WhatsApp: resumen de lo hablado + enlace de pago + "Cualquier duda, aquí estoy."';
+      document.getElementById('result').value = guion;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

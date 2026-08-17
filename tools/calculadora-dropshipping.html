@@ -35,6 +35,10 @@
       </div>
       <div class="tool-out" id="out">
         <div class="out-box" id="result"></div>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copyResult()">Copiar resultado</button>
+          <span class="copy-ok" id="ok">Copiado!</span>
+        </div>
       </div>
     </div>
   </main>
@@ -62,6 +66,20 @@
         '<p style="margin-top:8px;font-weight:bold;color:' + color + ';">' + status + '</p>';
       document.getElementById('out').classList.add('show');
     }
-  </script>
+  
+    function copyResult() {
+      var el = document.getElementById('result');
+      var txt = el.textContent || el.innerText;
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+</script>
 </body>
 </html>

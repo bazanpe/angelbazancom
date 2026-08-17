@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Calculadora de embudo de ventas — Angel Bazán</title>
+  <meta name="description" content="Simula tu embudo completo: tráfico → conversación → venta → ticket. Descubre cuántas visitas necesitas para tu meta de facturación." />
+  <link rel="canonical" href="https://angelbazan.com/tools/calculadora-embudo.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Calculadora de embudo</h1>
+    <p class="tool-desc">Simula tu embudo completo: del clic al ticket promedio. Descubre cuántas conversaciones necesitas al mes para tu meta de facturación.</p>
+    <div class="tool-box">
+      <div class="row">
+        <div><label>Visitas al día</label><input type="number" id="traffic" value="500" /></div>
+        <div><label>CTR del anuncio (%)</label><input type="number" id="ctr" value="2" /></div>
+      </div>
+      <div class="row">
+        <div><label>Clic → conversación (%)</label><input type="number" id="clickConv" value="30" /></div>
+        <div><label>Conversación → venta (%)</label><input type="number" id="convSale" value="25" /></div>
+      </div>
+      <div class="row">
+        <div><label>Ticket promedio</label><input type="number" id="ticket" value="80" /></div>
+        <div><label>Margen de ganancia (%)</label><input type="number" id="margin" value="60" /></div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="calc()">Calcular embudo</button>
+      </div>
+      <div class="tool-out" id="out">
+        <div class="out-box" id="result"></div>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copyResult()">Copiar resultado</button>
+          <span class="copy-ok" id="ok">Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function calc() {
+      var t = +document.getElementById('traffic').value || 0;
+      var ctr = +document.getElementById('ctr').value || 0;
+      var cc = +document.getElementById('clickConv').value || 0;
+      var cs = +document.getElementById('convSale').value || 0;
+      var ticket = +document.getElementById('ticket').value || 0;
+      var margin = +document.getElementById('margin').value || 0;
+      var clicks = t * ctr / 100;
+      var chats = clicks * cc / 100;
+      var sales = chats * cs / 100;
+      var salesMonth = sales * 30;
+      var revMonth = salesMonth * ticket;
+      var netMonth = revMonth * margin / 100;
+      var html =
+        '<p><b>Visitas:</b> ' + t.toFixed(0) + '/día → <b>Clics:</b> ' + clicks.toFixed(0) + '/día</p>' +
+        '<p><b>Conversaciones:</b> ' + chats.toFixed(0) + '/día · <b>Ventas:</b> ' + sales.toFixed(1) + '/día</p>' +
+        '<p><b>Ventas al mes:</b> ' + salesMonth.toFixed(0) + '</p>' +
+        '<p><b>Facturación mensual:</b> ' + revMonth.toFixed(0) + '</p>' +
+        '<p><b>Ganancia neta mensual (margen ' + margin + '%):</b> <span style="font-weight:bold;color:#128C7E;">' + netMonth.toFixed(0) + '</span></p>' +
+        '<p style="margin-top:10px;color:#128C7E;font-weight:bold;">Optimiza la etapa más débil: subir la conversación a venta de 25% a 35% mueve más que duplicar el tráfico.</p>';
+      document.getElementById('result').innerHTML = html;
+      document.getElementById('out').classList.add('show');
+    }
+    function copyResult() {
+      var el = document.getElementById('result');
+      var txt = el.textContent || el.innerText;
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

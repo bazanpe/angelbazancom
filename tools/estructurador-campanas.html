@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Estructurador de campañas de Meta Ads — Angel Bazán</title>
+  <meta name="description" content="Arma la estructura de tus campañas de Meta Ads con naming profesional y distribución de presupuesto. Plan listo para copiar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/estructurador-campanas.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Estructurador de campañas</h1>
+    <p class="tool-desc">Genera la arquitectura de tu cuenta de Meta Ads: naming claro, distribución de presupuesto y estructura de testeo. Plan listo para copiar a tu Ads Manager.</p>
+    <div class="tool-box">
+      <label>Tu marca o negocio</label>
+      <input type="text" id="biz" placeholder="MiNegocio" />
+      <label>Producto u oferta</label>
+      <input type="text" id="offer" placeholder="Ebook IA" />
+      <label>Objetivo de campaña</label>
+      <select id="goal">
+        <option value="Mensajes">Mensajes (WhatsApp)</option>
+        <option value="Ventas">Ventas</option>
+        <option value="Leads">Leads</option>
+        <option value="Tráfico">Tráfico</option>
+      </select>
+      <label>Presupuesto diario total</label>
+      <input type="number" id="budget" value="50" />
+      <label>Ángulos a testear (uno por línea)</label>
+      <textarea id="angles" placeholder="Ángulo dolor: pierdes leads por no responder&#10;Ángulo resultado: duplica ventas&#10;Ángulo prueba: caso real de clínica"></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar estructura</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu plan de estructura</label>
+        <textarea id="result" readonly style="min-height: 14rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar plan</button>
+          <span class="copy-ok" id="ok">Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var biz = document.getElementById('biz').value.trim() || 'Marca';
+      var offer = document.getElementById('offer').value.trim() || 'Oferta';
+      var goal = document.getElementById('goal').value;
+      var budget = +document.getElementById('budget').value || 50;
+      var angles = document.getElementById('angles').value.split('\n').map(function(s){ return s.trim(); }).filter(Boolean);
+      if (!angles.length) angles = ['Ángulo principal'];
+      var test = Math.round(budget * 0.7);
+      var ret = Math.round(budget * 0.2);
+      var prosp = Math.round(budget * 0.1);
+      var perAngle = Math.round(test / angles.length);
+      var lines = ['ESTRUCTURA DE CAMPAÑAS — ' + biz.toUpperCase(), ''];
+      lines.push('CAMPAÑA 1 · TESTEO (' + goal + ')');
+      lines.push('  Presupuesto: ' + test + '/día (' + angles.length + ' ángulos → ~' + perAngle + ' c/u)');
+      lines.push('  CBO: sí · Optimización: ' + (goal === 'Mensajes' ? 'Conversaciones' : goal) + '');
+      lines.push('  Nombre: T_' + biz + '_' + offer.replace(/\s+/g, '') + '_' + goal);
+      angles.forEach(function(a, i) {
+        lines.push('    Conjunto ' + (i + 1) + ' · ' + a.split(':')[0].slice(0, 30));
+        lines.push('      Anuncio: AD_' + (i + 1) + '_' + a.split(':')[0].slice(0, 12).replace(/\s+/g, ''));
+      });
+      lines.push('');
+      lines.push('CAMPAÑA 2 · RETARGETING');
+      lines.push('  Presupuesto: ' + ret + '/día');
+      lines.push('  Audiencias: visitantes 7-14d + chats sin compra 30d + compradores 90d');
+      lines.push('  Nombre: RT_' + biz + '_Visitantes / RT_' + biz + '_Chats / RT_' + biz + '_Compradores');
+      lines.push('');
+      lines.push('CAMPAÑA 3 · PROSPECCIÓN (LOOKALIKE)');
+      lines.push('  Presupuesto: ' + prosp + '/día');
+      lines.push('  Audiencia: 1% y 3% de compradores');
+      lines.push('');
+      lines.push('REGLAS:');
+      lines.push('  • Escalar: +20-30% cada 2-3 días solo al ganador validado (15-20 resultados).');
+      lines.push('  • Cortar anuncios: mínimo 3 días antes de juzgar.');
+      lines.push('  • Métricas: costo por conversación y costo por venta, no solo ROAS.');
+      document.getElementById('result').value = lines.join('\n');
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

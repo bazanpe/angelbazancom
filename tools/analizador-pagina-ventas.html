@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Analizador de página de ventas (30 puntos) — Angel Bazán</title>
+  <meta name="description" content="Audita tu página de ventas con los 30 puntos de conversión: gancho, problema, mecanismo, prueba, oferta y CTA. Con puntaje y informe." />
+  <link rel="canonical" href="https://angelbazan.com/tools/analizador-pagina-ventas.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Analizador de página de ventas</h1>
+    <p class="tool-desc">Los 30 puntos que toda página de ventas necesita. Marca lo que tu página cumple y obtén tu puntaje de conversión con informe copiable.</p>
+    <div class="tool-box">
+      <p class="tool-hint" id="score" style="font-size:1rem;margin-bottom:1rem;">Puntaje: <b>0/30</b></p>
+      <div id="groups"></div>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="copyReport()">Copiar informe</button>
+        <button class="tbtn tbtn-outline" onclick="resetAll()">Reiniciar</button>
+        <span class="copy-ok" id="ok">Copiado!</span>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var groups = [
+      ['Gancho', [
+        'El titular promete un beneficio claro en menos de 10 palabras',
+        'El subtítulo aclara para quién es y qué obtiene',
+        'Los primeros 5 segundos (o el primer párrafo) capturan atención',
+        'No hay ambigüedad: se entiende qué se vende',
+        'El gancho conecta con el anuncio que trajo al visitante'
+      ]],
+      ['Problema', [
+        'Se describe el dolor del cliente con sus propias palabras',
+        'Se agranda el costo de no resolver el problema',
+        'La historia es creíble y con detalles específicos',
+        'El lector se siente identificado en los primeros 2 párrafos',
+        'Se conecta el problema con la solución de forma natural'
+      ]],
+      ['Mecanismo', [
+        'Hay un "cómo" claro y con nombre propio',
+        'El mecanismo suena creíble, no mágico',
+        'Se explica en pasos o fases entendibles',
+        'El mecanismo diferencia la oferta de la competencia',
+        'La promesa es consistente con el mecanismo'
+      ]],
+      ['Prueba', [
+        'Hay testimonios reales con nombre y contexto',
+        'Hay capturas o cifras verificables',
+        'Los resultados mostrados son realistas',
+        'Hay garantía clara (días y condiciones)',
+        'La prueba aparece ANTES de la oferta'
+      ]],
+      ['Oferta', [
+        'El precio está visible sin fricción',
+        'Se compara el valor entregado vs el precio',
+        'Hay urgencia legítima (plazo o stock real)',
+        'El precio está justificado con bonos o contenido',
+        'No hay letra pequeña engañosa'
+      ]],
+      ['CTA y diseño', [
+        'Hay un solo CTA principal claro',
+        'El botón repite el CTA en puntos de decisión',
+        'La página carga rápido y se ve bien en móvil',
+        'No hay distracciones (menús, enlaces externos)',
+        'El CTA lleva exactamente a lo que promete'
+      ]]
+    ];
+    var groupEls = [];
+    function render() {
+      var wrap = document.getElementById('groups');
+      wrap.innerHTML = '';
+      groups.forEach(function(g, gi) {
+        var h = document.createElement('h3');
+        h.style.cssText = 'font-size:1.05rem;margin:1.25rem 0 .5rem;color:#075E54;';
+        h.textContent = g[0];
+        wrap.appendChild(h);
+        var row = [];
+        g[1].forEach(function(item, ii) {
+          var label = document.createElement('label');
+          label.style.cssText = 'display:flex;gap:.6rem;align-items:flex-start;font-size:.9375rem;font-weight:400;margin:.35rem 0;cursor:pointer;';
+          var cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.addEventListener('change', update);
+          label.appendChild(cb);
+          label.appendChild(document.createTextNode(item));
+          wrap.appendChild(label);
+          row.push(cb);
+        });
+        groupEls.push(row);
+      });
+    }
+    function update() {
+      var total = 0, done = 0;
+      groupEls.forEach(function(row) { row.forEach(function(cb) { total++; if (cb.checked) done++; }); });
+      var pct = Math.round(done / total * 100);
+      var msg = pct >= 85 ? ' — 🔥 Excelente, lista para escalar' : pct >= 60 ? ' — 👍 Buena base, optimiza los pendientes' : pct >= 35 ? ' — ⚠️ Trabaja los puntos clave' : ' — 🚨 La página necesita una revisión seria';
+      document.getElementById('score').innerHTML = 'Puntaje: <b>' + done + '/' + total + ' (' + pct + '%)</b>' + msg;
+    }
+    function copyReport() {
+      var done = 0, total = 0;
+      var lines = ['AUDITORIA DE PAGINA DE VENTAS — ' + new Date().toLocaleDateString('es-PE'), ''];
+      groups.forEach(function(g, gi) {
+        lines.push(g[0].toUpperCase());
+        g[1].forEach(function(item, ii) {
+          total++;
+          var checked = groupEls[gi][ii].checked;
+          if (checked) done++;
+          lines.push((checked ? '[x] ' : '[ ] ') + item);
+        });
+        lines.push('');
+      });
+      var pct = Math.round(done / total * 100);
+      lines.push('PUNTAJE: ' + done + '/' + total + ' (' + pct + '%)');
+      lines.push('Prioridad: atacar primero los puntos sin marcar de Gancho, Mecanismo y Oferta.');
+      copyText(lines.join('\n'));
+    }
+    function copyText(txt) {
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+    function resetAll() {
+      groupEls.forEach(function(row) { row.forEach(function(cb) { cb.checked = false; }); });
+      update();
+    }
+    render();
+    update();
+  </script>
+</body>
+</html>

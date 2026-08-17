@@ -23,6 +23,9 @@
       <label>Tu texto</label>
       <textarea id="input" placeholder="Escribe o pega tu texto aquí…" style="min-height: 180px;"></textarea>
       <p class="tool-hint" id="stats"></p>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-outline" onclick="copyText()">Copiar texto</button>
+      </div>
     </div>
   </main>
   <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
@@ -40,6 +43,16 @@
     }
     area.addEventListener('input', update);
     update();
-  </script>
+  
+    function copyText() {
+      var ta = document.createElement('textarea');
+      ta.value = document.getElementById('input').value;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      alert('Texto copiado');
+    }
+</script>
 </body>
 </html>
