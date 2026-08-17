@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Formateador de texto para WhatsApp — Angel Bazán</title>
+  <meta name="description" content="Aplica negritas, cursivas, tachado y mayúsculas a tus textos para WhatsApp, Instagram y más. Copia y pega al instante." />
+  <link rel="canonical" href="https://angelbazan.com/tools/formateador-texto.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Formateador de texto</h1>
+    <p class="tool-desc">Formatea tu texto para WhatsApp (*negrita*, _cursiva_, ~tachado~) y otras redes. Escribe o pega, elige el formato y copia el resultado.</p>
+    <div class="tool-box">
+      <label>Tu texto</label>
+      <textarea id="input" placeholder="Escribe o pega aquí tu mensaje de venta…"></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="fmt('*')">Negrita</button>
+        <button class="tbtn tbtn-outline" onclick="fmt('_')">Cursiva</button>
+        <button class="tbtn tbtn-outline" onclick="fmt('~')">Tachado</button>
+        <button class="tbtn tbtn-outline" onclick="upper()">MAYÚSCULAS</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Resultado (copia y pega en WhatsApp)</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function wrap(sym) {
+      var v = document.getElementById('input').value;
+      if (!v.trim()) return;
+      var lines = v.split('\n');
+      document.getElementById('result').value = lines.map(function(l){ return l.trim() ? sym + l + sym : l; }).join('\n');
+      show();
+    }
+    function fmt(sym) { wrap(sym); }
+    function upper() {
+      var v = document.getElementById('input').value;
+      if (!v.trim()) return;
+      document.getElementById('result').value = v.toUpperCase();
+      show();
+    }
+    function show() {
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de testimonios para tu web — Angel Bazán</title>
+  <meta name="description" content="Crea bloques de testimonios con slider para tu página de ventas y copia el código HTML listo para pegar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/testimonios-slider.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Generador de testimonios</h1>
+    <p class="tool-desc">Arma un bloque de testimonios con slider para tu página de ventas. Agrega tus testimonios reales y copia el código HTML listo para pegar.</p>
+    <div class="tool-box">
+      <label>Testimonios (nombre, testimonio y ciudad separados por |)</label>
+      <textarea id="items" placeholder="María G. | Dupliqué mis pacientes en 60 días, el método funciona. | Lima&#10;Carlos R. | El sistema de WhatsApp me cambió el negocio. | Bogotá&#10;Lucía P. | La mejor inversión que hice este año. | CDMX"></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar bloque</button>
+      </div>
+      <div class="preview" id="preview" style="display:none;">
+        <div class="preview-label">Vista previa</div>
+        <div id="prevbox"></div>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Código HTML (copia y pega en tu página)</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar código</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var raw = document.getElementById('items').value.split('\n').filter(function(l){ return l.trim(); });
+      if (!raw.length) { alert('Agrega al menos un testimonio'); return; }
+      var cards = raw.map(function(line, i) {
+        var parts = line.split('|').map(function(s){ return s.trim(); });
+        var name = parts[0] || 'Cliente';
+        var text = parts[1] || '';
+        var city = parts[2] || '';
+        return '<div style="min-width:100%;box-sizing:border-box;padding:20px;background:#f7f7f7;border-radius:14px;text-align:center;">' +
+          '<p style="font-size:17px;color:#222;margin-bottom:12px;">\u201C' + text + '\u201D</p>' +
+          '<p style="font-weight:bold;color:#075E54;">' + name + '</p>' +
+          (city ? '<p style="font-size:13px;color:#888;">' + city + '</p>' : '') +
+          '</div>';
+      }).join('');
+      var code = '<div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:20px 0;">' + cards + '</div>';
+      document.getElementById('result').value = code;
+      document.getElementById('out').classList.add('show');
+      document.getElementById('prevbox').innerHTML = code;
+      document.getElementById('preview').style.display = 'block';
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

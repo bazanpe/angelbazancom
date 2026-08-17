@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Eliminar duplicados de listas online — Angel Bazán</title>
+  <meta name="description" content="Limpia listas de emails, leads y textos: elimina líneas duplicadas al instante. Gratis y sin registro." />
+  <link rel="canonical" href="https://angelbazan.com/tools/eliminar-duplicados.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Eliminar duplicados</h1>
+    <p class="tool-desc">Pega tu lista de emails, leads o textos y elimina las líneas duplicadas al instante. Perfecto para limpiar bases de datos antes de una campaña.</p>
+    <div class="tool-box">
+      <label>Tu lista (una línea por elemento)</label>
+      <textarea id="input" placeholder="correo1@gmail.com&#10;correo2@gmail.com&#10;correo1@gmail.com"></textarea>
+      <p class="tool-hint" id="count"></p>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="clean()">Eliminar duplicados</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Resultado</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function clean() {
+      var lines = document.getElementById('input').value.split('\n');
+      var seen = {};
+      var out = [];
+      lines.forEach(function(l) {
+        var t = l.trim();
+        if (!t) return;
+        var key = t.toLowerCase();
+        if (!seen[key]) { seen[key] = true; out.push(t); }
+      });
+      document.getElementById('result').value = out.join('\n');
+      document.getElementById('out').classList.add('show');
+      document.getElementById('count').textContent = 'Originales: ' + lines.filter(function(l){return l.trim();}).length + ' · Únicos: ' + out.length + ' · Eliminados: ' + (lines.filter(function(l){return l.trim();}).length - out.length);
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

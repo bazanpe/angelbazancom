@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de badge de garantía — Angel Bazán</title>
+  <meta name="description" content="Crea un bloque de garantía profesional para tu página de ventas y copia el código listo para pegar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/badge-garantia.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Badge de garantía</h1>
+    <p class="tool-desc">Genera el bloque de garantía que reduce el miedo a comprar en tu página de ventas. Personaliza días, título y texto, y copia el código listo para pegar.</p>
+    <div class="tool-box">
+      <label>Días de garantía</label>
+      <input type="number" id="days" value="7" min="1" />
+      <label>Título</label>
+      <input type="text" id="title" value="Garantía de devolución del 100% en 7 días" />
+      <label>Texto de apoyo</label>
+      <textarea id="text" placeholder="Si no quedas satisfecho, te devolvemos tu dinero sin preguntas. Sin letra pequeña."></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar bloque</button>
+      </div>
+      <div class="preview" id="preview" style="display:none;">
+        <div class="preview-label">Vista previa</div>
+        <div id="prevbox"></div>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Código HTML (copia y pega en tu página)</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar código</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var d = +document.getElementById('days').value || 7;
+      var t = document.getElementById('title').value.trim() || 'Garantía de devolución';
+      var x = document.getElementById('text').value.trim();
+      var inner = '<div style="max-width:520px;margin:20px auto;text-align:center;border:2px solid #25D366;border-radius:16px;padding:24px;background:#f4fdf7;">' +
+        '<div style="font-size:44px;">🛡️</div>' +
+        '<p style="font-weight:bold;font-size:18px;color:#075E54;margin:8px 0 4px;">' + t + '</p>' +
+        (x ? '<p style="font-size:14px;color:#555;line-height:1.5;">' + x + '</p>' : '') +
+        '</div>';
+      document.getElementById('result').value = inner;
+      document.getElementById('out').classList.add('show');
+      document.getElementById('prevbox').innerHTML = inner;
+      document.getElementById('preview').style.display = 'block';
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

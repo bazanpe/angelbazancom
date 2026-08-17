@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de enlace de WhatsApp — Angel Bazán</title>
+  <meta name="description" content="Crea enlaces wa.me con mensaje predefinido para tus anuncios, bio y funnels de WhatsApp en segundos." />
+  <link rel="canonical" href="https://angelbazan.com/tools/enlace-whatsapp.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Generador de enlace de WhatsApp</h1>
+    <p class="tool-desc">Crea tu enlace wa.me con mensaje predefinido: perfecto para anuncios de Meta Ads, botones de tu web y la bio de Instagram.</p>
+    <div class="tool-box">
+      <label>Número de WhatsApp (con código de país, sin + ni espacios)</label>
+      <input type="text" id="num" placeholder="51999999999" />
+      <p class="tool-hint">Ejemplo: 51 es Perú, 57 Colombia, 52 México.</p>
+      <label>Mensaje predefinido (opcional)</label>
+      <textarea id="msg" placeholder="Hola Angel, quiero comprar el ebook"></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar enlace</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu enlace de WhatsApp</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <button class="tbtn tbtn-outline" id="openbtn" onclick="openLink()" style="display:none;">Probar enlace</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var url = '';
+    function build() {
+      var n = document.getElementById('num').value.replace(/[^0-9]/g, '');
+      if (n.length < 8) { alert('Escribe un número válido con código de país'); return; }
+      var m = document.getElementById('msg').value.trim();
+      url = 'https://wa.me/' + n + (m ? '?text=' + encodeURIComponent(m) : '');
+      document.getElementById('result').value = url;
+      document.getElementById('out').classList.add('show');
+      document.getElementById('openbtn').style.display = 'inline-flex';
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+    function openLink() { window.open(url, '_blank'); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de píldoras CTA — Angel Bazán</title>
+  <meta name="description" content="Crea botones de llamada a la acción con estilo píldora para tus embudos y copia el código HTML listo para pegar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/pildoras-cta.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Píldoras CTA</h1>
+    <p class="tool-desc">Genera botones de llamado a la acción (CTA) con estilo píldora para tus páginas de venta y embudos. Cada botón con su propio enlace.</p>
+    <div class="tool-box">
+      <label>Botones (texto | enlace, uno por línea)</label>
+      <textarea id="items" placeholder="Comprar ahora | https://tusitio.com/checkout&#10;Escríbenos por WhatsApp | https://wa.me/51999999999"></textarea>
+      <label>Color del botón</label>
+      <div class="row">
+        <div><label><input type="radio" name="color" value="green" checked /> Verde WhatsApp</label></div>
+        <div><label><input type="radio" name="color" value="dark" /> Verde oscuro</label></div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar botones</button>
+      </div>
+      <div class="preview" id="preview" style="display:none;">
+        <div class="preview-label">Vista previa</div>
+        <div id="prevbox"></div>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Código HTML (copia y pega en tu página)</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar código</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var lines = document.getElementById('items').value.split('\n').filter(function(l){ return l.trim(); });
+      if (!lines.length) { alert('Agrega al menos un botón'); return; }
+      var color = document.querySelector('input[name="color"]:checked').value === 'green' ? '#25D366' : '#075E54';
+      var btns = lines.map(function(line) {
+        var p = line.split('|');
+        var label = (p[0] || 'CTA').trim();
+        var href = (p[1] || '#').trim();
+        return '<a href="' + href + '" style="display:inline-block;background:' + color + ';color:#fff;border-radius:9999px;padding:14px 34px;font-size:17px;font-weight:bold;text-decoration:none;margin:6px;box-shadow:0 8px 20px rgba(37,211,102,.35);">' + label + '</a>';
+      }).join('');
+      var code = '<div style="text-align:center;margin:20px 0;">' + btns + '</div>';
+      document.getElementById('result').value = code;
+      document.getElementById('out').classList.add('show');
+      document.getElementById('prevbox').innerHTML = code;
+      document.getElementById('preview').style.display = 'block';
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

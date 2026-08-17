@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de prompts para IA de marketing — Angel Bazán</title>
+  <meta name="description" content="Plantillas de prompts optimizadas para ChatGPT, Claude y Gemini: copy de anuncios, guiones de VSL, objeciones y más." />
+  <link rel="canonical" href="https://angelbazan.com/tools/generador-prompts.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Generador de prompts para IA</h1>
+    <p class="tool-desc">Arma prompts optimizados para ChatGPT, Claude o Gemini en segundos. Elige la plantilla, completa los datos y copia el prompt listo para pegar.</p>
+    <div class="tool-box">
+      <label>Plantilla</label>
+      <select id="tpl">
+        <option value="copy">Copy de anuncios de Meta Ads</option>
+        <option value="vsl">Guion de VSL (video de ventas)</option>
+        <option value="obj">Respuestas a objeciones (WhatsApp)</option>
+        <option value="analisis">Análisis de página de ventas</option>
+      </select>
+      <label>Tu producto u oferta</label>
+      <input type="text" id="product" placeholder="Ebook de 50 hacks de IA para emprendedores" />
+      <label>Tu cliente ideal</label>
+      <input type="text" id="audience" placeholder="Emprendedores y dueños de negocio que venden online" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar prompt</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu prompt (copia y pega en ChatGPT, Claude o Gemini)</label>
+        <textarea id="result" readonly style="min-height: 10rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar prompt</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var t = document.getElementById('tpl').value;
+      var p = document.getElementById('product').value.trim();
+      var a = document.getElementById('audience').value.trim();
+      var prompt = '';
+      if (t === 'copy') {
+        prompt = 'Eres un redactor publicitario experto en Meta Ads. Escribe 5 variaciones de anuncio para: "' + p + '".\nPúblico: ' + a + '.\nCada variación debe tener: gancho de titular, cuerpo con dolor/beneficio, prueba social y llamado a la acción. Tono cercano y directo, sin clickbait falso.';
+      } else if (t === 'vsl') {
+        prompt = 'Eres un estratega de ventas. Escribe el guion completo de un video de ventas (VSL) de 10-12 minutos para: "' + p + '".\nPúblico: ' + a + '.\nEstructura: gancho (0-15s), historia del problema, promesa, mecanismo único, prueba, oferta con precio, garantía y CTA. Marca los tiempos de cada sección.';
+      } else if (t === 'obj') {
+        prompt = 'Eres un vendedor experto en cierre por WhatsApp. Para el producto "' + p + '" y el cliente ideal ' + a + ', escribe respuestas cortas (máx 3 líneas cada una) para estas objeciones: "está muy caro", "lo pienso", "no tengo tiempo", "¿tiene garantía?", "¿y si no me funciona?". Mensajes conversacionales, sin presión.';
+      } else {
+        prompt = 'Eres un consultor de conversión. Analiza mi página de ventas como si fueras mi cliente ideal (' + a + ') interesado en "' + p + '".\nDetente en cada sección y dime: qué entiendo, qué dudo y dónde me saldría. Al final, lista priorizada de fugas de conversión con sugerencias concretas.';
+      }
+      document.getElementById('result').value = prompt;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Abrir múltiples enlaces a la vez — Angel Bazán</title>
+  <meta name="description" content="Abre varias URLs en nuevas pestañas de una sola vez: ideal para revisar anuncios de la competencia o varios embudos." />
+  <link rel="canonical" href="https://angelbazan.com/tools/abrir-multiples-enlaces.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Abrir múltiples enlaces</h1>
+    <p class="tool-desc">Pega varias URLs (una por línea) y ábrelas todas en pestañas nuevas. Perfecto para auditar anuncios de la competencia en la Biblioteca de Meta o revisar varios embudos a la vez.</p>
+    <div class="tool-box">
+      <label>URLs (una por línea)</label>
+      <textarea id="input" placeholder="https://facebook.com/ads/library/&#10;https://tusitio.com/landing1&#10;https://tusitio.com/landing2"></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="openAll()">Abrir todos</button>
+      </div>
+      <p class="tool-hint" id="count"></p>
+      <p class="tool-hint">Si tu navegador bloquea las ventanas emergentes, permite pop-ups para este sitio y vuelve a intentarlo.</p>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function openAll() {
+      var lines = document.getElementById('input').value.split('\n');
+      var n = 0;
+      lines.forEach(function(l) {
+        var t = l.trim();
+        if (!t) return;
+        if (!/^https?:\/\//i.test(t)) t = 'https://' + t;
+        window.open(t, '_blank');
+        n++;
+      });
+      document.getElementById('count').textContent = n ? 'Se abrieron ' + n + ' pestañas.' : 'No hay URLs para abrir.';
+    }
+  </script>
+</body>
+</html>

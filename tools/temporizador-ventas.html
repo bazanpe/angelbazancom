@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de temporizador de ventas — Angel Bazán</title>
+  <meta name="description" content="Crea un contador regresivo de urgencia para tu página de ventas y copia el código HTML listo para pegar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/temporizador-ventas.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Temporizador de ventas</h1>
+    <p class="tool-desc">Genera un contador regresivo de urgencia para tu página de ventas y copia el código listo para pegar en tu embudo. Funciona en cualquier página HTML.</p>
+    <div class="tool-box">
+      <div class="row">
+        <div><label>Días</label><input type="number" id="days" value="3" min="0" /></div>
+        <div><label>Horas</label><input type="number" id="hours" value="0" min="0" max="23" /></div>
+        <div><label>Minutos</label><input type="number" id="mins" value="0" min="0" max="59" /></div>
+      </div>
+      <label>Texto (opcional)</label>
+      <input type="text" id="label" value="¡Oferta termina en!" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar código</button>
+      </div>
+      <div class="preview" id="preview" style="display:none;">
+        <div class="preview-label">Vista previa</div>
+        <div id="prevbox"></div>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Código HTML (copia y pega en tu página)</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar código</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var d = +document.getElementById('days').value || 0;
+      var h = +document.getElementById('hours').value || 0;
+      var m = +document.getElementById('mins').value || 0;
+      var lab = document.getElementById('label').value.trim() || '¡Oferta termina en!';
+      var total = (d * 86400) + (h * 3600) + (m * 60);
+      if (total <= 0) { alert('Configura un tiempo mayor a 0'); return; }
+      var code = '<div id="timer-wrap" style="text-align:center;font-family:Arial,sans-serif;margin:20px 0;">\n' +
+        '  <p style="font-size:16px;font-weight:bold;color:#075E54;">' + lab + '</p>\n' +
+        '  <div id="timer" style="font-size:36px;font-weight:bold;color:#25D366;"></div>\n' +
+        '</div>\n' +
+        '<script>\n' +
+        '  var target = Date.now() + ' + (total * 1000) + ';\n' +
+        '  (function tick() {\n' +
+        '    var diff = Math.max(0, target - Date.now());\n' +
+        '    var dd = Math.floor(diff / 86400000);\n' +
+        '    var hh = Math.floor(diff % 86400000 / 3600000);\n' +
+        '    var mm = Math.floor(diff % 3600000 / 60000);\n' +
+        '    var ss = Math.floor(diff % 60000 / 1000);\n' +
+        '    document.getElementById("timer").textContent =\n' +
+        '      dd + "d " + hh + "h " + mm + "m " + ss + "s";\n' +
+        '    if (diff > 0) setTimeout(tick, 1000);\n' +
+        '  })();\n' +
+        '<\/script>';
+      document.getElementById('result').value = code;
+      document.getElementById('out').classList.add('show');
+      var prev = document.getElementById('prevbox');
+      prev.innerHTML = '<p style="font-size:16px;font-weight:bold;color:#075E54;margin-bottom:6px;">' + lab + '</p><div style="font-size:36px;font-weight:bold;color:#25D366;">' + d + 'd ' + h + 'h ' + m + 'm 00s</div>';
+      document.getElementById('preview').style.display = 'block';
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

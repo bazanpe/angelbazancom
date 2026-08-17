@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Calculadora de rentabilidad dropshipping — Angel Bazán</title>
+  <meta name="description" content="Calcula tu margen y rentabilidad real en dropshipping: producto, envío, comisiones y precio de venta." />
+  <link rel="canonical" href="https://angelbazan.com/tools/calculadora-dropshipping.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Calculadora de rentabilidad dropshipping</h1>
+    <p class="tool-desc">Sabe si un producto te deja margen antes de lanzar la campaña: costo de producto, envío, comisiones y precio de venta.</p>
+    <div class="tool-box">
+      <div class="row">
+        <div><label>Costo del producto (proveedor)</label><input type="number" id="product" value="15" /></div>
+        <div><label>Costo de envío</label><input type="number" id="ship" value="5" /></div>
+      </div>
+      <div class="row">
+        <div><label>Comisión de la plataforma (%)</label><input type="number" id="comm" value="10" /></div>
+        <div><label>Precio de venta</label><input type="number" id="price" value="49" /></div>
+      </div>
+      <label>Costo publicitario estimado por venta</label>
+      <input type="number" id="ads" value="12" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="calc()">Calcular</button>
+      </div>
+      <div class="tool-out" id="out">
+        <div class="out-box" id="result"></div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function calc() {
+      var p = +document.getElementById('product').value || 0;
+      var s = +document.getElementById('ship').value || 0;
+      var c = +document.getElementById('comm').value || 0;
+      var price = +document.getElementById('price').value || 0;
+      var ads = +document.getElementById('ads').value || 0;
+      var commAmt = price * c / 100;
+      var cost = p + s + commAmt;
+      var margin = price - cost;
+      var marginPct = price ? (margin / price * 100).toFixed(1) : 0;
+      var net = margin - ads;
+      var roas = ads > 0 ? (price / ads).toFixed(2) : '—';
+      var status = net > 0 ? '✅ Producto rentable' : '⚠️ Producto NO rentable';
+      var color = net > 0 ? '#128C7E' : '#b91c1c';
+      document.getElementById('result').innerHTML =
+        '<p><b>Margen bruto:</b> S/ ' + margin.toFixed(2) + ' (' + marginPct + '%)</p>' +
+        '<p><b>Costo total por venta (sin ads):</b> S/ ' + cost.toFixed(2) + '</p>' +
+        '<p><b>Ganancia neta (con ads):</b> <span style="color:' + color + ';font-weight:bold;">S/ ' + net.toFixed(2) + '</span></p>' +
+        '<p><b>ROAS necesario para no perder:</b> ' + roas + 'x</p>' +
+        '<p style="margin-top:8px;font-weight:bold;color:' + color + ';">' + status + '</p>';
+      document.getElementById('out').classList.add('show');
+    }
+  </script>
+</body>
+</html>

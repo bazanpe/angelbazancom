@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Calendario de contenidos para redes — Angel Bazán</title>
+  <meta name="description" content="Planifica tus publicaciones de TikTok, Instagram y Facebook de la semana: el calendario de contenidos que se guarda en tu navegador." />
+  <link rel="canonical" href="https://angelbazan.com/tools/calendario-contenidos.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Calendario de contenidos</h1>
+    <p class="tool-desc">Planifica tu semana de contenido para TikTok, Instagram y Facebook. Todo se guarda automáticamente en tu navegador.</p>
+    <div class="tool-box">
+      <label>Semana del</label>
+      <input type="date" id="week" />
+      <div id="days"></div>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="clearAll()">Limpiar semana</button>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    var store = JSON.parse(localStorage.getItem('ab-cal') || '{}');
+    function render() {
+      var wrap = document.getElementById('days');
+      wrap.innerHTML = '';
+      days.forEach(function(d, i) {
+        var box = document.createElement('div');
+        box.style.cssText = 'margin-top:12px;';
+        var label = document.createElement('label');
+        label.textContent = d;
+        var ta = document.createElement('textarea');
+        ta.placeholder = 'Idea de publicación para ' + d + '…';
+        ta.value = store[d] || '';
+        ta.addEventListener('input', function() {
+          store[d] = ta.value;
+          localStorage.setItem('ab-cal', JSON.stringify(store));
+        });
+        box.appendChild(label);
+        box.appendChild(ta);
+        wrap.appendChild(box);
+      });
+    }
+    function clearAll() {
+      if (!confirm('¿Limpiar toda la semana?')) return;
+      store = {};
+      localStorage.setItem('ab-cal', JSON.stringify(store));
+      render();
+    }
+    document.getElementById('week').value = new Date().toISOString().slice(0, 10);
+    render();
+  </script>
+</body>
+</html>

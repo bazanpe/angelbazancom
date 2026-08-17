@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Notas online con guardado automático — Angel Bazán</title>
+  <meta name="description" content="Bloc de notas en línea que se guarda solo en tu navegador. Captura ideas de campañas sin perder nada." />
+  <link rel="canonical" href="https://angelbazan.com/tools/notas-online.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Notas online</h1>
+    <p class="tool-desc">Bloc de notas que se guarda automáticamente en tu navegador (localStorage). Tus ideas de campañas, guiones y mensajes, siempre a mano — sin cuentas ni registro.</p>
+    <div class="tool-box">
+      <label>Tu nota</label>
+      <textarea id="note" placeholder="Escribe aquí tus ideas… se guardan solas mientras escribes." style="min-height: 220px;"></textarea>
+      <p class="tool-hint" id="saved">Guardado automáticamente.</p>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-outline" onclick="clearNote()">Borrar nota</button>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var area = document.getElementById('note');
+    var saved = document.getElementById('saved');
+    area.value = localStorage.getItem('ab-notes') || '';
+    var t;
+    area.addEventListener('input', function() {
+      localStorage.setItem('ab-notes', area.value);
+      saved.textContent = 'Guardado ✓ ' + area.value.split(/\s+/).filter(Boolean).length + ' palabras';
+      clearTimeout(t);
+      t = setTimeout(function(){ saved.textContent = 'Guardado automáticamente.'; }, 2500);
+    });
+    function clearNote() {
+      if (!confirm('¿Borrar tu nota?')) return;
+      localStorage.removeItem('ab-notes');
+      area.value = '';
+      saved.textContent = 'Nota borrada.';
+    }
+  </script>
+</body>
+</html>

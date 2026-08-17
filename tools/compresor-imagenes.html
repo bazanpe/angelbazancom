@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Compresor de imágenes online — Angel Bazán</title>
+  <meta name="description" content="Comprime imágenes JPG/PNG sin perder calidad visible: páginas más rápidas y anuncios que cargan al instante. Tu imagen no sale de tu navegador." />
+  <link rel="canonical" href="https://angelbazan.com/tools/compresor-imagenes.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Compresor de imágenes</h1>
+    <p class="tool-desc">Reduce el peso de tus imágenes para que tus páginas carguen rápido y tus anuncios no se rechacen por lentitud. Todo ocurre en tu navegador: tus imágenes nunca salen de tu equipo.</p>
+    <div class="tool-box">
+      <label>Elige una imagen (JPG o PNG)</label>
+      <input type="file" id="file" accept="image/jpeg,image/png" />
+      <label>Calidad</label>
+      <input type="range" id="quality" min="20" max="95" value="70" oninput="document.getElementById('qval').textContent = this.value + '%'" />
+      <p class="tool-hint">Calidad: <b id="qval">70%</b> (menor calidad = menos peso)</p>
+      <label>Ancho máximo (px)</label>
+      <input type="number" id="maxw" value="1200" min="200" max="4000" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="compress()">Comprimir</button>
+      </div>
+      <div class="tool-out" id="out">
+        <p class="tool-hint" id="sizes"></p>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-green" id="dl" onclick="download()" style="display:none;">Descargar imagen</button>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var blobUrl = '';
+    function compress() {
+      var f = document.getElementById('file').files[0];
+      if (!f) { alert('Elige una imagen primero'); return; }
+      var q = +document.getElementById('quality').value / 100;
+      var maxW = +document.getElementById('maxw').value || 1200;
+      var img = new Image();
+      img.onload = function() {
+        var w = Math.min(img.width, maxW);
+        var h = Math.round(img.height * (w / img.width));
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        var ext = f.type === 'image/png' ? 'image/png' : 'image/jpeg';
+        var originalKB = (f.size / 1024).toFixed(1);
+        canvas.toBlob(function(blob) {
+          if (!blob) return;
+          var newKB = (blob.size / 1024).toFixed(1);
+          document.getElementById('sizes').textContent = 'Original: ' + originalKB + ' KB → Comprimida: ' + newKB + ' KB (' + Math.max(0, Math.round((1 - blob.size / f.size) * 100)) + '% menos) · ' + w + 'x' + h + 'px';
+          if (blobUrl) URL.revokeObjectURL(blobUrl);
+          blobUrl = URL.createObjectURL(blob);
+          document.getElementById('dl').style.display = 'inline-flex';
+          document.getElementById('out').classList.add('show');
+        }, ext, q);
+      };
+      img.src = URL.createObjectURL(f);
+    }
+    function download() {
+      var a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = 'imagen-comprimida.jpg';
+      a.click();
+    }
+  </script>
+</body>
+</html>

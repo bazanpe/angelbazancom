@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Constructor UTM online — Angel Bazán</title>
+  <meta name="description" content="Genera URLs con parámetros UTM para rastrear tus campañas de Meta Ads, Google y WhatsApp. Gratis, sin registro." />
+  <link rel="canonical" href="https://angelbazan.com/tools/constructor-utm.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Constructor UTM</h1>
+    <p class="tool-desc">Crea URLs con parámetros UTM para medir exactamente de dónde viene cada visita, clic y venta en Google Analytics.</p>
+    <div class="tool-box">
+      <label>URL del sitio o página de destino</label>
+      <input type="url" id="base" placeholder="https://tusitio.com/pagina-de-ventas" />
+      <div class="row">
+        <div><label>Fuente (source)</label><input type="text" id="source" placeholder="facebook" /></div>
+        <div><label>Medio (medium)</label><input type="text" id="medium" placeholder="cpc" /></div>
+      </div>
+      <div class="row">
+        <div><label>Campaña (campaign)</label><input type="text" id="campaign" placeholder="oferta-ebook" /></div>
+        <div><label>Contenido (content)</label><input type="text" id="content" placeholder="anuncio-1" /></div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar URL</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu URL con UTM</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var b = document.getElementById('base').value.trim();
+      if (!b) { alert('Escribe la URL de destino'); return; }
+      var p = [];
+      ['source','medium','campaign','content'].forEach(function(id) {
+        var v = document.getElementById(id).value.trim();
+        if (v) p.push(id + '=' + encodeURIComponent(v));
+      });
+      var sep = b.indexOf('?') === -1 ? '?' : '&';
+      var url = b + sep + p.join('&');
+      document.getElementById('result').value = url;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de contraseñas seguras — Angel Bazán</title>
+  <meta name="description" content="Genera contraseñas fuertes al instante: mayúsculas, números y símbolos. Protege tus cuentas publicitarias y de negocio." />
+  <link rel="canonical" href="https://angelbazan.com/tools/generador-contrasenas.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Generador de contraseñas</h1>
+    <p class="tool-desc">Contraseñas fuertes en un clic para proteger tus cuentas de Meta Ads, WhatsApp Business y tu negocio. Nada se envía al servidor: todo ocurre en tu navegador.</p>
+    <div class="tool-box">
+      <label>Longitud</label>
+      <input type="range" id="len" min="8" max="40" value="16" oninput="document.getElementById('lenval').textContent = this.value" />
+      <p class="tool-hint">Longitud: <b id="lenval">16</b> caracteres</p>
+      <div class="row">
+        <div><label><input type="checkbox" id="upper" checked /> Mayúsculas (A-Z)</label></div>
+        <div><label><input type="checkbox" id="lower" checked /> Minúsculas (a-z)</label></div>
+      </div>
+      <div class="row">
+        <div><label><input type="checkbox" id="nums" checked /> Números (0-9)</label></div>
+        <div><label><input type="checkbox" id="sym" checked /> Símbolos (!@#$)</label></div>
+      </div>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="gen()">Generar contraseña</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu contraseña</label>
+        <textarea id="result" readonly></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiada!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function gen() {
+      var len = +document.getElementById('len').value;
+      var sets = [];
+      if (document.getElementById('upper').checked) sets.push('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+      if (document.getElementById('lower').checked) sets.push('abcdefghijklmnopqrstuvwxyz');
+      if (document.getElementById('nums').checked) sets.push('0123456789');
+      if (document.getElementById('sym').checked) sets.push('!@#$%^&*()_+-=[]{}|;:,.<>?');
+      if (!sets.length) { alert('Marca al menos una opción'); return; }
+      var all = sets.join('');
+      var out = '';
+      for (var i = 0; i < len; i++) {
+        out += all.charAt(Math.floor(Math.random() * all.length));
+      }
+      document.getElementById('result').value = out;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>
