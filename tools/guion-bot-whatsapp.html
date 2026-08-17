@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de guion para bot de WhatsApp con IA — Angel Bazán</title>
+  <meta name="description" content="Arma la base de conocimiento de tu bot de IA en WhatsApp: bienvenida, calificación, objeciones y derivación a humano. Listo para copiar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/guion-bot-whatsapp.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Guion para bot de WhatsApp con IA</h1>
+    <p class="tool-desc">Genera las instrucciones y la base de conocimiento de tu asistente de IA en WhatsApp: mensajes de bienvenida, preguntas de calificación, objeciones y reglas. Listo para pegar en tu automatización.</p>
+    <div class="tool-box">
+      <label>Tu negocio</label>
+      <input type="text" id="biz" placeholder="Mi Negocio" />
+      <label>Tu oferta y precio</label>
+      <input type="text" id="offer" placeholder="Ebook 50 hacks de IA — S/ 99" />
+      <label>Objecciones frecuentes (separadas por |)</label>
+      <textarea id="obj" placeholder="está muy caro | lo voy a pensar | no tengo tiempo | y si no me funciona?"></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar guion</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Instrucciones del bot (copia y pega)</label>
+        <textarea id="result" readonly style="min-height: 16rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var biz = document.getElementById('biz').value.trim() || 'Mi Negocio';
+      var offer = document.getElementById('offer').value.trim() || 'nuestra oferta';
+      var objs = document.getElementById('obj').value.split('|').map(function(s){ return s.trim(); }).filter(Boolean);
+      var objBlock = objs.length ? objs.map(function(o){
+        return '  • "' + o + '" → Responde en 2 líneas: reconoce la preocupación, conecta con un beneficio o prueba y devuelve una pregunta de opciones.';
+      }).join('\n') : '  • Usa siempre: reconocer → beneficio → pregunta de opciones.';
+      var txt = 'ERES EL ASISTENTE DE VENTAS DE ' + biz.toUpperCase() + ' EN WHATSAPP.\n\n' +
+        'REGLAS GENERALES:\n' +
+        '  • Responde en español, mensajes cortos (máx 3 líneas), una idea por mensaje.\n' +
+        '  • Tono cercano y directo, sin presión. Nunca inventes precios, promesas ni datos.\n' +
+        '  • Si no sabes la respuesta o el cliente pide hablar con una persona, deriva al humano inmediatamente.\n\n' +
+        'FLUJO:\n' +
+        '  1. BIENVENIDA: "¡Hola! Gracias por escribir a ' + biz + '. ¿Qué necesitas? Responde 1️⃣ información y precios, 2️⃣ asesoría, 3️⃣ hablar con un humano."\n' +
+        '  2. CALIFICACIÓN (2 preguntas máx): presupuesto aproximado y urgencia ("¿Para cuándo lo necesitas?").\n' +
+        '  3. OFERTA: presenta "' + offer + '" con sus beneficios y el enlace de pago SOLO si el lead califica.\n\n' +
+        'OBJECIONES:\n' + objBlock + '\n\n' +
+        'DERIVACIÓN A HUMANO: ante "quiero hablar con alguien", ticket alto o cliente molesto, corta el bot y avisa al equipo.';
+      document.getElementById('result').value = txt;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

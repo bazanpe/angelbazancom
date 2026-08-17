@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Plantilla de apelación para anuncios rechazados de Meta — Angel Bazán</title>
+  <meta name="description" content="Genera el texto de apelación perfecto para que Meta revise tu anuncio rechazado. Plantillas por motivo de rechazo." />
+  <link rel="canonical" href="https://angelbazan.com/tools/apelar-anuncios-meta.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Apelar anuncios rechazados en Meta</h1>
+    <p class="tool-desc">Un anuncio rechazado se apela con estructura, no con ira. Elige el motivo, completa los datos y copia la apelación lista para el Centro de anuncios.</p>
+    <div class="tool-box">
+      <label>Motivo del rechazo</label>
+      <select id="reason">
+        <option value="misleading">Contenido engañoso / promesas exageradas</option>
+        <option value="health">Reclamos de salud o pérdida de peso</option>
+        <option value="products">Productos o servicios restringidos</option>
+        <option value="audience">Segmentación de público restringida</option>
+        <option value="landing">Página de destino en violación</option>
+        <option value="personal">Identidad o personalidad pública</option>
+      </select>
+      <label>Nombre de tu negocio</label>
+      <input type="text" id="biz" placeholder="Mi Negocio" />
+      <label>Qué vendes</label>
+      <input type="text" id="offer" placeholder="curso de marketing digital" />
+      <label>Qué cambios hiciste para cumplir la política</label>
+      <textarea id="changes" placeholder="Ej: eliminé la promesa de resultados garantizados y agregué evidencia verificable. Actualicé la página de destino con la política de reembolso visible."></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar apelación</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu texto de apelación</label>
+        <textarea id="result" readonly style="min-height: 12rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var reasons = {
+      misleading: 'Considero que mi anuncio no contiene contenido engañoso: las afirmaciones son verificables y muestran la oferta de forma honesta, sin exageraciones.',
+      health: 'Mi anuncio cumple con la política de salud: no promete resultados médicos ni curaciones, y todo lo afirmado está respaldado por evidencia verificable.',
+      products: 'Mi producto/servicio está permitido por las políticas de anuncios de Meta y mi página de destino muestra toda la información requerida, incluyendo políticas de devolución.',
+      audience: 'Mi segmentación de público cumple con las políticas de publicidad personalizada: no utilizo datos sensibles y el anuncio es relevante para la audiencia seleccionada.',
+      landing: 'He actualizado mi página de destino: ahora incluye la política de privacidad, datos de contacto del negocio y toda la información requerida por las políticas de Meta.',
+      personal: 'Mi anuncio respeta las políticas sobre identidad y personalidad: el uso de cualquier imagen o referencia cuenta con autorización y no se presenta de forma engañosa.'
+    };
+    function build() {
+      var reason = document.getElementById('reason').value;
+      var biz = document.getElementById('biz').value.trim() || 'Mi Negocio';
+      var offer = document.getElementById('offer').value.trim() || 'nuestros productos';
+      var changes = document.getElementById('changes').value.trim();
+      var txt = 'Solicitud de revisión — Anuncio de ' + biz + '\n\n' +
+        'Hola, equipo de revisión de Meta:\n\n' +
+        'Mi anuncio de "' + offer + '" fue rechazado y solicito una nueva revisión.\n\n' +
+        reasons[reason] + '\n\n' +
+        'Cambios que realicé para cumplir las políticas:\n' + (changes || 'Revisé el anuncio y la página de destino para asegurar el cumplimiento de todas las políticas de publicidad.') + '\n\n' +
+        'El anuncio es relevante, transparente y cumple las normas de la comunidad. Agradezco una revisión manual de mi caso.\n\n' +
+        'Saludos,\n' + biz;
+      document.getElementById('result').value = txt;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

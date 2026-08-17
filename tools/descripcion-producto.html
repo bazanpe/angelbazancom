@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de descripción de producto para ecommerce — Angel Bazán</title>
+  <meta name="description" content="Escribe descripciones de producto que venden con la estructura probada: titular, dolor, beneficios, prueba y CTA." />
+  <link rel="canonical" href="https://angelbazan.com/tools/descripcion-producto.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Descripción de producto que vende</h1>
+    <p class="tool-desc">Crea descripciones con la estructura probada del direct response: titular con beneficio, dolor, características, prueba y llamado a la acción.</p>
+    <div class="tool-box">
+      <label>Producto</label>
+      <input type="text" id="product" placeholder="Botella térmica de acero inoxidable 1L" />
+      <label>Beneficio principal</label>
+      <input type="text" id="benefit" placeholder="mantiene tu bebida fría 24 horas" />
+      <label>Características (separadas por |)</label>
+      <input type="text" id="feats" placeholder="acero inoxidable | tapa hermética | 24h frío | libre de BPA" />
+      <label>Para quién es</label>
+      <input type="text" id="audience" placeholder="personas que entrenan o trabajan fuera de casa" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar descripción</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu descripción</label>
+        <textarea id="result" readonly style="min-height: 12rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var product = document.getElementById('product').value.trim() || 'tu producto';
+      var ben = document.getElementById('benefit').value.trim() || 'resultados reales';
+      var feats = document.getElementById('feats').value.split('|').map(function(s){ return s.trim(); }).filter(Boolean);
+      var aud = document.getElementById('audience').value.trim() || 'tu cliente ideal';
+      var featBlock = feats.length ? feats.map(function(f){ return '• ' + f + '\n'; }).join('') : '';
+      var txt = product + ': ' + ben + '\n\n' +
+        '¿Cansado de productos que prometen y no cumplen? ' + product + ' fue diseñado para ' + aud + ', pensado para ' + ben + ' desde el primer uso.\n\n' +
+        'Lo que lo hace diferente:\n' + (featBlock || '• Calidad comprobada en uso diario\n') +
+        '\n' + ben + ' no es una promesa: es ingeniería. Cada detalle está pensado para que funcione cuando más lo necesitas.\n\n' +
+        'Pruébalo sin riesgo: si no notas la diferencia, te devolvemos tu dinero. Haz tu pedido hoy y recíbelo en 48 horas.';
+      document.getElementById('result').value = txt;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

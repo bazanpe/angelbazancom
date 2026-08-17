@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de secuencia de seguimiento para WhatsApp — Angel Bazán</title>
+  <meta name="description" content="Crea la secuencia automática de 4 mensajes que recupera leads fríos por WhatsApp: valor, prueba social, oferta y cierre." />
+  <link rel="canonical" href="https://angelbazan.com/tools/secuencia-seguimiento-whatsapp.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Secuencia de seguimiento para WhatsApp</h1>
+    <p class="tool-desc">El 80% de las ventas llega después del primer contacto. Genera la secuencia de 4 mensajes que convierte leads fríos en ventas.</p>
+    <div class="tool-box">
+      <label>Tu negocio</label>
+      <input type="text" id="biz" placeholder="Mi Negocio" />
+      <label>Tu oferta</label>
+      <input type="text" id="offer" placeholder="ebook de 50 hacks de IA" />
+      <label>Valor del producto</label>
+      <input type="text" id="price" placeholder="S/ 99" />
+      <label>Beneficio principal</label>
+      <input type="text" id="benefit" placeholder="ahorrar horas al día automatizando con IA" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar secuencia</button>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Tu secuencia (copia y pega en tu automatización)</label>
+        <textarea id="result" readonly style="min-height: 16rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function build() {
+      var biz = document.getElementById('biz').value.trim() || 'Mi Negocio';
+      var offer = document.getElementById('offer').value.trim() || 'nuestra oferta';
+      var price = document.getElementById('price').value.trim() || 'S/ 99';
+      var ben = document.getElementById('benefit').value.trim() || 'resultados reales';
+      var seq = '📬 SECUENCIA DE SEGUIMIENTO — ' + biz + '\n\n' +
+        '— DÍA 1 · Mensaje de valor —\n' +
+        '¡Hola! 👋 Quería dejarte algo gratis que te va a servir: una guía rápida sobre cómo ' + ben + '. ¿Te la envío por aquí?\n\n' +
+        '— DÍA 2 · Prueba social —\n' +
+        'Por cierto, te cuento un caso real: un cliente logró ' + ben + ' en 4 semanas usando ' + offer + '. La constancia + el sistema funcionan. ¿Quieres que te cuente cómo lo hizo?\n\n' +
+        '— DÍA 4 · La oferta —\n' +
+        'Hoy tengo disponible ' + offer + ' a ' + price + ' (con garantía total). El cupo de esta semana se está cerrando. ¿Te lo reservo?\n\n' +
+        '— DÍA 6 · Cierre —\n' +
+        'Último aviso: mañana sube de precio. Si te interesa, responde "ME INTERESA" y te envío el enlace de pago al instante. Si no, sin problema, gracias por leerme. 😊';
+      document.getElementById('result').value = seq;
+      document.getElementById('out').classList.add('show');
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

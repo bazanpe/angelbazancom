@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Generador de prelanding de preventa — Angel Bazán</title>
+  <meta name="description" content="Crea páginas de preventa (prelanding) 100% legales para tus anuncios de Meta Ads: gancho, historia, beneficios y CTA. Código listo para pegar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/generador-prelanding.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Generador de prelanding (preventa)</h1>
+    <p class="tool-desc">Una prelanding de preventa calienta al visitante antes de llevarlo a tu oferta. Genera una página completa de una sola pieza: gancho, historia, beneficios y CTA. 100% compatible con las políticas de Meta Ads.</p>
+    <div class="tool-box">
+      <label>Tu oferta</label>
+      <input type="text" id="offer" placeholder="Ebook 50 hacks de IA" />
+      <label>Promesa principal</label>
+      <input type="text" id="promise" placeholder="automatiza tu negocio con IA sin ser técnico" />
+      <label>Para quién es</label>
+      <input type="text" id="aud" placeholder="emprendedores que quieren ahorrar horas" />
+      <label>Beneficios (separados por |)</label>
+      <input type="text" id="benefits" placeholder="ahorra 5 horas a la semana | vende más con menos esfuerzo | sin experiencia técnica" />
+      <label>Enlace del CTA</label>
+      <input type="url" id="cta" placeholder="https://angelbazan.com/libro.html" />
+      <label>Texto del botón</label>
+      <input type="text" id="ctatxt" value="Quiero el ebook ahora" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar prelanding</button>
+      </div>
+      <div class="preview" id="preview" style="display:none;">
+        <div class="preview-label">Vista previa</div>
+        <iframe id="frame" style="width:100%;height:340px;border:1px solid var(--border);border-radius:10px;background:#fff;"></iframe>
+      </div>
+      <div class="tool-out" id="out">
+        <label>Código HTML (guarda como .html y súbelo a tu hosting)</label>
+        <textarea id="result" readonly style="min-height: 12rem;"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar código</button>
+          <span class="copy-ok" id="ok">¡Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function esc(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+    function build() {
+      var offer = esc(document.getElementById('offer').value.trim() || 'nuestra oferta');
+      var promise = esc(document.getElementById('promise').value.trim() || 'resultados reales');
+      var aud = esc(document.getElementById('aud').value.trim() || 'tú');
+      var benefits = document.getElementById('benefits').value.split('|').map(function(s){ return esc(s.trim()); }).filter(Boolean);
+      var cta = document.getElementById('cta').value.trim() || '#';
+      var ctatxt = esc(document.getElementById('ctatxt').value.trim() || 'Quiero empezar');
+      var bList = benefits.length ? benefits.map(function(b){ return '<li>' + b + '</li>'; }).join('\n') : '<li>Beneficio claro y medible</li>';
+      var html = '<!DOCTYPE html>\n<html lang="es">\n<head>\n<meta charset="utf-8" />\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n<title>' + offer + ' — Preventa</title>\n<style>\n  body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4fdf7;color:#222;}\n  .wrap{max-width:640px;margin:0 auto;padding:40px 20px;text-align:center;}\n  h1{font-size:32px;line-height:1.2;color:#075E54;}\n  p{font-size:17px;line-height:1.6;color:#444;}\n  ul{text-align:left;display:inline-block;font-size:17px;line-height:1.9;}\n  .btn{display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-weight:bold;font-size:18px;padding:16px 38px;border-radius:9999px;margin-top:12px;box-shadow:0 8px 20px rgba(37,211,102,.35);}\n</style>\n</head>\n<body>\n<div class="wrap">\n  <h1>' + offer + ': ' + promise + '</h1>\n  <p>Si eres ' + aud + ', esta es la solución que estabas esperando. Sin complicaciones, sin tecnicismos, con resultados desde la primera semana.</p>\n  <ul>\n' + bList + '\n  </ul>\n  <p>Cupos limitados esta semana. Haz clic y descubre cómo empezar hoy mismo.</p>\n  <a class="btn" href="' + cta + '">' + ctatxt + '</a>\n</div>\n</body>\n</html>';
+      document.getElementById('result').value = html;
+      document.getElementById('out').classList.add('show');
+      document.getElementById('frame').srcdoc = html;
+      document.getElementById('preview').style.display = 'block';
+    }
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>

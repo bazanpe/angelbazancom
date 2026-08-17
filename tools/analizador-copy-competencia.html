@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Analizador de copy de anuncios — Angel Bazán</title>
+  <meta name="description" content="Pega los textos de anuncios de tu competencia y descubre patrones: palabras más usadas, CTAs, preguntas y emojis." />
+  <link rel="canonical" href="https://angelbazan.com/tools/analizador-copy-competencia.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Analizador de copy de anuncios</h1>
+    <p class="tool-desc">Pega hasta 10 textos de anuncios de la Biblioteca de Meta (uno por línea) y descubre los patrones que se repiten: palabras clave, CTAs, preguntas y tono.</p>
+    <div class="tool-box">
+      <label>Textos de anuncios (uno por línea)</label>
+      <textarea id="input" placeholder="🔥 ¡Duplica tus ventas con WhatsApp! Escribe hoy…&#10;¿Cansado de perder leads? Descubre el método…&#10;Aprende a vender más con IA. Regístrate gratis…"></textarea>
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="analyze()">Analizar</button>
+      </div>
+      <div class="tool-out" id="out">
+        <div class="out-box" id="result"></div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var stop = ['el','la','los','las','de','del','que','y','a','en','con','para','por','un','una','es','su','se','lo','al','como','más','mas','no','tu','tus','mi','mis','te','me','les','las','cuando','si','cada','esto','esta','este','hay','ser','tener','hacer','puedes','viene','solo','muy'];
+    function analyze() {
+      var raw = document.getElementById('input').value.split('\n').filter(function(l){ return l.trim(); });
+      if (!raw.length) { alert('Pega al menos un texto'); return; }
+      var words = {};
+      var totalWords = 0, questions = 0, ctas = 0, emojis = 0, boldCount = 0;
+      var ctaWords = ['comprar','compra','regístrate','registrate','escríbenos','escribenos','descarga','haz clic','clic','aquí','aqui','más información','reserva','reserva tu'];
+      var ctaFound = {};
+      raw.forEach(function(t) {
+        var txt = t.toLowerCase();
+        if (txt.indexOf('?') !== -1) questions++;
+        (t.match(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]/gu) || []).length && emojis++;
+        if (/\*\*|__/.test(t) || /(negrit)/i.test(t)) boldCount++;
+        ctaWords.forEach(function(cw) {
+          if (txt.indexOf(cw) !== -1) ctaFound[cw] = true;
+        });
+        t.toLowerCase().replace(/[^a-záéíóúñü0-9 ]/g, ' ').split(/\s+/).forEach(function(w) {
+          if (w.length < 3) return;
+          totalWords++;
+          if (stop.indexOf(w) === -1) words[w] = (words[w] || 0) + 1;
+        });
+      });
+      var top = Object.keys(words).sort(function(a,b){ return words[b] - words[a]; }).slice(0, 15);
+      var ctaList = Object.keys(ctaFound);
+      var html = '<p><b>Textos analizados:</b> ' + raw.length + ' · <b>Palabras:</b> ' + totalWords + '</p>' +
+        '<p><b>Anuncios con pregunta:</b> ' + questions + ' (' + Math.round(questions / raw.length * 100) + '%)</p>' +
+        '<p><b>Anuncios con CTA detectado:</b> ' + ctaList.length + '/' + raw.length + ' — ' + (ctaList.join(', ') || 'ninguno') + '</p>' +
+        '<p><b>Anuncios con emojis:</b> ' + emojis + '</p>' +
+        '<p style="margin-top:10px;"><b>Palabras más repetidas:</b><br/>' + (top.map(function(w){ return w + ' (' + words[w] + ')'; }).join(' · ') || '—') + '</p>' +
+        '<p style="margin-top:10px;color:#128C7E;font-weight:bold;">Los patrones repetidos son tu punto de partida para nuevos ángulos.</p>';
+      document.getElementById('result').innerHTML = html;
+      document.getElementById('out').classList.add('show');
+    }
+  </script>
+</body>
+</html>

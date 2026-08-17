@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Calculadora de presupuesto de testeo Meta Ads — Angel Bazán</title>
+  <meta name="description" content="Calcula cuánto invertir en el testeo de tus campañas de Meta Ads con la regla del costo por resultado x10. Gratis." />
+  <link rel="canonical" href="https://angelbazan.com/tools/presupuesto-testeo-meta-ads.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Calculadora de presupuesto de testeo</h1>
+    <p class="tool-desc">Cuánto invertir para descubrir si tu oferta vende. Usa la regla del costo por resultado esperado × 10, la base de todo testeo serio en Meta Ads.</p>
+    <div class="tool-box">
+      <label>Precio de tu producto o servicio</label>
+      <input type="number" id="price" value="50" />
+      <label>Costo por venta esperado (normalmente 30-80% del precio)</label>
+      <input type="number" id="cpv" value="25" />
+      <label>Número de variantes a testear (anuncios o ángulos)</label>
+      <input type="number" id="variants" value="3" />
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="calc()">Calcular presupuesto</button>
+      </div>
+      <div class="tool-out" id="out">
+        <div class="out-box" id="result"></div>
+      </div>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    function calc() {
+      var price = +document.getElementById('price').value || 0;
+      var cpv = +document.getElementById('cpv').value || 0;
+      var v = +document.getElementById('variants').value || 1;
+      var total = cpv * 10;
+      var perDay = Math.ceil(total / 14);
+      var perVariant = Math.ceil(total / v);
+      var roas = cpv ? (price / cpv).toFixed(2) : '—';
+      var status = price && cpv && (price / cpv) >= 1.5 ? '✅ El margen estimado aguanta el testeo' : '⚠️ Revisa el precio: el costo por venta estimado deja poco margen';
+      document.getElementById('result').innerHTML =
+        '<p><b>ROAS estimado de partida:</b> ' + roas + 'x</p>' +
+        '<p><b>Presupuesto de testeo (costo por venta × 10):</b> <span style="font-weight:bold;color:#128C7E;">' + total.toFixed(0) + '</span></p>' +
+        '<p><b>Ritmo sugerido:</b> ~' + perDay + ' al día durante 14 días</p>' +
+        '<p><b>Por variante (' + v + '):</b> ' + perVariant + ' aprox.</p>' +
+        '<p style="margin-top:8px;font-weight:bold;color:' + (status.indexOf('✅') === 0 ? '#128C7E' : '#b91c1c') + ';">' + status + '</p>';
+      document.getElementById('out').classList.add('show');
+    }
+  </script>
+</body>
+</html>

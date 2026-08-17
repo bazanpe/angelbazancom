@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Contador de caracteres y palabras — Angel Bazán</title>
+  <meta name="description" content="Cuenta caracteres, palabras y líneas en tiempo real. Ideal para anuncios de Meta Ads y mensajes de WhatsApp." />
+  <link rel="canonical" href="https://angelbazan.com/tools/contador-caracteres.html" />
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../index.html"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos.html">← Recursos</a>
+  </div></div>
+  <main class="tool-main">
+    <h1>Contador de caracteres y palabras</h1>
+    <p class="tool-desc">Mide tus textos en tiempo real: caracteres, palabras, líneas y tiempo de lectura. Perfecto para anuncios de Meta Ads, descripciones y mensajes de WhatsApp.</p>
+    <div class="tool-box">
+      <label>Tu texto</label>
+      <textarea id="input" placeholder="Escribe o pega tu texto aquí…" style="min-height: 180px;"></textarea>
+      <p class="tool-hint" id="stats"></p>
+    </div>
+  </main>
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos.html">Todos los recursos gratis</a></footer>
+  <script>
+    var area = document.getElementById('input');
+    var stats = document.getElementById('stats');
+    function update() {
+      var t = area.value;
+      var chars = t.length;
+      var words = t.trim() ? t.trim().split(/\s+/).length : 0;
+      var lines = t ? t.split('\n').length : 0;
+      var mins = Math.ceil(words / 200);
+      stats.innerHTML = '<b>' + chars + '</b> caracteres · <b>' + words + '</b> palabras · <b>' + lines + '</b> líneas · ~<b>' + mins + '</b> min de lectura' +
+        (chars > 5000 ? ' · <span style="color:#b91c1c;">Anuncio muy largo (máx 5000)</span>' : '');
+    }
+    area.addEventListener('input', update);
+    update();
+  </script>
+</body>
+</html>
