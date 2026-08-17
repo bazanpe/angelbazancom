@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/tools.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="https://a.favicon.im/angelbazan.com" />
+  <title>Popup Flotante para Skool — Angel Bazán</title>
+  <meta name="description" content="Genera un widget flotante estilo Skool VIP para promocionar tu comunidad en tu blog o landing page. Copia el código listo para usar." />
+  <link rel="canonical" href="https://angelbazan.com/tools/popup-skool" />
+  <style>
+    /* Estilos embebidos para previsualización directa */
+    .skool-preview-box {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: #080c14;
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      border-radius: 12px;
+      position: relative;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="tool-top"><div class="tool-top-inner">
+    <a class="tool-logo" href="../"><img src="https://angelbazan.com/wp-content/uploads/2020/01/AngelBazan-LOGO-2.png" alt="Angel Bazan" /></a>
+    <a class="tool-back" href="../recursos">← Recursos</a>
+  </div></div>
+
+  <main class="tool-main">
+    <h1>Popup Flotante para Skool</h1>
+    <p class="tool-desc">Promociona tu comunidad de Skool en tu blog o sitio web con este widget flotante ultra premium con insignias glowing y diseño de alta conversión.</p>
+    
+    <div class="tool-box">
+      <label>Título de la comunidad</label>
+      <input type="text" id="title" value="VENDE EN AUTOMÁTICO" placeholder="Ej. VENDE EN AUTOMÁTICO" />
+      
+      <label>Descripción corta</label>
+      <textarea id="desc" rows="3" style="width:100%;padding:0.75rem;border-radius:8px;border:1px solid #ccc;font-family:inherit;margin-bottom:1rem;">Vende en Automático es una comunidad que te enseña paso a paso a vender productos digitales Low Ticket usando Meta Ads, WhatsApp + IA.</textarea>
+
+      <label>Enlace de tu comunidad en Skool</label>
+      <input type="text" id="url" value="https://www.skool.com/vende-en-automatico-vip-8874/" placeholder="https://www.skool.com/tu-comunidad" />
+
+      <label>Texto del botón CTA</label>
+      <input type="text" id="btnText" value="Unirme Ahora" placeholder="Unirme Ahora" />
+
+      <label>Posición en la pantalla</label>
+      <select id="pos">
+        <option value="left">Abajo a la izquierda (Recomendado)</option>
+        <option value="right">Abajo a la derecha</option>
+      </select>
+
+      <div class="tool-actions">
+        <button class="tbtn tbtn-green" onclick="build()">Generar código HTML/CSS</button>
+      </div>
+
+      <div class="tool-out" id="out">
+        <label>Código para pegar antes de &lt;/body&gt;</label>
+        <textarea id="result" readonly rows="12"></textarea>
+        <div class="tool-actions">
+          <button class="tbtn tbtn-outline" onclick="copy()">Copiar código</button>
+          <span class="copy-ok" id="ok">¡Copiado al portapapeles!</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="tool-foot">© 2026 Angel Bazán — <a href="../recursos">Todos los recursos gratis</a></footer>
+
+  <script>
+    function build() {
+      var t = document.getElementById('title').value.trim() || 'VENDE EN AUTOMÁTICO';
+      var d = document.getElementById('desc').value.trim() || 'Vende en Automático es una comunidad que te enseña paso a paso a vender productos digitales Low Ticket usando Meta Ads, WhatsApp + IA.';
+      var u = document.getElementById('url').value.trim() || 'https://www.skool.com/vende-en-automatico-vip-8874/';
+      var b = document.getElementById('btnText').value.trim() || 'Unirme Ahora';
+      var pos = document.getElementById('pos').value;
+
+      var cssPos = pos === 'left' ? 'left: 20px;' : 'right: 20px;';
+
+      var code = '<!-- Widget Popup Skool por Angel Bazan -->\n' +
+'<style>\n' +
+'.skool-floating-widget {\n' +
+'  position: fixed;\n' +
+'  bottom: 20px;\n' +
+'  ' + cssPos + '\n' +
+'  z-index: 9999;\n' +
+'  width: 320px;\n' +
+'  max-width: calc(100vw - 32px);\n' +
+'  background: linear-gradient(165deg, #0e1420 0%, #070a12 100%);\n' +
+'  border: 1.5px solid rgba(0, 210, 255, 0.4);\n' +
+'  border-radius: 18px;\n' +
+'  padding: 26px 18px 18px 18px;\n' +
+'  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.9), 0 0 30px -5px rgba(0, 210, 255, 0.35);\n' +
+'  backdrop-filter: blur(16px);\n' +
+'  color: #ffffff;\n' +
+'  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;\n' +
+'  transition: all 0.3s ease;\n' +
+'}\n' +
+'.skool-badge-top {\n' +
+'  position: absolute;\n' +
+'  top: -24px;\n' +
+'  left: 50%;\n' +
+'  transform: translateX(-50%);\n' +
+'  width: 46px;\n' +
+'  height: 46px;\n' +
+'  border-radius: 14px;\n' +
+'  background: #090e17;\n' +
+'  border: 2px solid #00d2ff;\n' +
+'  box-shadow: 0 0 20px rgba(0, 210, 255, 0.7);\n' +
+'  display: flex;\n' +
+'  align-items: center;\n' +
+'  justify-content: center;\n' +
+'}\n' +
+'.skool-btn-cta {\n' +
+'  display: flex;\n' +
+'  align-items: center;\n' +
+'  justify-content: center;\n' +
+'  gap: 8px;\n' +
+'  width: 100%;\n' +
+'  padding: 12px 16px;\n' +
+'  border-radius: 12px;\n' +
+'  background: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);\n' +
+'  color: #ffffff;\n' +
+'  font-weight: 700;\n' +
+'  font-size: 0.9rem;\n' +
+'  text-decoration: none;\n' +
+'  box-shadow: 0 4px 20px rgba(0, 210, 255, 0.45);\n' +
+'}\n' +
+'</style>\n\n' +
+'<div class="skool-floating-widget" id="skoolWidget">\n' +
+'  <button onclick="document.getElementById(\'skoolWidget\').style.display=\'none\'" style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer;">&times;</button>\n' +
+'  <div class="skool-badge-top">\n' +
+'    <svg viewBox="0 0 28 28" width="30" height="30" fill="none"><rect width="28" height="28" rx="8" fill="#00d2ff"/><text x="14" y="19" font-size="16" font-weight="900" fill="#090e17" text-anchor="middle">sk</text></svg>\n' +
+'  </div>\n' +
+'  <div style="text-align:center;margin-top:8px;font-weight:700;font-size:0.95rem;">⚡ Únete a ' + t + '</div>\n' +
+'  <p style="font-size:0.8rem;line-height:1.45;color:rgba(255,255,255,0.85);text-align:center;margin:10px 0 14px;">' + d + '</p>\n' +
+'  <a href="' + u + '" target="_blank" class="skool-btn-cta">' + b + ' &rarr;</a>\n' +
+'</div>';
+
+      document.getElementById('result').value = code;
+      document.getElementById('out').classList.add('show');
+    }
+
+    function copy() {
+      var r = document.getElementById('result');
+      r.select();
+      document.execCommand('copy');
+      var ok = document.getElementById('ok');
+      ok.classList.add('show');
+      setTimeout(function(){ ok.classList.remove('show'); }, 2000);
+    }
+  </script>
+</body>
+</html>
