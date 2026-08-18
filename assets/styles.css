@@ -288,12 +288,6 @@ a {
   object-fit: cover;
   max-width: 260px;
   margin: 0 auto;
-  filter: grayscale(100%);
-  transition: filter 0.45s ease;
-}
-
-.hero-img:hover {
-  filter: grayscale(0%);
 }
 
 .hero-media {
@@ -321,12 +315,6 @@ a {
   box-shadow: none;
   max-width: none;
   margin: 0;
-  filter: grayscale(100%);
-  transition: filter 0.45s ease;
-}
-
-.hero-img-ring .hero-img:hover {
-  filter: grayscale(0%);
 }
 
 /* ---------- Libro / product page ---------- */
