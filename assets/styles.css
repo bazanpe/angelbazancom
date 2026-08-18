@@ -1060,6 +1060,14 @@ a.resource-card {
   gap: 0.375rem;
 }
 
+.resource-card img {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
+  margin: 0.75rem 0;
+  box-shadow: 0 14px 34px -22px rgba(18, 140, 126, 0.4);
+}
+
 .resource-card .emoji {
   font-size: 2rem;
   margin-bottom: 0.75rem;
