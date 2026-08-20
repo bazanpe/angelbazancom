@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#075E54"/><stop offset="55%" stop-color="#128C7E"/><stop offset="100%" stop-color="#25D366"/></linearGradient></defs>
+  <rect width="1280" height="720" fill="url(#g)"/>
+  <rect x="515" y="210" width="250" height="180" rx="36" fill="#ffffff" fill-opacity="0.95"/>
+  <text x="640" y="338" font-family="Segoe UI,sans-serif" font-size="96" font-weight="700" fill="#075E54" text-anchor="middle">CC</text>
+  <text x="640" y="500" font-family="Segoe UI,sans-serif" font-size="48" font-weight="700" fill="#ffffff" text-anchor="middle">como crear un bot para whatsapp si</text>
+  <text x="640" y="556" font-family="Segoe UI,sans-serif" font-size="26" font-weight="500" fill="#DCF8C6" text-anchor="middle">Angel Bazan</text>
+  <text x="640" y="660" font-family="monospace" font-size="22" letter-spacing="4" fill="#ffffff" fill-opacity="0.55" text-anchor="middle">ANGELBAZAN.COM</text>
+</svg>

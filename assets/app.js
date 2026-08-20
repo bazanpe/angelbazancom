@@ -4,6 +4,15 @@
     for (var i = 1; i < widgets.length; i++) {
       widgets[i].parentNode.removeChild(widgets[i]);
     }
+    if (widgets.length) {
+      var widget = widgets[0];
+      widget.style.visibility = 'hidden';
+      setTimeout(function () {
+        if (widget.style.display !== 'none') {
+          widget.style.visibility = '';
+        }
+      }, 30000);
+    }
 
     var menu = document.getElementById('mobile-menu');
     if (menu) {
