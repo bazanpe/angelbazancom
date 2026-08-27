@@ -208,7 +208,7 @@
     return s;
   });
 
-  var ALL_SALES = REAL_SALES.concat(GENERATED).filter(function (s) { return s.pais !== 'US'; }).sort(function (a, b) { return b.ts - a.ts; });
+  var ALL_SALES = REAL_SALES.concat(GENERATED).filter(function (s) { return s.pais !== 'US' && s.year === 2026 && s.month >= 4 && s.month <= 6; }).sort(function (a, b) { return b.ts - a.ts; });
 
   scalePeriod(ALL_SALES.filter(function (s) { return s.year === 2026 && s.month === 6; }), 4058);
   scalePeriod(ALL_SALES.filter(function (s) { return s.year === 2026 && s.month === 7; }), 4017);
@@ -377,27 +377,35 @@
   // ============================================================
   // KPIs & CHARTS
   // ============================================================
-  function renderKpis(visible) {
-    var sum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
-    var ingresos = sum ? sum.totalSalesUSD : 4058;
-    var gastosBiz = sum ? sum.totalBusinessUSD : 1613.66;
-    var gastosPers = sum ? sum.totalPersonalUSD : 554.99;
-    var gastosTotal = gastosBiz + gastosPers;
-    var saldo = ingresos - gastosTotal;
-    var margen = sum ? (sum.netMarginPct || 60.2) : 60.2;
-    var margenUsd = sum ? sum.netMarginUSD : 2444.34;
-
-    animateValue(document.getElementById('kpi-revenue'), ingresos, function (v) { return fmtUSD(v); });
-    animateValue(document.getElementById('kpi-exp'), gastosTotal, function (v) { return fmtUSD(v); });
-    animateValue(document.getElementById('kpi-saldo'), saldo, function (v) { return fmtUSD(v); });
-    animateValue(document.getElementById('kpi-net-margin'), margen, function (v) { return v.toFixed(1) + '%'; });
-
-    var revDelta = document.getElementById('kpi-revenue-delta');
-    if (revDelta) revDelta.innerHTML = 'Julio 2026 \u00B7 ' + fmtInt(visible.length) + ' entradas';
-    var saldoDelta = document.getElementById('kpi-saldo-delta');
-    if (saldoDelta) saldoDelta.innerHTML = 'Flujo libre: ' + fmtUSD(saldo);
-    var marginDelta = document.getElementById('kpi-net-margin-delta');
-    if (marginDelta) marginDelta.innerHTML = fmtUSD(margenUsd) + ' ganancia bruta';
+    function renderKpis(visible) {
+    var combo = window.COMBO_IA_DATA;
+    var debts = window.DEBTS_DATA;
+    var mes = null;
+    if (combo && combo.months) {
+      combo.months.forEach(function (m) { if (m.month.indexOf('Julio') !== -1) mes = m; });
+    }
+    var ingresosMes = mes ? mes.revenueUSD : 0;
+    var compromisoPEN = debts ? debts.summary.totalMonthlyCommitmentCurrentPEN : 8971;
+    var deudaMin = debts ? debts.summary.totalDebtEstimatedMinPEN : 165000;
+    var deudaMax = debts ? debts.summary.totalDebtEstimatedMaxPEN : 185000;
+    var disponiblePEN = debts ? debts.summary.liquidAssetsPEN : 4000;
+    function fmtPEN(n) { return 'S/ ' + Math.round(n).toLocaleString('en-US'); }
+    var elRev = document.getElementById('kpi-revenue');
+    if (elRev) elRev.textContent = '$' + Math.round(ingresosMes).toLocaleString('en-US') + ' USD';
+    var elExp = document.getElementById('kpi-exp');
+    if (elExp) elExp.textContent = fmtPEN(compromisoPEN);
+    var elSal = document.getElementById('kpi-saldo');
+    if (elSal) elSal.textContent = 'S/ ' + Math.round(deudaMin / 1000) + 'k \u2013 ' + Math.round(deudaMax / 1000) + 'k';
+    var elMarg = document.getElementById('kpi-net-margin');
+    if (elMarg) elMarg.textContent = fmtPEN(disponiblePEN);
+    var rd = document.getElementById('kpi-revenue-delta');
+    if (rd) rd.innerHTML = 'Ingresos del mes \u00B7 Combo IA \u00B7 Julio 2026';
+    var ed = document.getElementById('kpi-exp-delta');
+    if (ed) ed.innerHTML = 'S/ 6,971 cr\u00E9ditos + S/ 2,000 junta';
+    var sd = document.getElementById('kpi-saldo-delta');
+    if (sd) sd.innerHTML = 'Formales + informales estimadas';
+    var md = document.getElementById('kpi-net-margin-delta');
+    if (md) md.innerHTML = 'Activos l\u00EDquidos disponibles';
   }
 
   function dailyData(visible) {
@@ -414,13 +422,18 @@
       }
       return out;
     }
-    var outAll = [];
-    for (var i = 1; i <= 31; i++) {
-      var u2 = 0, c2 = 0;
-      visible.forEach(function (s) { if (s.day === i) { u2 += s.usd; c2++; } });
-      outAll.push({ label: pad(i), usd: u2, count: c2, y: 2026, m: 6 });
-    }
-    return outAll;
+        var byDay = {}, meta = {};
+    visible.forEach(function (s) {
+      var k = s.month * 100 + s.day;
+      if (!byDay[k]) byDay[k] = { usd: 0, count: 0 };
+      byDay[k].usd += s.usd;
+      byDay[k].count += 1;
+      meta[k] = { m: s.month, d: s.day };
+    });
+    var keys = Object.keys(byDay).map(Number).sort(function (a, b) { return a - b; }).slice(-90);
+    return keys.map(function (k) {
+      return { label: pad(meta[k].d) + '/' + pad(meta[k].m + 1), usd: byDay[k].usd, count: byDay[k].count, y: 2026, m: meta[k].m };
+    });
   }
 
   function renderRevenueChart(visible) {
@@ -656,7 +669,7 @@
     if (!grid) return;
     grid.innerHTML = '';
 
-    window.COMBO_IA_DATA.months.forEach(function (m) {
+    window.COMBO_IA_DATA.months.filter(function (m) { return m.month.indexOf('Agosto') === -1; }).forEach(function (m) {
       var card = document.createElement('div');
       card.className = 'combo-month-card stark-card';
       card.innerHTML = '<h3>' + esc(m.month) + '</h3>' +
@@ -675,15 +688,10 @@
     if (!tbody) return;
     tbody.innerHTML = '';
 
-    var monthsData = [
-      { name: 'Enero 2026', revenue: 2800, ads: 950, profit: 1850, roas: '2.94x', status: 'Excelente' },
-      { name: 'Febrero 2026', revenue: 3200, ads: 1100, profit: 2100, roas: '2.90x', status: 'Excelente' },
-      { name: 'Marzo 2026', revenue: 4500, ads: 1600, profit: 2900, roas: '2.81x', status: 'Excelente' },
-      { name: 'Abril 2026', revenue: 5800, ads: 2200, profit: 3600, roas: '2.63x', status: 'Saludable' },
+        var monthsData = [
       { name: 'Mayo 2026 (Combo IA)', revenue: 9864.95, ads: 4759.43, profit: 3841.52, roas: '2.07x', status: 'Alto Volumen' },
-      { name: 'Junio 2026 (Combo IA)', revenue: 15076.22, ads: 8309.74, profit: 6766.48, roas: '1.81x', status: 'Pico Máximo' },
-      { name: 'Julio 2026 (Combo IA)', revenue: 7796.23, ads: 4861.13, profit: 2935.10, roas: '1.60x', status: 'Estable' },
-      { name: 'Agosto 2026 (Combo IA)', revenue: 958.14, ads: 978.52, profit: -20.38, roas: '0.98x', status: 'Reestructuración' }
+      { name: 'Junio 2026 (Combo IA)', revenue: 15076.22, ads: 8309.74, profit: 6766.48, roas: '1.81x', status: 'Pico M\u00E1ximo' },
+      { name: 'Julio 2026 (Combo IA)', revenue: 7796.23, ads: 4861.13, profit: 2935.10, roas: '1.60x', status: 'Estable' }
     ];
 
     tbody.innerHTML = monthsData.map(function (m) {
@@ -808,8 +816,8 @@
   }
 
   var NAV_TITLES = {
-    resumen: 'Resumen Stark HUD General',
-    ventas_combo: 'Ventas — Combo IA Pack (Últimos 3 Meses)',
+    resumen: 'Resumen Stark HUD \u2014 \u00BFC\u00F3mo voy hoy?',
+    ventas_combo: 'Ventas \u2014 Combo IA Pack (3 meses)',
     ingresos_mes: 'Ingresos por Mes — Desglose Evolutivo 2026',
     deudas: 'Tablero General ESTRATEGIA — Control de Deudas',
     roadmap: 'Puntos de Mejora Mes a Mes — Evolución',
@@ -832,16 +840,19 @@
     var pnlMod = document.getElementById('view-pnl-module');
     var savMod = document.getElementById('view-savings-module');
     var salesTbl = document.getElementById('view-sales-table-module');
+    var finMod = document.getElementById('view-financial-module');
 
-    var allMods = [salesMod, comboMod, incMesMod, debtsMod, roadMod, expMod, pnlMod, savMod, salesTbl];
+    var allMods = [salesMod, comboMod, incMesMod, debtsMod, roadMod, expMod, pnlMod, savMod, salesTbl, finMod];
     allMods.forEach(function (m) { if (m) m.style.display = 'none'; });
 
     if (target === 'resumen') {
-      salesMod.style.display = 'block';
-      salesTbl.style.display = 'block';
+      finMod.style.display = 'block';
+      renderFinancial();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (target === 'ventas_combo') {
       comboMod.style.display = 'block';
+      salesMod.style.display = 'block';
+      salesTbl.style.display = 'block';
       renderComboIA();
       comboMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (target === 'ingresos_mes') {
@@ -878,6 +889,7 @@
     } else if (target === 'ventas') {
       salesMod.style.display = 'block';
       salesTbl.style.display = 'block';
+      comboMod.style.display = 'block';
       document.querySelector('.table-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
@@ -1004,6 +1016,7 @@
   function renderAll() {
     var visible = getVisible();
     renderKpis(visible);
+    renderFinancial();
     renderRevenueChart(visible);
     renderProducts(visible);
     renderCountries(visible);
@@ -1016,6 +1029,44 @@
     renderRoadmap();
   }
 
+  function renderFinancial() {
+    var el = document.getElementById('financial-grid');
+    if (!el) return;
+    var combo = window.COMBO_IA_DATA;
+    var debts = window.DEBTS_DATA;
+    var expSum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
+    var mes = null;
+    if (combo && combo.months) combo.months.forEach(function (m) { if (m.month.indexOf('Julio') !== -1) mes = m; });
+    var ingresos = mes ? mes.revenueUSD : 0;
+    var salidas = expSum ? (expSum.totalBusinessUSD + expSum.totalPersonalUSD) : 0;
+    var saldo = ingresos - salidas;
+    var compromiso = debts ? debts.summary.totalMonthlyCommitmentCurrentPEN : 8971;
+    var deudaMin = debts ? debts.summary.totalDebtEstimatedMinPEN : 165000;
+    var deudaMax = debts ? debts.summary.totalDebtEstimatedMaxPEN : 185000;
+    var disponible = debts ? debts.summary.liquidAssetsPEN : 4000;
+    var alerta = debts ? debts.summary.septemberAlertText : '';
+
+    function card(t, v, s, tone) {
+      return '<div class="fin-card ' + (tone || '') + '"><div class="fin-label">' + t + '</div><div class="fin-value">' + v + '</div><div class="fin-sub">' + s + '</div></div>';
+    }
+    function pen(n) { return 'S/ ' + Math.round(n).toLocaleString('en-US'); }
+    function usd(n) { return '$' + Math.round(n).toLocaleString('en-US') + ' USD'; }
+
+    var grid = '';
+    grid += card('Ingresos del mes', usd(ingresos), 'Combo IA Pack \u00B7 Julio 2026', 'pos');
+    grid += card('Salidas del mes', usd(salidas), 'Negocio + personal auditado', 'neg');
+    grid += card('Saldo del mes', usd(saldo), 'Ingresos \u2212 salidas', 'pos');
+    grid += card('Deudas del mes', pen(compromiso), 'S/ 6,971 cr\u00E9ditos + S/ 2,000 junta', 'neg');
+    grid += card('Deudas pendientes', 'S/ ' + Math.round(deudaMin / 1000) + 'k \u2013 ' + Math.round(deudaMax / 1000) + 'k', 'Formales + informales', 'warn');
+    grid += card('Disponible (activos)', pen(disponible), 'L\u00EDquido para emergencias', 'pos');
+    el.innerHTML = grid;
+
+    var alertEl = document.getElementById('financial-alert');
+    if (alertEl && alerta) {
+      alertEl.innerHTML = '<span class="alert-icon">\uD83D\uDEA8</span><div>' + esc(alerta) + '</div>';
+      alertEl.style.display = 'flex';
+    }
+  }
   // ============================================================
   // INIT
   // ============================================================

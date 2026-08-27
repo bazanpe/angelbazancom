@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>STARK HUD - Panel Ejecutivo, Ventas & Finanzas</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=13">
+  <link rel="stylesheet" href="css/dashboard.css?v=14">
 </head>
 <body class="stark-theme">
 
@@ -92,26 +92,36 @@
 
         <section class="kpi-grid" id="kpi-grid">
           <div class="kpi-card stark-kpi">
-            <div class="kpi-head"><span class="kpi-label">Ventas Combo IA (Junio)</span><span class="kpi-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
-            <div class="kpi-value cyan-glow" id="kpi-revenue">$15,076.22</div>
-            <div class="kpi-delta up" id="kpi-revenue-delta">Pico Histórico de Ventas</div>
+            <div class="kpi-head"><span class="kpi-label">Ingresos del Mes</span><span class="kpi-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
+            <div class="kpi-value cyan-glow" id="kpi-revenue">$0</div>
+            <div class="kpi-delta up" id="kpi-revenue-delta">Julio 2026</div>
           </div>
           <div class="kpi-card stark-kpi">
-            <div class="kpi-head"><span class="kpi-label">Compromiso Mensual Fijo</span><span class="kpi-icon" style="color:var(--danger)"><svg class="ico"><use href="#i-card"/></svg></span></div>
-            <div class="kpi-value red-glow" id="kpi-exp">S/ 8,971</div>
-            <div class="kpi-delta" style="color:var(--text-count)">S/ 6,971 Créditos + S/ 2,000 Junta</div>
+            <div class="kpi-head"><span class="kpi-label">Deudas del Mes</span><span class="kpi-icon" style="color:var(--danger)"><svg class="ico"><use href="#i-card"/></svg></span></div>
+            <div class="kpi-value red-glow" id="kpi-exp">S/ 0</div>
+            <div class="kpi-delta" id="kpi-exp-delta" style="color:var(--text-count)">Compromiso mensual</div>
           </div>
           <div class="kpi-card stark-kpi kpi-saldo">
-            <div class="kpi-head"><span class="kpi-label">Deuda Total Estimada</span><span class="kpi-icon saldo-icon"><svg class="ico"><use href="#i-shield"/></svg></span></div>
-            <div class="kpi-value gold-glow" id="kpi-saldo">S/ 165k - 185k</div>
-            <div class="kpi-delta" style="color:var(--warning)">Formales (66k) + Sandra/Eva (95k)</div>
+            <div class="kpi-head"><span class="kpi-label">Deudas Pendientes</span><span class="kpi-icon saldo-icon"><svg class="ico"><use href="#i-shield"/></svg></span></div>
+            <div class="kpi-value gold-glow" id="kpi-saldo">S/ 0</div>
+            <div class="kpi-delta" id="kpi-saldo-delta" style="color:var(--warning)">Estimado total</div>
           </div>
           <div class="kpi-card stark-kpi">
-            <div class="kpi-head"><span class="kpi-label">Margen Neto Promedio</span><span class="kpi-icon" style="color:var(--green)"><svg class="ico"><use href="#i-statement"/></svg></span></div>
-            <div class="kpi-value green-glow" id="kpi-net-margin">60.2%</div>
-            <div class="kpi-delta up" id="kpi-net-margin-delta">Libres para amortización</div>
+            <div class="kpi-head"><span class="kpi-label">Disponible (Activos)</span><span class="kpi-icon" style="color:var(--green)"><svg class="ico"><use href="#i-statement"/></svg></span></div>
+            <div class="kpi-value green-glow" id="kpi-net-margin">S/ 0</div>
+            <div class="kpi-delta up" id="kpi-net-margin-delta">Líquido disponible</div>
           </div>
         </section>
+
+        <!-- RESUMEN FINANCIERO RÁPIDO (Stark HUD) -->
+        <div id="view-financial-module">
+          <div class="section-row">
+            <h2>¿Cómo voy hoy? — Resumen Financiero Rápido</h2>
+            <span class="pill" style="background:rgba(217,119,87,0.14); color:#D97757">Julio 2026</span>
+          </div>
+          <div class="financial-grid" id="financial-grid"></div>
+          <div class="financial-alert" id="financial-alert" style="display:none;"></div>
+        </div>
 
         <!-- SECCIÓN 1: VISTAS PRINCIPALES DE VENTAS -->
         <div id="view-sales-module">
@@ -590,11 +600,11 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=13"></script>
-  <script src="js/data2.js?v=13"></script>
-  <script src="js/expenses_data.js?v=13"></script>
-  <script src="js/combo_ia_data.js?v=13"></script>
-  <script src="js/debts_data.js?v=13"></script>
-  <script src="js/dashboard.js?v=13"></script>
+  <script src="js/data.js?v=14"></script>
+  <script src="js/data2.js?v=14"></script>
+  <script src="js/expenses_data.js?v=14"></script>
+  <script src="js/combo_ia_data.js?v=14"></script>
+  <script src="js/debts_data.js?v=14"></script>
+  <script src="js/dashboard.js?v=14"></script>
 </body>
 </html>
