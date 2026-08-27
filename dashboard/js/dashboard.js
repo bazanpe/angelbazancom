@@ -877,21 +877,7 @@
 
     if (target === 'resumen') {
       finMod.style.display = 'block';
-      salesMod.style.display = 'block';
-      comboMod.style.display = 'block';
-      incMesMod.style.display = 'block';
-      debtsMod.style.display = 'block';
-      roadMod.style.display = 'block';
-      expMod.style.display = 'block';
-      pnlMod.style.display = 'block';
-      savMod.style.display = 'block';
-      salesTbl.style.display = 'block';
       renderFinancial();
-      renderComboIA();
-      renderMonthlyIncome();
-      renderDebts();
-      renderRoadmap();
-      renderExpenses();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else     if (target === 'ventas_combo') {
       comboMod.style.display = 'block';
@@ -1079,14 +1065,20 @@
     renderRoadmap();
   }
 
-  function renderFinancial() {
+    function renderFinancial() {
     var el = document.getElementById('financial-grid');
     if (!el) return;
     var combo = window.COMBO_IA_DATA;
     var debts = window.DEBTS_DATA;
     var expSum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
     var mes = null;
-    if (combo && combo.months) combo.months.forEach(function (m) { if (m.month.indexOf('Julio') !== -1) mes = m; });
+    var mejor = null;
+    if (combo && combo.months) {
+      combo.months.forEach(function (m) {
+        if (m.month.indexOf('Julio') !== -1) mes = m;
+        if (m.month.indexOf('Agosto') === -1 && (!mejor || m.revenueUSD > mejor.revenueUSD)) mejor = m;
+      });
+    }
     var ingresos = mes ? mes.revenueUSD : 0;
     var salidas = expSum ? (expSum.totalBusinessUSD + expSum.totalPersonalUSD) : 0;
     var saldo = ingresos - salidas;
@@ -1095,6 +1087,11 @@
     var deudaMax = debts ? debts.summary.totalDebtEstimatedMaxPEN : 185000;
     var disponible = debts ? debts.summary.liquidAssetsPEN : 4000;
     var alerta = debts ? debts.summary.septemberAlertText : '';
+    var ahorro = expSum ? (expSum.potentialMonthlySavingsUSD || 0) : 155;
+    var gastosPers = expSum ? expSum.totalPersonalUSD : 0;
+    var margen = expSum ? (expSum.netMarginPct || 0) : 0;
+    var transacciones = getVisible().length;
+    var roas = mes ? mes.roas : 0;
 
     function card(t, v, s, tone) {
       return '<div class="fin-card ' + (tone || '') + '"><div class="fin-label">' + t + '</div><div class="fin-value">' + v + '</div><div class="fin-sub">' + s + '</div></div>';
@@ -1103,12 +1100,18 @@
     function usd(n) { return '$' + Math.round(n).toLocaleString('en-US') + ' USD'; }
 
     var grid = '';
-    grid += card('Ingresos del mes', usd(ingresos), 'Combo IA Pack \u00B7 Julio 2026', 'pos');
-    grid += card('Salidas del mes', usd(salidas), 'Negocio + personal auditado', 'neg');
+    grid += card('Ingresos del mes', usd(ingresos), 'Combo IA \u00B7 Julio 2026', 'pos');
+    grid += card('Salidas del mes', usd(salidas), 'Negocio + personal', 'neg');
     grid += card('Saldo del mes', usd(saldo), 'Ingresos \u2212 salidas', 'pos');
     grid += card('Deudas del mes', pen(compromiso), 'S/ 6,971 cr\u00E9ditos + S/ 2,000 junta', 'neg');
     grid += card('Deudas pendientes', 'S/ ' + Math.round(deudaMin / 1000) + 'k \u2013 ' + Math.round(deudaMax / 1000) + 'k', 'Formales + informales', 'warn');
     grid += card('Disponible (activos)', pen(disponible), 'L\u00EDquido para emergencias', 'pos');
+    grid += card('Mejor mes del trimestre', mejor ? mejor.month : '\u2014', mejor ? usd(mejor.revenueUSD) + ' de facturaci\u00F3n' : '', 'pos');
+    grid += card('ROAS julio', roas ? roas.toFixed(2) + 'x' : '\u2014', 'Por cada $1 de publicidad', 'warn');
+    grid += card('Margen neto negocio', (margen ? margen.toFixed(1) : '0') + '%', 'Saludable', 'pos');
+    grid += card('Gastos personales', usd(gastosPers), 'Estilo de vida del mes', 'neg');
+    grid += card('Ahorro potencial', '+$' + ahorro + ' USD/mes', 'Optimizando SaaS y suscripciones', 'pos');
+    grid += card('Transacciones del mes', fmtInt(transacciones), 'Ventas registradas', 'warn');
     el.innerHTML = grid;
 
     var alertEl = document.getElementById('financial-alert');
