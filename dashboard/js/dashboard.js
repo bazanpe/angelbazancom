@@ -20,6 +20,8 @@
   var formalCredits = debts ? debts.formalCredits || [] : [];
   var expSum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
   var expItems = window.EXPENSES_DATA ? window.EXPENSES_DATA.items : [];
+  var extras0 = loadExtras();
+  if (extras0.length) expItems = expItems.concat(extras0);
 
   function julyMonth() {
     for (var i = 0; i < comboMonths.length; i++) if (comboMonths[i].month.indexOf('Julio') !== -1) return comboMonths[i];
@@ -29,6 +31,7 @@
 
   var ingresos = julio ? julio.revenueUSD : 0;
   var gastos = expSum ? (expSum.totalBusinessUSD + expSum.totalPersonalUSD) : 0;
+  if (extras0 && extras0.length) extras0.forEach(function (e) { gastos += e.usd; });
   var saldo = ingresos - gastos;
 
   var MONTHS = comboMonths.slice();
@@ -356,7 +359,7 @@
     if (total) total.textContent = items.length + ' cargos · ' + fmtUSD(gastos);
   }
 
-  function renderDeudas() {
+    function renderDeudas() {
     var tb = document.getElementById('debt-formal-tbody');
     var tot = document.getElementById('debt-total');
     var banner = document.getElementById('debt-banner');
@@ -364,17 +367,46 @@
       var totalPend = 0;
       formalCredits.forEach(function (c) { totalPend += c.pendingBalancePEN; });
       tb.innerHTML = formalCredits.map(function (c) {
-        return '<tr><td class="cell-title">' + esc(c.name) + '</td>' +
-          '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">≈ ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
-          '<td>Día ' + c.dueDateDay + '</td>' +
+        var paid = payCount(c.name);
+        var shown = Math.min(paid, c.remainingQuota);
+        var pct = Math.min(100, Math.round((paid / c.remainingQuota) * 100));
+        return '<tr>' +
+          '<td class="cell-title">' + esc(c.name) + '</td>' +
+          '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
+          '<td>D\u00EDa ' + c.dueDateDay + '</td>' +
           '<td>' + c.remainingQuota + ' cuotas</td>' +
           '<td>' + esc(c.range) + '</td>' +
-          '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;font-weight:800;">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">≈ ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td></tr>';
+          '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;font-weight:800;">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td>' +
+          '<td><div class="pay-progress"><div class="pay-bar" style="width:' + pct + '%"></div></div>' +
+          '<div class="pay-meta">' + shown + ' de ' + c.remainingQuota + ' cuotas pagadas</div>' +
+          '<button class="pay-btn" data-name="' + esc(c.name) + '" data-amount="' + c.monthlyFeePEN + '">\u2714 Registrar pago</button></td>' +
+          '</tr>';
       }).join('');
-      if (tot) tot.textContent = 'Compromiso S/ ' + deudasMes.toLocaleString() + ' ≈ ' + usdEquiv(deudasMes) + ' USD · Saldo formal S/ ' + totalPend.toLocaleString();
+      tb.querySelectorAll('.pay-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var name = btn.getAttribute('data-name');
+          var amount = parseFloat(btn.getAttribute('data-amount'));
+          var arr = loadFormalPagos();
+          arr.push({ name: name, amountPEN: amount, date: new Date().toISOString().slice(0, 10) });
+          saveFormalPagos(arr);
+          showToast('Pago registrado', name + ' \u00B7 S/ ' + amount.toLocaleString());
+          renderDeudas();
+        });
+      });
+      if (tot) tot.textContent = 'Compromiso S/ ' + deudasMes.toLocaleString() + ' \u2248 ' + usdEquiv(deudasMes) + ' USD \u00B7 Saldo formal S/ ' + totalPend.toLocaleString();
     }
     if (banner) {
-      banner.innerHTML = '<span style="font-size:18px;">🚨</span><div><b>ALERTA SEPTIEMBRE 2026:</b> caen juntas las 4 cuotas de créditos (días 2, 11 y 19) por <b>S/ 6,971</b> + <b>S/ 2,000</b> de junta = <b>S/ 8,971</b> <span class="usd-mini">(≈ $2,392 USD)</span>.</div>';
+      banner.innerHTML = '<span style="font-size:18px;">\uD83D\uDEA8</span><div><b>ALERTA SEPTIEMBRE 2026:</b> caen juntas las 4 cuotas de cr\u00E9ditos (d\u00EDas 2, 11 y 19) por <b>S/ 6,971</b> + <b>S/ 2,000</b> de junta = <b>S/ 8,971</b> <span class="usd-mini">(\u2248 $2,392 USD)</span>.</div>';
+    }
+    var ptb = document.getElementById('payments-tbody');
+    var ptot = document.getElementById('payments-total');
+    if (window.PAYMENTS_HISTORY && ptb) {
+      var totalP = 0;
+      ptb.innerHTML = window.PAYMENTS_HISTORY.map(function (p) {
+        totalP += p.usd;
+        return '<tr><td>' + esc(p.fecha) + '</td><td class="cell-title">' + esc(p.desc) + '</td><td class="amt-exp">' + fmtUSD(p.usd) + '</td></tr>';
+      }).join('');
+      if (ptot) ptot.textContent = 'Total pagado: ' + fmtUSD(totalP) + ' (mayo\u2013julio)';
     }
   }
 
@@ -612,6 +644,67 @@
   window.addEventListener('scroll', function () { toTop.classList.toggle('show', window.scrollY > 500); });
   toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
+  function loadExtras() { try { return JSON.parse(localStorage.getItem('stark_gastos_extra') || '[]'); } catch (e) { return []; } }
+  function saveExtras(arr) { localStorage.setItem('stark_gastos_extra', JSON.stringify(arr)); }
+  function loadFormalPagos() { try { return JSON.parse(localStorage.getItem('stark_formal_pagos') || '[]'); } catch (e) { return []; } }
+  function saveFormalPagos(arr) { localStorage.setItem('stark_formal_pagos', JSON.stringify(arr)); }
+  function payCount(name) { return loadFormalPagos().filter(function (p) { return p.name === name; }).length; }
+
+  function downloadCsv(filename, rows) {
+    var csv = rows.map(function (r) { return r.map(function (c) { var s = String(c); if (s.indexOf(',') !== -1 || s.indexOf('"') !== -1) s = '"' + s.replace(/"/g, '""') + '"'; return s; }).join(','); }).join('\r\n');
+    var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  }
+  function exportActive() {
+    var target = 'resumen';
+    document.querySelectorAll('.view').forEach(function (v) { if (v.style.display === 'block') target = v.id.replace('view-', ''); });
+    var rows = [];
+    if (target === 'deudas') {
+      rows = [['Cr\u00E9dito', 'Cuota mensual', 'Vencimiento', 'Cuotas', 'Periodo', 'Saldo pendiente PEN', 'Pagos registrados']];
+      formalCredits.forEach(function (c) { rows.push([c.name, c.monthlyFeePEN, 'D\u00EDa ' + c.dueDateDay, c.remainingQuota, c.range, c.pendingBalancePEN, payCount(c.name)]); });
+      downloadCsv('stark_deudas.csv', rows);
+    } else if (target === 'gastos') {
+      rows = [['Fecha', 'Fuente', 'Descripci\u00F3n', 'Categor\u00EDa', 'Tipo', 'USD', 'PEN', 'Estado']];
+      expItems.forEach(function (it) { rows.push([it.date, it.source, it.desc, it.cat, it.type, it.usd, it.pen, it.status]); });
+      downloadCsv('stark_gastos.csv', rows);
+    } else if (target === 'ingresos') {
+      rows = [['Mes', 'Ingresos USD', 'Gasto pauta', 'Ganancia neta', 'ROAS']];
+      comboMonths.forEach(function (m) { rows.push([m.month, m.revenueUSD, m.adsUSD, m.profitUSD, m.roas]); });
+      downloadCsv('stark_ingresos.csv', rows);
+    } else if (target === 'reportes') {
+      rows = [['Mes', 'Ingresos', 'Gastos', 'Saldo', 'ROAS']];
+      comboMonths.forEach(function (m) { var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0); rows.push([m.month, m.revenueUSD, g, m.revenueUSD - g, m.roas]); });
+      downloadCsv('stark_reportes.csv', rows);
+    } else {
+      rows = [['Movimiento', 'Categor\u00EDa', 'Fecha', 'Monto USD', 'Tipo']];
+      buildMovementsList();
+      movAll.forEach(function (r) { rows.push([r.name, r.cat, r.date, r.usd, r.type]); });
+      downloadCsv('stark_movimientos.csv', rows);
+    }
+    showToast('Exportado', 'CSV descargado \u2014 \u00E1brelo en Excel o Google Sheets.');
+  }
+  function bindExtras() {
+    var eb = document.getElementById('export-btn');
+    if (eb) eb.addEventListener('click', exportActive);
+    var ga = document.getElementById('gf-add');
+    if (ga) ga.addEventListener('click', function () {
+      var desc = document.getElementById('gf-desc').value.trim();
+      var usd = parseFloat(document.getElementById('gf-usd').value);
+      if (!desc || isNaN(usd) || usd <= 0) { showToast('Gasto por d\u00EDa', 'Completa descripci\u00F3n y monto USD v\u00E1lido.'); return; }
+      var item = { source: 'Registro diario', date: document.getElementById('gf-fecha').value || '2026-07-27', desc: desc, cat: document.getElementById('gf-cat').value, type: document.getElementById('gf-tipo').value, usd: usd, pen: usd * FX, status: 'Mantener' };
+      expItems.push(item);
+      gastos += usd;
+      var extras = loadExtras(); extras.push(item); saveExtras(extras);
+      document.getElementById('gf-desc').value = '';
+      document.getElementById('gf-usd').value = '';
+      showToast('Gasto registrado', desc + ' \u00B7 ' + fmtUSD(usd));
+      renderGastos();
+      renderResumen();
+    });
+  }
   // ============================================================
   // INIT
   // ============================================================
@@ -619,5 +712,6 @@
   bindAgent();
   renderResumen();
   switchTab('resumen');
+  bindExtras();
   lock();
 })();
