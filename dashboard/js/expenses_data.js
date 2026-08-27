@@ -49,12 +49,12 @@
       { source: 'Scotiabank Visa Oro', date: '2026-07-04', desc: 'PAYPAL *BUNNYWAY (CDN/Storage)', cat: 'Infraestructura & SaaS', type: 'Negocio', usd: 10.00, pen: 37.50, status: 'Mantener' },
 
       // SKOOL & INFOPRODUCTOS
-      { source: 'Scotiabank Visa Oro', date: '2026-07-04', desc: 'P.SKOOL.COM/PLSJT (Comunidad Skool 2)', cat: 'EducaciÃ³n & Comunidades', type: 'Negocio', usd: 12.00, pen: 45.00, status: 'Optimizar' },
-      { source: 'Scotiabank Visa Oro', date: '2026-07-07', desc: 'P.SKOOL.COM/WLKXG (Comunidad Skool 3)', cat: 'EducaciÃ³n & Comunidades', type: 'Negocio', usd: 9.00, pen: 33.75, status: 'Optimizar' },
-      { source: 'Scotiabank Visa Oro', date: '2026-07-15', desc: 'P.SKOOL.COM/PMPRQ (Comunidad Skool 4)', cat: 'EducaciÃ³n & Comunidades', type: 'Negocio', usd: 3.00, pen: 11.25, status: 'Mantener' },
-      { source: 'Scotiabank Visa Oro', date: '2026-07-22', desc: 'P.SKOOL.COM/XHWTT (Comunidad Skool 5)', cat: 'EducaciÃ³n & Comunidades', type: 'Negocio', usd: 14.00, pen: 52.50, status: 'Optimizar' },
-      { source: 'Scotiabank Visa Oro', date: '2026-07-25', desc: 'SKOOL.COM WWW.SKOOL.COM (Skool 6)', cat: 'EducaciÃ³n & Comunidades', type: 'Negocio', usd: 9.00, pen: 33.75, status: 'Optimizar' },
-      { source: 'Scotiabank Visa Oro', date: '2026-07-01', desc: 'PAYPAL *HOTMART', cat: 'EducaciÃ³n & Comunidades', type: 'Negocio', usd: 5.00, pen: 18.75, status: 'Mantener' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-04', desc: 'P.SKOOL.COM/PLSJT (Comunidad Skool 2)', cat: 'Educaci\u00F3n & Comunidades', type: 'Negocio', usd: 12.00, pen: 45.00, status: 'Optimizar' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-07', desc: 'P.SKOOL.COM/WLKXG (Comunidad Skool 3)', cat: 'Educaci\u00F3n & Comunidades', type: 'Negocio', usd: 9.00, pen: 33.75, status: 'Optimizar' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-15', desc: 'P.SKOOL.COM/PMPRQ (Comunidad Skool 4)', cat: 'Educaci\u00F3n & Comunidades', type: 'Negocio', usd: 3.00, pen: 11.25, status: 'Mantener' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-22', desc: 'P.SKOOL.COM/XHWTT (Comunidad Skool 5)', cat: 'Educaci\u00F3n & Comunidades', type: 'Negocio', usd: 14.00, pen: 52.50, status: 'Optimizar' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-25', desc: 'SKOOL.COM WWW.SKOOL.COM (Skool 6)', cat: 'Educaci\u00F3n & Comunidades', type: 'Negocio', usd: 9.00, pen: 33.75, status: 'Optimizar' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-01', desc: 'PAYPAL *HOTMART', cat: 'Educaci\u00F3n & Comunidades', type: 'Negocio', usd: 5.00, pen: 18.75, status: 'Mantener' },
 
       // GOOGLE CLOUD & WORKSPACE
       { source: 'Scotiabank Visa Oro', date: '2026-07-01', desc: 'Google Workspace_natal', cat: 'Servicios Cloud & Email', type: 'Negocio', usd: 9.91, pen: 37.16, status: 'Optimizar' },
@@ -65,19 +65,19 @@
       { source: 'BCP Ahorros', date: '2026-07-01', desc: 'Google One (Debito BCP)', cat: 'Servicios Cloud & Email', type: 'Negocio', usd: 2.25, pen: 8.44, status: 'Cancelar' },
 
       // LOGISTICA EMPRESARIAL BCP
-      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'SHALOM EMPRESARIAL (EnvÃ­os 1)', cat: 'LogÃ­stica & Operaciones', type: 'Negocio', usd: 2.13, pen: 8.00, status: 'Mantener' },
-      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'SHALOM EMPRESARIAL (EnvÃ­os 2)', cat: 'LogÃ­stica & Operaciones', type: 'Negocio', usd: 2.13, pen: 8.00, status: 'Mantener' },
-      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'SHALOM EMPRESARIAL (EnvÃ­os 3)', cat: 'LogÃ­stica & Operaciones', type: 'Negocio', usd: 2.13, pen: 8.00, status: 'Mantener' },
-      { source: 'BCP Ahorros', date: '2026-07-20', desc: 'SHALOM EMPRESARIAL (EnvÃ­os 4)', cat: 'LogÃ­stica & Operaciones', type: 'Negocio', usd: 2.67, pen: 10.00, status: 'Mantener' },
+      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'SHALOM EMPRESARIAL (Env\u00EDos 1)', cat: 'Log\u00EDstica & Operaciones', type: 'Negocio', usd: 2.13, pen: 8.00, status: 'Mantener' },
+      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'SHALOM EMPRESARIAL (Env\u00EDos 2)', cat: 'Log\u00EDstica & Operaciones', type: 'Negocio', usd: 2.13, pen: 8.00, status: 'Mantener' },
+      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'SHALOM EMPRESARIAL (Env\u00EDos 3)', cat: 'Log\u00EDstica & Operaciones', type: 'Negocio', usd: 2.13, pen: 8.00, status: 'Mantener' },
+      { source: 'BCP Ahorros', date: '2026-07-20', desc: 'SHALOM EMPRESARIAL (Env\u00EDos 4)', cat: 'Log\u00EDstica & Operaciones', type: 'Negocio', usd: 2.67, pen: 10.00, status: 'Mantener' },
 
       // GASTOS PERSONALES
-      { source: 'BCP Ahorros', date: '2026-07-02', desc: 'PedidosYa*Market + Propina', cat: 'AlimentaciÃ³n & Delivery', type: 'Personal', usd: 10.56, pen: 39.60, status: 'Optimizar' },
-      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'PedidosYa*Ohashi M', cat: 'AlimentaciÃ³n & Delivery', type: 'Personal', usd: 14.29, pen: 53.60, status: 'Optimizar' },
-      { source: 'BCP Ahorros', date: '2026-07-11', desc: 'PedidosYa*La B Alt', cat: 'AlimentaciÃ³n & Delivery', type: 'Personal', usd: 5.41, pen: 20.30, status: 'Optimizar' },
-      { source: 'BCP Ahorros', date: '2026-07-12', desc: 'PedidosYa*Chicken + Propina', cat: 'AlimentaciÃ³n & Delivery', type: 'Personal', usd: 19.17, pen: 71.90, status: 'Optimizar' },
-      { source: 'Scotiabank Visa Oro', date: '2026-07-04', desc: 'OPENPAY*POLLO LOCO CHICLAYO', cat: 'AlimentaciÃ³n & Delivery', type: 'Personal', usd: 6.67, pen: 25.00, status: 'Personal' },
-      { source: 'Scotiabank Visa Oro', date: '2026-07-07', desc: 'Grifo San Antonio - LO Jose Leonardo', cat: 'AlimentaciÃ³n & Delivery', type: 'Personal', usd: 2.67, pen: 10.00, status: 'Personal' },
-      { source: 'Binance Card', date: '2026-07-05', desc: 'PAYPAL *SUNFLOWERTE', cat: 'AlimentaciÃ³n & Delivery', type: 'Personal', usd: 22.09, pen: 82.84, status: 'Personal' },
+      { source: 'BCP Ahorros', date: '2026-07-02', desc: 'PedidosYa*Market + Propina', cat: 'Alimentaci\u00F3n & Delivery', type: 'Personal', usd: 10.56, pen: 39.60, status: 'Optimizar' },
+      { source: 'BCP Ahorros', date: '2026-07-03', desc: 'PedidosYa*Ohashi M', cat: 'Alimentaci\u00F3n & Delivery', type: 'Personal', usd: 14.29, pen: 53.60, status: 'Optimizar' },
+      { source: 'BCP Ahorros', date: '2026-07-11', desc: 'PedidosYa*La B Alt', cat: 'Alimentaci\u00F3n & Delivery', type: 'Personal', usd: 5.41, pen: 20.30, status: 'Optimizar' },
+      { source: 'BCP Ahorros', date: '2026-07-12', desc: 'PedidosYa*Chicken + Propina', cat: 'Alimentaci\u00F3n & Delivery', type: 'Personal', usd: 19.17, pen: 71.90, status: 'Optimizar' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-04', desc: 'OPENPAY*POLLO LOCO CHICLAYO', cat: 'Alimentaci\u00F3n & Delivery', type: 'Personal', usd: 6.67, pen: 25.00, status: 'Personal' },
+      { source: 'Scotiabank Visa Oro', date: '2026-07-07', desc: 'Grifo San Antonio - LO Jose Leonardo', cat: 'Alimentaci\u00F3n & Delivery', type: 'Personal', usd: 2.67, pen: 10.00, status: 'Personal' },
+      { source: 'Binance Card', date: '2026-07-05', desc: 'PAYPAL *SUNFLOWERTE', cat: 'Alimentaci\u00F3n & Delivery', type: 'Personal', usd: 22.09, pen: 82.84, status: 'Personal' },
 
       { source: 'BCP Ahorros', date: '2026-07-27', desc: 'TICKETMASTER BCP (Conciertos/Eventos)', cat: 'Entretenimiento & Ocio', type: 'Personal', usd: 66.13, pen: 248.00, status: 'Personal' },
       { source: 'BCP Ahorros', date: '2026-07-19', desc: 'PTP*BETANO (Apuestas)', cat: 'Entretenimiento & Ocio', type: 'Personal', usd: 13.33, pen: 50.00, status: 'Cancelar' },
@@ -95,7 +95,7 @@
       { source: 'Binance Card', date: '2026-07-02', desc: 'JetSMART Airlines (Vuelos)', cat: 'Transporte & Viajes', type: 'Personal', usd: 119.98, pen: 449.93, status: 'Personal' },
       { source: 'Scotiabank Visa Oro', date: '2026-07-04', desc: 'MORPHO TRAVEL PERU SAC CALLAO', cat: 'Transporte & Viajes', type: 'Personal', usd: 2.88, pen: 10.80, status: 'Personal' },
 
-      { source: 'Binance Card', date: '2026-07-16', desc: 'LASTPASS.COM (Gestor ContraseÃ±as)', cat: 'Seguridad & Utilidades', type: 'Personal', usd: 36.00, pen: 135.00, status: 'Optimizar' },
+      { source: 'Binance Card', date: '2026-07-16', desc: 'LASTPASS.COM (Gestor Contrase\u00F1as)', cat: 'Seguridad & Utilidades', type: 'Personal', usd: 36.00, pen: 135.00, status: 'Optimizar' },
       { source: 'Scotiabank Visa Oro', date: '2026-07-20', desc: 'CHORRICLUB SANTIAGO DE C ES', cat: 'Seguridad & Utilidades', type: 'Personal', usd: 1.10, pen: 4.13, status: 'Personal' }
     ]
   };

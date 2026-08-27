@@ -30,6 +30,20 @@
   var ingresos = julio ? julio.revenueUSD : 0;
   var gastos = expSum ? (expSum.totalBusinessUSD + expSum.totalPersonalUSD) : 0;
   var saldo = ingresos - gastos;
+
+  var MONTHS = comboMonths.slice();
+  var state = { mIdx: MONTHS.length - 1 };
+  function selectedMonth() { return MONTHS[state.mIdx] || null; }
+  function monthIngresos() { var m = selectedMonth(); return m ? m.revenueUSD : 0; }
+  function monthGastos() {
+    var m = selectedMonth();
+    if (!m) return 0;
+    if (m.month.indexOf('Julio') !== -1) return gastos;
+    return (m.adsUSD || 0) + (m.toolsUSD || 0);
+  }
+  function monthSaldo() { return monthIngresos() - monthGastos(); }
+  function monthLabel() { var m = selectedMonth(); return m ? m.month : '\u2014'; }
+  function monthIsJuly() { var m = selectedMonth(); return !!m && m.month.indexOf('Julio') !== -1; }
   var deudasMes = debts ? debts.summary.totalMonthlyCommitmentCurrentPEN : 8971;
   var deudaMin = debts ? debts.summary.totalDebtEstimatedMinPEN : 165000;
   var deudaMax = debts ? debts.summary.totalDebtEstimatedMaxPEN : 185000;
@@ -127,18 +141,30 @@
     growth.innerHTML = 'Disponible en cuentas · Ahorro Warda ' + fmtPEN(warda);
     growth.className = 'hero-growth up';
 
+    var ms = monthSaldo();
+    var mpct = Math.min(100, Math.round((ms / META) * 100));
     var pctEl = document.getElementById('meta-pct');
-    pctEl.textContent = metaPct + '%';
-    document.getElementById('meta-sub').textContent = fmtUSD(saldo) + ' de ' + fmtUSD(META) + ' alcanzados';
+    pctEl.textContent = mpct + '%';
+    document.getElementById('meta-sub').textContent = fmtUSD(Math.max(0, ms)) + ' de ' + fmtUSD(META) + ' alcanzados';
     var ring = document.getElementById('meta-ring-fill');
-    var dash = Math.max(0, Math.min(314, (metaPct / 100) * 314));
+    var dash = Math.max(0, Math.min(314, (mpct / 100) * 314));
     ring.setAttribute('stroke-dashoffset', (314 - dash).toFixed(1));
   }
 
   function renderMinis() {
-    document.getElementById('mini-ingresos').textContent = fmtUSD(ingresos);
-    document.getElementById('mini-gastos').textContent = fmtUSD(gastos);
+    document.getElementById('mini-ingresos').textContent = fmtUSD(monthIngresos());
+    document.getElementById('mini-gastos').textContent = fmtUSD(monthGastos());
     document.getElementById('mini-deudas').textContent = fmtPEN(deudasMes);
+    var card = document.getElementById('mini-ingresos');
+    if (card) {
+      var sub = card.closest('.mini-card').querySelector('.mini-sub');
+      if (sub) sub.textContent = monthLabel() + (monthIsJuly() ? ' Â· auditado' : ' Â· combo IA');
+    }
+    var gc = document.getElementById('mini-gastos');
+    if (gc) {
+      var sub2 = gc.closest('.mini-card').querySelector('.mini-sub');
+      if (sub2) sub2.textContent = monthIsJuly() ? 'Negocio + personal' : 'Estimado: pauta + herramientas';
+    }
   }
 
   function renderFlowChart() {
@@ -276,16 +302,9 @@
 
   function renderAssets() {
     var el = document.getElementById('assets-value');
-    var bars = document.getElementById('assets-bars');
+    var w = document.getElementById('assets-warda');
     if (el) el.textContent = fmtPEN(disponible);
-    if (bars) {
-      var max = Math.max(disponible, warda);
-      bars.innerHTML =
-        '<div class="ab-row"><div class="ab-head"><span>Disponible en cuentas</span><span>' + fmtPEN(disponible) + '</span></div>' +
-        '<div class="ab-track"><div class="ab-fill" style="width:' + Math.round(disponible / max * 100) + '%"></div></div></div>' +
-        '<div class="ab-row"><div class="ab-head"><span>Ahorro Warda BCP</span><span>' + fmtPEN(warda) + '</span></div>' +
-        '<div class="ab-track"><div class="ab-fill" style="width:' + Math.round(warda / max * 100) + '%;background:var(--amber);"></div></div></div>';
-    }
+    if (w) w.textContent = fmtPEN(warda);
   }
 
   function renderResumen() {
@@ -304,7 +323,10 @@
   function renderIngresos() {
     var tb = document.getElementById('ingresos-tbody');
     if (!tb) return;
-    tb.innerHTML = comboMonths.map(function (m) {
+    var sel = document.getElementById('sel-month-ingresos');
+    var filter = sel ? sel.value : 'all';
+    var months = filter === 'all' ? comboMonths : comboMonths.filter(function (m) { return m.month.indexOf(filter) !== -1; });
+    tb.innerHTML = months.map(function (m) {
       return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
         '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
         '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(m.adsUSD) + '</td>' +
@@ -431,8 +453,30 @@
   function buildMonthSelect() {
     var sel = document.getElementById('sel-month');
     if (!sel) return;
-    sel.innerHTML = '<option value="0">Julio 2026</option>';
-    sel.value = '0';
+    sel.innerHTML = '';
+    MONTHS.forEach(function (m, i) {
+      var o = document.createElement('option');
+      o.value = i;
+      o.textContent = m.month;
+      sel.appendChild(o);
+    });
+    sel.value = String(state.mIdx);
+    sel.addEventListener('change', function () {
+      state.mIdx = parseInt(sel.value, 10);
+      renderResumen();
+    });
+
+    var selIng = document.getElementById('sel-month-ingresos');
+    if (selIng) {
+      selIng.innerHTML = '<option value="all">Todos los meses</option>';
+      MONTHS.forEach(function (m) {
+        var o = document.createElement('option');
+        o.value = m.month.split(' ')[0];
+        o.textContent = m.month;
+        selIng.appendChild(o);
+      });
+      selIng.addEventListener('change', renderIngresos);
+    }
   }
 
   document.getElementById('add-mov-btn').addEventListener('click', function () {
