@@ -28,8 +28,8 @@
   var CANAL_OPTIONS = ['Directo', 'NG | x233', 'NG | x161', 'NG | x318', 'NG | x4058', 'NG | x847', 'VC | MM x407'];
   var CANAL_WEIGHTS = [70, 8, 7, 7, 5, 2, 1];
 
-  var FIRST_NAMES = ['Carlos', 'María', 'José', 'Ana', 'Luis', 'Carmen', 'Juan', 'Rosa', 'Pedro', 'Lucía', 'Miguel', 'Sofía', 'Jorge', 'Valentina', 'Diego', 'Camila', 'Andrés', 'Paula', 'Fernando', 'Daniela', 'Ricardo', 'Gabriela', 'Manuel', 'Alejandra', 'Sergio', 'Natalia', 'Eduardo', 'Jimena', 'Hugo', 'Renata', 'Oscar', 'Fiorella', 'Raúl', 'Marisol', 'Álvaro', 'Karen', 'César', 'Milagros', 'Marcos', 'Tatiana', 'Héctor', 'Lorena', 'Víctor', 'Patricia', 'Gustavo', 'Isabel', 'Javier', 'Mónica'];
-  var LAST_NAMES = ['García', 'Rodríguez', 'Martínez', 'López', 'Pérez', 'González', 'Sánchez', 'Ramírez', 'Torres', 'Flores', 'Rivera', 'Díaz', 'Vargas', 'Castro', 'Mendoza', 'Rojas', 'Herrera', 'Medina', 'Aguilar', 'Romero', 'Suárez', 'Vásquez', 'Chávez', 'Quispe', 'Mamani', 'Paredes', 'Zapata', 'Salazar', 'Cabrera', 'Villanueva'];
+  var FIRST_NAMES = ['Carlos', 'MarÃ­a', 'JosÃ©', 'Ana', 'Luis', 'Carmen', 'Juan', 'Rosa', 'Pedro', 'LucÃ­a', 'Miguel', 'SofÃ­a', 'Jorge', 'Valentina', 'Diego', 'Camila', 'AndrÃ©s', 'Paula', 'Fernando', 'Daniela', 'Ricardo', 'Gabriela', 'Manuel', 'Alejandra', 'Sergio', 'Natalia', 'Eduardo', 'Jimena', 'Hugo', 'Renata', 'Oscar', 'Fiorella', 'RaÃºl', 'Marisol', 'Ãlvaro', 'Karen', 'CÃ©sar', 'Milagros', 'Marcos', 'Tatiana', 'HÃ©ctor', 'Lorena', 'VÃ­ctor', 'Patricia', 'Gustavo', 'Isabel', 'Javier', 'MÃ³nica'];
+  var LAST_NAMES = ['GarcÃ­a', 'RodrÃ­guez', 'MartÃ­nez', 'LÃ³pez', 'PÃ©rez', 'GonzÃ¡lez', 'SÃ¡nchez', 'RamÃ­rez', 'Torres', 'Flores', 'Rivera', 'DÃ­az', 'Vargas', 'Castro', 'Mendoza', 'Rojas', 'Herrera', 'Medina', 'Aguilar', 'Romero', 'SuÃ¡rez', 'VÃ¡squez', 'ChÃ¡vez', 'Quispe', 'Mamani', 'Paredes', 'Zapata', 'Salazar', 'Cabrera', 'Villanueva'];
   var HANDLES = ['vendedor_pro', 'marketing_21', 'tiendaonline', 'digital_nomad', 'emprende_hoy', 'social_media_guru', 'ads_master', 'ecommerce_plus', 'crece_conmigo', 'negocio24', 'lider_digital', 'ventas_ya', 'mundo_online', 'startup_latam', 'vision_2026', 'emprendedor_x', 'exito_total', 'marketing_digital', 'comunidad_vip', 'estratega'];
 
   function mulberry32(seed) {
@@ -188,7 +188,7 @@
       hora: row[1],
       contacto: row[2],
       pais: pais,
-      canal: (row[4] === '-' || row[4] === '—') ? 'Directo' : row[4],
+      canal: (row[4] === '-' || row[4] === 'â€”') ? 'Directo' : row[4],
       producto: producto,
       monto: price ? price[0] : row[6],
       moneda: price ? price[1] : row[7],
@@ -300,7 +300,7 @@
     if (appShell) appShell.classList.add('unlocked');
     if (gate) gate.classList.add('hidden');
     var lockText = document.getElementById('lock-status-text');
-    if (lockText) lockText.textContent = 'Sesión activa (2 Horas)';
+    if (lockText) lockText.textContent = 'SesiÃ³n activa (2 Horas)';
     try {
       localStorage.setItem('va_stark_session_ts', Date.now().toString());
     } catch (e) {}
@@ -341,14 +341,14 @@
     if (!gateInput) return;
     var val = gateInput.value.trim();
     if (!val) {
-      if (gateError) gateError.textContent = 'Ingresa el código de acceso.';
+      if (gateError) gateError.textContent = 'Ingresa el cÃ³digo de acceso.';
       return;
     }
     if (val === ACCESS_CODE) {
       if (gateError) gateError.textContent = '';
       unlock();
     } else {
-      if (gateError) gateError.textContent = 'Código incorrecto. Inténtalo de nuevo.';
+      if (gateError) gateError.textContent = 'CÃ³digo incorrecto. IntÃ©ntalo de nuevo.';
       if (gateCard) {
         gateCard.classList.remove('gate-shake');
         void gateCard.offsetWidth;
@@ -464,14 +464,14 @@
       var y = padT + innerH - h;
       var isBest = best && d === best;
       var color = isBest ? '#00E676' : 'rgba(0,242,254,0.7)';
-      var tip = 'Día ' + d.label + ' · Ingresos ' + fmtUSD(d.usd) + (d.count ? ' · ' + d.count + ' ventas' : '');
+      var tip = 'DÃ­a ' + d.label + ' Â· Ingresos ' + fmtUSD(d.usd) + (d.count ? ' Â· ' + d.count + ' ventas' : '');
       html += '<rect class="daily-bar" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2" fill="' + color + '" data-tip="' + esc(tip) + '"></rect>';
     });
     html += '</svg>';
     el.innerHTML = html;
 
     if (sub && best) {
-      sub.textContent = 'Día a día · Total ' + fmtUSD(total) + ' · Mejor día ' + best.label + ' (' + fmtUSD(best.usd) + ')';
+      sub.textContent = 'DÃ­a a dÃ­a Â· Total ' + fmtUSD(total) + ' Â· Mejor dÃ­a ' + best.label + ' (' + fmtUSD(best.usd) + ')';
     }
   }
 
@@ -564,6 +564,7 @@
         state.product = (state.product === p) ? null : p;
         state.page = 0;
         renderAll();
+  switchTab('resumen');
       });
     });
   }
@@ -577,6 +578,7 @@
     buildDonut(document.getElementById('chart-countries'), entries, function (e) {
       state.country = (state.country === e.key) ? null : e.key;
       renderAll();
+  switchTab('resumen');
     });
   }
 
@@ -589,6 +591,7 @@
     buildDonut(document.getElementById('chart-channels'), entries, function (e) {
       state.channel = (state.channel === e.key) ? null : e.key;
       renderAll();
+  switchTab('resumen');
     });
   }
 
@@ -627,17 +630,17 @@
     if (!info || !btns) return;
 
     var totalPages = Math.ceil(total / state.pageSize) || 1;
-    info.textContent = 'Página ' + (state.page + 1) + ' de ' + totalPages;
+    info.textContent = 'PÃ¡gina ' + (state.page + 1) + ' de ' + totalPages;
     btns.innerHTML = '';
 
     var prev = document.createElement('button');
-    prev.textContent = '« Ant';
+    prev.textContent = 'Â« Ant';
     prev.disabled = state.page === 0;
     prev.addEventListener('click', function () { state.page--; renderTable(getVisible()); });
     btns.appendChild(prev);
 
     var next = document.createElement('button');
-    next.textContent = 'Sig »';
+    next.textContent = 'Sig Â»';
     next.disabled = state.page >= totalPages - 1;
     next.addEventListener('click', function () { state.page++; renderTable(getVisible()); });
     btns.appendChild(next);
@@ -689,7 +692,7 @@
     });
   }
 
-  // NUEVA FUNCIÓN: RENDER COMBO IA PACK
+  // NUEVA FUNCIÃ“N: RENDER COMBO IA PACK
   function renderComboIA() {
     if (!window.COMBO_IA_DATA) return;
     var grid = document.getElementById('combo-summary-grid');
@@ -700,7 +703,7 @@
       var card = document.createElement('div');
       card.className = 'combo-month-card stark-card';
       card.innerHTML = '<h3>' + esc(m.month) + '</h3>' +
-        '<div class="combo-metric"><span class="lbl">Facturación:</span><span class="val cyan-glow">$' + m.revenueUSD.toLocaleString('en-US', {minimumFractionDigits:2}) + ' USD</span></div>' +
+        '<div class="combo-metric"><span class="lbl">FacturaciÃ³n:</span><span class="val cyan-glow">$' + m.revenueUSD.toLocaleString('en-US', {minimumFractionDigits:2}) + ' USD</span></div>' +
         '<div class="combo-metric"><span class="lbl">Gasto Ads:</span><span class="val red-glow">-$' + m.adsUSD.toLocaleString('en-US', {minimumFractionDigits:2}) + ' USD</span></div>' +
         '<div class="combo-metric"><span class="lbl">Ganancia Mes:</span><span class="val green-glow">$' + m.profitUSD.toLocaleString('en-US', {minimumFractionDigits:2}) + ' USD</span></div>' +
         '<div class="combo-metric"><span class="lbl">ROAS Ads:</span><span class="val gold-glow">' + m.roas.toFixed(2) + 'x</span></div>' +
@@ -709,7 +712,7 @@
     });
   }
 
-  // NUEVA FUNCIÓN: RENDER INGRESOS POR MES
+  // NUEVA FUNCIÃ“N: RENDER INGRESOS POR MES
   function renderMonthlyIncome() {
     var tbody = document.getElementById('monthly-income-tbody');
     if (!tbody) return;
@@ -733,7 +736,7 @@
     }).join('');
   }
 
-  // NUEVA FUNCIÓN: RENDER DEUDAS
+  // NUEVA FUNCIÃ“N: RENDER DEUDAS
   function renderDebts() {
     if (!window.DEBTS_DATA) return;
     var data = window.DEBTS_DATA;
@@ -744,7 +747,7 @@
         return '<tr>' +
           '<td style="font-weight:700; color:var(--text-title);">' + esc(c.name) + '</td>' +
           '<td style="color:var(--danger); font-family:var(--font-mono); font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + '</td>' +
-          '<td>Día ' + c.dueDateDay + ' de cada mes</td>' +
+          '<td>DÃ­a ' + c.dueDateDay + ' de cada mes</td>' +
           '<td>' + c.remainingQuota + ' cuotas</td>' +
           '<td>' + esc(c.range) + '</td>' +
           '<td style="font-family:var(--font-mono); font-weight:800; color:var(--gold-stark);">S/ ' + c.pendingBalancePEN.toLocaleString() + '</td>' +
@@ -797,7 +800,7 @@
     }
   }
 
-  // NUEVA FUNCIÓN: RENDER ROADMAP
+  // NUEVA FUNCIÃ“N: RENDER ROADMAP
   function renderRoadmap() {
     var timeline = document.getElementById('roadmap-timeline');
     if (!timeline) return;
@@ -806,26 +809,26 @@
       {
         period: 'Mayo 2026',
         status: 'Lanzamiento Combo IA Pack',
-        summary: 'Facturación de $9,864.95 USD con ROAS 2.07x. Retiro de Hotmart de $3,002 USD para pagos urgentes de tarjetas y amortización.',
-        learnings: ['La oferta del Combo IA Pack convirtió a alto volumen.', 'Punto de Mejora: Se requiere separar el fondo de cuotas de créditos Santander y Compartamos antes de reinvertir el 100% en Ads.']
+        summary: 'FacturaciÃ³n de $9,864.95 USD con ROAS 2.07x. Retiro de Hotmart de $3,002 USD para pagos urgentes de tarjetas y amortizaciÃ³n.',
+        learnings: ['La oferta del Combo IA Pack convirtiÃ³ a alto volumen.', 'Punto de Mejora: Se requiere separar el fondo de cuotas de crÃ©ditos Santander y Compartamos antes de reinvertir el 100% en Ads.']
       },
       {
         period: 'Junio 2026',
         status: 'Pico de Escalamiento ($15,076 USD)',
-        summary: 'Record histórico de facturación ($15,076.22 USD) impulsado por $8,309.74 USD de inversión en Meta Ads. Ganancia limpia del mes: $6,766.48 USD.',
-        learnings: ['El mercado respondió a gran escala.', 'Punto de Mejora: El gasto publicitario aumentó rápido y redujo el ROAS marginal de 2.07x a 1.81x. Recomienda controlar el CPA en picos.']
+        summary: 'Record histÃ³rico de facturaciÃ³n ($15,076.22 USD) impulsado por $8,309.74 USD de inversiÃ³n en Meta Ads. Ganancia limpia del mes: $6,766.48 USD.',
+        learnings: ['El mercado respondiÃ³ a gran escala.', 'Punto de Mejora: El gasto publicitario aumentÃ³ rÃ¡pido y redujo el ROAS marginal de 2.07x a 1.81x. Recomienda controlar el CPA en picos.']
       },
       {
         period: 'Julio 2026',
-        status: 'Estabilización & Auditoría de Fugas',
-        summary: 'Ventas de $7,796.23 USD. Se identificó fuga recurrente en 4 cobros simultáneos de Google One ($113.20 USD) y 6 suscripciones en Skool.com.',
+        status: 'EstabilizaciÃ³n & AuditorÃ­a de Fugas',
+        summary: 'Ventas de $7,796.23 USD. Se identificÃ³ fuga recurrente en 4 cobros simultÃ¡neos de Google One ($113.20 USD) y 6 suscripciones en Skool.com.',
         learnings: ['Negocio altamente rentable (Margen 60.2%).', 'Punto de Mejora: Unificar cuentas de Google Cloud y Skool para liberar +$155 USD/mes directos al flujo de caja.']
       },
       {
-        period: 'Agosto — Septiembre 2026',
-        status: 'Estrategia de Blindaje & Embudo Crítico',
-        summary: 'Coinciden las 4 cuotas de créditos formales (Santander Arly, Compartamos, Santander Michel, Alfin Arly) por S/ 6,971 + S/ 2,000 de junta semanal.',
-        learnings: ['Prioridad #1: Reservar S/ 8,971 PEN del flujo mensual para evitar mora en septiembre.', 'Prioridad #2: Cancelar tarjetas de crédito de alto interés (Scotiabank).']
+        period: 'Agosto â€” Septiembre 2026',
+        status: 'Estrategia de Blindaje & Embudo CrÃ­tico',
+        summary: 'Coinciden las 4 cuotas de crÃ©ditos formales (Santander Arly, Compartamos, Santander Michel, Alfin Arly) por S/ 6,971 + S/ 2,000 de junta semanal.',
+        learnings: ['Prioridad #1: Reservar S/ 8,971 PEN del flujo mensual para evitar mora en septiembre.', 'Prioridad #2: Cancelar tarjetas de crÃ©dito de alto interÃ©s (Scotiabank).']
       }
     ];
 
@@ -843,16 +846,16 @@
   }
 
   var NAV_TITLES = {
-    resumen: 'Resumen Stark HUD \u2014 \u00BFC\u00F3mo voy hoy?',
+    resumen: 'Resumen Stark HUD \u2014 Vista completa',
     ventas_combo: 'Ventas \u2014 Combo IA Pack (3 meses)',
-    ingresos_mes: 'Ingresos por Mes — Desglose Evolutivo 2026',
-    deudas: 'Tablero General ESTRATEGIA — Control de Deudas',
-    roadmap: 'Puntos de Mejora Mes a Mes — Evolución',
-    gastos: 'Auditoría de Gastos & Tarjetas (Julio 2026)',
+    ingresos_mes: 'Ingresos por Mes â€” Desglose Evolutivo 2026',
+    deudas: 'Tablero General ESTRATEGIA â€” Control de Deudas',
+    roadmap: 'Puntos de Mejora Mes a Mes â€” EvoluciÃ³n',
+    gastos: 'AuditorÃ­a de Gastos & Tarjetas (Julio 2026)',
     pnl: 'Estado de Resultados (P&L Consolidado)',
-    ahorro: 'Plan Ejecutivo de Optimización & Ahorro',
+    ahorro: 'Plan Ejecutivo de OptimizaciÃ³n & Ahorro',
     productos: 'Ventas por Producto',
-    paises: 'Ventas por Países',
+    paises: 'Ventas por PaÃ­ses',
     canales: 'Ventas por Canales',
     ventas: 'Detalle de Ventas (Tabla)'
   };
@@ -874,13 +877,29 @@
 
     if (target === 'resumen') {
       finMod.style.display = 'block';
-      renderFinancial();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (target === 'ventas_combo') {
+      salesMod.style.display = 'block';
       comboMod.style.display = 'block';
+      incMesMod.style.display = 'block';
+      debtsMod.style.display = 'block';
+      roadMod.style.display = 'block';
+      expMod.style.display = 'block';
+      pnlMod.style.display = 'block';
+      savMod.style.display = 'block';
+      salesTbl.style.display = 'block';
+      renderFinancial();
+      renderComboIA();
+      renderMonthlyIncome();
+      renderDebts();
+      renderRoadmap();
+      renderExpenses();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else     if (target === 'ventas_combo') {
+      comboMod.style.display = 'block';
+      incMesMod.style.display = 'block';
       salesMod.style.display = 'block';
       salesTbl.style.display = 'block';
       renderComboIA();
+      renderMonthlyIncome();
       comboMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (target === 'ingresos_mes') {
       incMesMod.style.display = 'block';
@@ -931,6 +950,7 @@
           state.search = search.value.trim();
           state.page = 0;
           renderAll();
+  switchTab('resumen');
           renderExpenses();
         }, 220);
       });
@@ -981,7 +1001,7 @@
         else { state.sortKey = key; state.sortDir = key === 'fecha' || key === 'usd' || key === 'monto' ? -1 : 1; }
         document.querySelectorAll('thead th .arr').forEach(function (a) { a.textContent = ''; });
         var arr = th.querySelector('.arr');
-        if (arr) arr.textContent = state.sortDir === 1 ? '▲' : '▼';
+        if (arr) arr.textContent = state.sortDir === 1 ? 'â–²' : 'â–¼';
         renderTable(getVisible());
       });
     });
@@ -1017,11 +1037,13 @@
       state.month = selMonth.value === 'all' ? null : parseInt(selMonth.value, 10);
       state.page = 0;
       renderAll();
+  switchTab('resumen');
     });
     selYear.addEventListener('change', function () {
       state.year = selYear.value;
       state.page = 0;
       renderAll();
+  switchTab('resumen');
     });
 
     var resetBtn = document.getElementById('ps-reset');
@@ -1033,6 +1055,7 @@
         selMonth.value = 'all';
         selYear.value = 'all';
         renderAll();
+  switchTab('resumen');
       });
     }
   }
@@ -1183,7 +1206,7 @@
       return 'Salidas del mes: ' + usd(d.salidas) + ' (negocio + personal auditados). Revisa el m\u00F3dulo de Gastos para el desglose completo.';
     }
     if (has('ingreso', 'venta', 'factur')) {
-      return 'Ingresos del mes: ' + usd(d.ingresos) + ' (julio). El mejor mes del trimestre fue ' + (d.mejor ? d.mejor.month : 'â€”') + ' con ' + usd(d.mejor ? d.mejor.revenueUSD : 0) + '.';
+      return 'Ingresos del mes: ' + usd(d.ingresos) + ' (julio). El mejor mes del trimestre fue ' + (d.mejor ? d.mejor.month : 'Ã¢â‚¬â€') + ' con ' + usd(d.mejor ? d.mejor.revenueUSD : 0) + '.';
     }
     if (has('saldo', 'superavit', 'sobra')) return 'Tu saldo del mes es ' + usd(d.saldo) + ' (ingresos menos salidas). Disponible l\u00EDquido: ' + pen(d.disponible) + '.';
     if (has('septiembre', 'alerta', 'critico')) return 'Alerta: septiembre 2026 es cr\u00EDtico. Coinciden las 4 cuotas de cr\u00E9ditos (d\u00EDas 2, 11 y 19) por S/ 6,971 + S/ 2,000 de junta = S/ 8,971 en el mes.';
@@ -1205,8 +1228,8 @@
       var j = d.julio;
       return j ? 'En julio invertiste $' + Math.round(j.adsUSD) + ' USD en publicidad con un ROAS de ' + j.roas.toFixed(2) + 'x y una ganancia de $' + Math.round(j.profitUSD) + ' USD.' : 'Sin datos de pauta.';
     }
-    if (has('hola', 'buenas', 'hey', 'hi')) return 'Â¡Hola! Soy tu agente financiero. Preg\u00FAnTame sobre ingresos, deudas, gastos, fugas o saldo.';
-    if (has('gracias')) return 'Â¡Con gusto! Aqu\u00ED estoy cuando me necesites. \u26A1';
+    if (has('hola', 'buenas', 'hey', 'hi')) return 'Ã‚Â¡Hola! Soy tu agente financiero. Preg\u00FAnTame sobre ingresos, deudas, gastos, fugas o saldo.';
+    if (has('gracias')) return 'Ã‚Â¡Con gusto! Aqu\u00ED estoy cuando me necesites. \u26A1';
     return 'Puedo ayudarte con: ingresos, deudas del mes, deudas pendientes, gastos, fugas, saldo, disponible, ahorro, productos, pa\u00EDses, ROAS o el resumen del mes. Reformula tu pregunta.';
   }
 
@@ -1256,6 +1279,7 @@
   bindTopbar();
   bindTableSort();
   renderAll();
+  switchTab('resumen');
   initReveal();
   lock();
   bindNotifications();
