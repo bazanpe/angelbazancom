@@ -529,15 +529,42 @@
     }
   }
 
-  function renderProducts(visible) {
+    function renderProducts(visible) {
+    var el = document.getElementById('chart-products');
+    if (!el) return;
     var g = groupBy(visible, function (s) { return s.producto; });
     var keys = Object.keys(g).sort(function (a, b) { return g[b].usd - g[a].usd; });
-    var entries = keys.map(function (k) {
-      return { key: k, label: k, value: g[k].usd, count: g[k].count, color: PRODUCT_COLORS[k] || '#00F2FE', active: state.product === k };
+    var total = 0;
+    keys.forEach(function (k) { total += g[k].usd; });
+    if (total === 0) { el.innerHTML = '<div class="empty">Sin datos</div>'; return; }
+    var max = keys.length ? g[keys[0]].usd : 1;
+
+    var html = '<div class="product-grid">';
+    keys.forEach(function (k, i) {
+      var d = g[k];
+      var pct = Math.round((d.usd / total) * 100);
+      var share = Math.round((d.usd / max) * 100);
+      var ticket = d.count ? d.usd / d.count : 0;
+      var active = state.product === k ? ' active' : '';
+      var col = PRODUCT_COLORS[k] || '#D97757';
+      html += '<div class="product-card' + active + '" data-product="' + k + '">' +
+        '<div class="product-card-top"><span class="product-rank">' + (i + 1) + '</span><span class="product-name">' + k + '</span><span class="product-pct">' + pct + '%</span></div>' +
+        '<div class="product-rev">' + fmtUSD(d.usd) + ' USD</div>' +
+        '<div class="product-meta">' + fmtInt(d.count) + ' ventas \u00B7 ticket ' + fmtUSD2(ticket) + '</div>' +
+        '<div class="product-bar"><div class="product-fill" style="width:' + share + '%;background:linear-gradient(90deg,' + col + ',' + col + '99);"></div></div>' +
+        '<div class="product-hint">' + (active ? 'Clic para quitar filtro' : 'Clic para filtrar') + '</div>' +
+        '</div>';
     });
-    buildDonut(document.getElementById('chart-products'), entries, function (e) {
-      state.product = (state.product === e.key) ? null : e.key;
-      renderAll();
+    html += '</div>';
+    el.innerHTML = html;
+
+    el.querySelectorAll('.product-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var p = card.getAttribute('data-product');
+        state.product = (state.product === p) ? null : p;
+        state.page = 0;
+        renderAll();
+      });
     });
   }
 
@@ -582,7 +609,7 @@
       var tr = document.createElement('tr');
       tr.innerHTML = '<td>' + esc(s.fecha) + '</td>' +
         '<td style="font-family:var(--font-mono);">' + esc(s.hora) + '</td>' +
-        '<td style="font-weight:600; color:#f8fafc;">' + esc(s.contacto) + '</td>' +
+        '<td style="font-weight:600; color:var(--text-title);">' + esc(s.contacto) + '</td>' +
         '<td>' + (FLAGS[s.pais] || '') + ' ' + esc(COUNTRIES[s.pais] || s.pais) + '</td>' +
         '<td><span class="pill">' + esc(s.canal) + '</span></td>' +
         '<td><span class="pill up">' + esc(s.producto) + '</span></td>' +
@@ -696,7 +723,7 @@
 
     tbody.innerHTML = monthsData.map(function (m) {
       return '<tr>' +
-        '<td style="font-weight:700; color:#f8fafc;">' + esc(m.name) + '</td>' +
+        '<td style="font-weight:700; color:var(--text-title);">' + esc(m.name) + '</td>' +
         '<td style="font-family:var(--font-mono); font-weight:800; color:var(--cyan-stark);">$' + m.revenue.toLocaleString('en-US', {minimumFractionDigits:2}) + ' USD</td>' +
         '<td style="font-family:var(--font-mono); color:var(--red-stark);">-$' + m.ads.toLocaleString('en-US', {minimumFractionDigits:2}) + ' USD</td>' +
         '<td style="font-family:var(--font-mono); font-weight:800; color:var(--green-stark);">$' + m.profit.toLocaleString('en-US', {minimumFractionDigits:2}) + ' USD</td>' +
@@ -715,7 +742,7 @@
     if (formalTbody) {
       formalTbody.innerHTML = data.formalCredits.map(function (c) {
         return '<tr>' +
-          '<td style="font-weight:700; color:#f8fafc;">' + esc(c.name) + '</td>' +
+          '<td style="font-weight:700; color:var(--text-title);">' + esc(c.name) + '</td>' +
           '<td style="color:var(--danger); font-family:var(--font-mono); font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + '</td>' +
           '<td>Día ' + c.dueDateDay + ' de cada mes</td>' +
           '<td>' + c.remainingQuota + ' cuotas</td>' +
@@ -729,7 +756,7 @@
     if (informalTbody) {
       informalTbody.innerHTML = data.informalDebts.map(function (d) {
         return '<tr>' +
-          '<td style="font-weight:700; color:#f8fafc;">' + esc(d.creditor) + '</td>' +
+          '<td style="font-weight:700; color:var(--text-title);">' + esc(d.creditor) + '</td>' +
           '<td style="color:var(--danger); font-family:var(--font-mono); font-weight:800;">S/ ' + d.amountPEN.toLocaleString() + '</td>' +
           '<td>' + esc(d.note) + '</td>' +
           '<td><span class="diag-badge optimizar">' + esc(d.priority) + '</span></td>' +
@@ -741,7 +768,7 @@
     if (cardsTbody) {
       cardsTbody.innerHTML = data.creditCards.map(function (card) {
         return '<tr>' +
-          '<td style="font-weight:700; color:#f8fafc;">' + esc(card.card) + '</td>' +
+          '<td style="font-weight:700; color:var(--text-title);">' + esc(card.card) + '</td>' +
           '<td style="font-family:var(--font-mono);">S/ ' + card.balancePEN.toLocaleString() + '</td>' +
           '<td style="font-family:var(--font-mono);">' + (card.balanceUSD ? '$' + card.balanceUSD : '-') + '</td>' +
           '<td>' + (card.guaranteePEN ? 'S/ ' + card.guaranteePEN : '-') + '</td>' +
@@ -754,7 +781,7 @@
     if (weeklyTbody) {
       weeklyTbody.innerHTML = data.weeklyCommitments.map(function (w) {
         return '<tr>' +
-          '<td style="font-weight:700; color:#f8fafc;">' + esc(w.name) + '</td>' +
+          '<td style="font-weight:700; color:var(--text-title);">' + esc(w.name) + '</td>' +
           '<td style="color:var(--warning); font-family:var(--font-mono); font-weight:700;">' + (w.weeklyFeePEN ? 'S/ ' + w.weeklyFeePEN + ' / semana' : '-') + '</td>' +
           '<td>' + (w.remainingQuotas ? 'Faltan ' + w.remainingQuotas + ' cuotas (' + esc(w.range) + ')' : esc(w.status)) + '</td>' +
           '<td><span class="diag-badge ' + (w.remainingQuotas ? 'optimizar' : 'personal') + '">' + esc(w.status) + '</span></td>' +
@@ -1068,6 +1095,154 @@
     }
   }
   // ============================================================
+  // NOTIFICACIONES (sonido) + AGENTE IA
+  // ============================================================
+  var audioCtx = null;
+  function playChime() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      var now = audioCtx.currentTime;
+      var notes = [880, 1174.66, 1567.98];
+      notes.forEach(function (f, i) {
+        var osc = audioCtx.createOscillator();
+        var gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = f;
+        gain.gain.setValueAtTime(0.0001, now + i * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.28, now + i * 0.12 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.12 + 0.4);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + i * 0.12);
+        osc.stop(now + i * 0.12 + 0.45);
+      });
+    } catch (e) {}
+  }
+
+  function showToast(title, msg) {
+    var wrap = document.getElementById('toast-wrap');
+    if (!wrap) return;
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = '<div class="toast-title">' + title + '</div><div class="toast-msg">' + msg + '</div>';
+    wrap.appendChild(t);
+    setTimeout(function () { t.classList.add('out'); }, 4200);
+    setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 4800);
+  }
+
+  function bindNotifications() {
+    var btn = document.getElementById('notify-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      playChime();
+      showToast('Recordatorio', 'Hora de revisar tu flujo y tus compromisos del mes. \uD83D\uDCA1');
+      var dot = document.getElementById('notify-dot');
+      if (dot) { dot.classList.add('ping'); setTimeout(function () { dot.classList.remove('ping'); }, 900); }
+    });
+  }
+
+  function agentData() {
+    var combo = window.COMBO_IA_DATA, debts = window.DEBTS_DATA;
+    var expSum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
+    var julio = null;
+    if (combo && combo.months) combo.months.forEach(function (m) { if (m.month.indexOf('Julio') !== -1) julio = m; });
+    var ingresos = julio ? julio.revenueUSD : 0;
+    var salidas = expSum ? (expSum.totalBusinessUSD + expSum.totalPersonalUSD) : 0;
+    var compromiso = debts ? debts.summary.totalMonthlyCommitmentCurrentPEN : 8971;
+    var deudaMin = debts ? debts.summary.totalDebtEstimatedMinPEN : 165000;
+    var deudaMax = debts ? debts.summary.totalDebtEstimatedMaxPEN : 185000;
+    var disponible = debts ? debts.summary.liquidAssetsPEN : 4000;
+    var ahorro = expSum ? (expSum.potentialMonthlySavingsUSD || 0) : 155;
+    var mejor = null;
+    if (combo && combo.months) {
+      combo.months.forEach(function (m) {
+        if (m.month.indexOf('Agosto') === -1 && (!mejor || m.revenueUSD > mejor.revenueUSD)) mejor = m;
+      });
+    }
+    return { julio: julio, ingresos: ingresos, salidas: salidas, saldo: ingresos - salidas, compromiso: compromiso, deudaMin: deudaMin, deudaMax: deudaMax, disponible: disponible, ahorro: ahorro, mejor: mejor };
+  }
+
+  function agentAnswer(q) {
+    var d = agentData();
+    var t = q.toLowerCase();
+    function has() { for (var i = 0; i < arguments.length; i++) if (t.indexOf(arguments[i]) !== -1) return true; return false; }
+    function pen(n) { return 'S/ ' + Math.round(n).toLocaleString('en-US'); }
+    function usd(n) { return '$' + Math.round(n).toLocaleString('en-US') + ' USD'; }
+
+    if (has('como voy', 'resumen', 'rapido', 'como voy hoy')) {
+      return 'En resumen: ingresos del mes ' + usd(d.ingresos) + ', salidas ' + usd(d.salidas) + ' y un saldo de ' + usd(d.saldo) + '. Tus deudas del mes son ' + pen(d.compromiso) + ' y tienes ' + pen(d.disponible) + ' disponibles.';
+    }
+    if (has('deuda')) {
+      if (has('pendiente', 'total')) return 'Deudas pendientes estimadas: ' + pen(d.deudaMin) + ' \u2013 ' + pen(d.deudaMax) + '. Compromiso mensual actual: ' + pen(d.compromiso) + '.';
+      if (has('mes', 'mensual')) return 'Tus deudas del mes suman ' + pen(d.compromiso) + ': S/ 6,971 en cr\u00E9ditos formales + S/ 2,000 de junta.';
+      return 'Deudas del mes: ' + pen(d.compromiso) + '. Pendientes totales: ' + pen(d.deudaMin) + ' \u2013 ' + pen(d.deudaMax) + '.';
+    }
+    if (has('gasto', 'salida')) {
+      if (has('fuga', 'duplic')) return 'Fugas detectadas: duplicidades en Google One (+$80 USD), 6 cobros de Skool (+$30 USD) y suscripciones de IA (ChatGPT + Claude, +$23.60 USD). Ahorro potencial total: +$' + d.ahorro + ' USD/mes.';
+      return 'Salidas del mes: ' + usd(d.salidas) + ' (negocio + personal auditados). Revisa el m\u00F3dulo de Gastos para el desglose completo.';
+    }
+    if (has('ingreso', 'venta', 'factur')) {
+      return 'Ingresos del mes: ' + usd(d.ingresos) + ' (julio). El mejor mes del trimestre fue ' + (d.mejor ? d.mejor.month : 'â€”') + ' con ' + usd(d.mejor ? d.mejor.revenueUSD : 0) + '.';
+    }
+    if (has('saldo', 'superavit', 'sobra')) return 'Tu saldo del mes es ' + usd(d.saldo) + ' (ingresos menos salidas). Disponible l\u00EDquido: ' + pen(d.disponible) + '.';
+    if (has('septiembre', 'alerta', 'critico')) return 'Alerta: septiembre 2026 es cr\u00EDtico. Coinciden las 4 cuotas de cr\u00E9ditos (d\u00EDas 2, 11 y 19) por S/ 6,971 + S/ 2,000 de junta = S/ 8,971 en el mes.';
+    if (has('disponible', 'activo', 'efectivo')) return 'Activos l\u00EDquidos disponibles: ' + pen(d.disponible) + '.';
+    if (has('ahorro', 'optimiz')) return 'Ahorro potencial detectado: +$' + d.ahorro + ' USD/mes optimizando Google, Skool y suscripciones de IA.';
+    if (has('producto')) {
+      var g = groupBy(getVisible(), function (s) { return s.producto; });
+      var ks = Object.keys(g).sort(function (a, b) { return g[b].usd - g[a].usd; });
+      if (!ks.length) return 'No hay datos de productos para analizar.';
+      return 'Tu mejor producto es ' + ks[0] + ' con ' + usd(g[ks[0]].usd) + ' y ' + g[ks[0]].count + ' ventas.';
+    }
+    if (has('pais', 'mercado')) {
+      var g2 = groupBy(getVisible(), function (s) { return s.pais; });
+      var ks2 = Object.keys(g2).sort(function (a, b) { return g2[b].usd - g2[a].usd; });
+      if (!ks2.length) return 'No hay datos de mercados.';
+      return 'Tu mejor mercado es ' + (COUNTRIES[ks2[0]] || ks2[0]) + ' con ' + usd(g2[ks2[0]].usd) + '.';
+    }
+    if (has('roas', 'ads', 'pauta', 'inversion')) {
+      var j = d.julio;
+      return j ? 'En julio invertiste $' + Math.round(j.adsUSD) + ' USD en publicidad con un ROAS de ' + j.roas.toFixed(2) + 'x y una ganancia de $' + Math.round(j.profitUSD) + ' USD.' : 'Sin datos de pauta.';
+    }
+    if (has('hola', 'buenas', 'hey', 'hi')) return 'Â¡Hola! Soy tu agente financiero. Preg\u00FAnTame sobre ingresos, deudas, gastos, fugas o saldo.';
+    if (has('gracias')) return 'Â¡Con gusto! Aqu\u00ED estoy cuando me necesites. \u26A1';
+    return 'Puedo ayudarte con: ingresos, deudas del mes, deudas pendientes, gastos, fugas, saldo, disponible, ahorro, productos, pa\u00EDses, ROAS o el resumen del mes. Reformula tu pregunta.';
+  }
+
+  function bindAgent() {
+    var fab = document.getElementById('agent-fab');
+    var panel = document.getElementById('agent-panel');
+    var body = document.getElementById('agent-body');
+    var input = document.getElementById('agent-input');
+    var form = document.getElementById('agent-form');
+    var close = document.getElementById('agent-close');
+    if (!fab || !panel) return;
+    fab.addEventListener('click', function () { panel.classList.toggle('open'); });
+    if (close) close.addEventListener('click', function () { panel.classList.remove('open'); });
+    function push(html, who) {
+      var m = document.createElement('div');
+      m.className = 'agent-msg ' + (who || 'bot');
+      m.innerHTML = html;
+      body.appendChild(m);
+      body.scrollTop = body.scrollHeight;
+    }
+    function ask(q) {
+      if (!q) return;
+      push(esc(q), 'user');
+      setTimeout(function () { push(agentAnswer(q)); }, 350);
+    }
+    if (form) form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      ask(input.value.trim());
+      input.value = '';
+    });
+    var chips = document.querySelectorAll('.agent-chip');
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () { ask(chip.getAttribute('data-q')); });
+    });
+  }
+  // ============================================================
   // INIT
   // ============================================================
   function initReveal() {
@@ -1083,4 +1258,6 @@
   renderAll();
   initReveal();
   lock();
+  bindNotifications();
+  bindAgent();
 })();
