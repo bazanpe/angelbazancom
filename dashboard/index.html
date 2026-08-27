@@ -4,34 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>STARK HUD - Panel Ejecutivo, Ventas & Finanzas</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=19">
+  <title>STARK HUD — Resumen Financiero</title>
+  <link rel="stylesheet" href="css/dashboard.css?v=20">
 </head>
-<body class="stark-theme">
+<body>
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
       <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
-      <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
       <symbol id="i-up" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></symbol>
       <symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
       <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></symbol>
       <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
       <symbol id="i-chart" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></symbol>
-      <symbol id="i-box" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
-      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
-      <symbol id="i-signal" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></symbol>
-      <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="13" y2="15"/></symbol>
       <symbol id="i-cash" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
-      <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></symbol>
-      <symbol id="i-trend" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
       <symbol id="i-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
-      <symbol id="i-statement" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></symbol>
-      <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
       <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
-      <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-3.05 11a22.35 22.35 0 0 1-3.95 2z"/></symbol>
-      <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+      <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+      <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
       <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
       <symbol id="i-sync" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.36 6.36L3 16"/><path d="M3 12a9 9 0 0 1 15.36-6.36L21 8"/><polyline points="3 16 3 21 8 21"/><polyline points="21 8 21 3 16 3"/></symbol>
       <symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
@@ -41,28 +34,26 @@
   <div class="app-shell app-blur">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">STARK</div>
+        <div class="brand-mark">S</div>
         <div>
-          <div class="brand-name">STARK HUD v3.0</div>
-          <div class="brand-sub">Control Financiero &amp; Deudas</div>
+          <div class="brand-name">STARK HUD</div>
+          <div class="brand-sub">Control financiero</div>
         </div>
       </div>
 
-      <nav class="sidebar-nav" id="sidebar-nav">
+      <nav class="sidebar-nav">
         <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen</a>
-        <a class="nav-item nav-highlight-gold" data-target="ventas_combo"><span class="nav-icon"><svg class="ico"><use href="#i-rocket"/></svg></span> Ventas</a>
-        <a class="nav-item nav-highlight-red" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
-        <a class="nav-item" data-target="roadmap"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Puntos de Mejora</a>
+        <a class="nav-item" data-target="ingresos"><span class="nav-icon"><svg class="ico"><use href="#i-cash"/></svg></span> Ingresos</a>
         <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
-        <a class="nav-item" data-target="pnl"><span class="nav-icon"><svg class="ico"><use href="#i-statement"/></svg></span> P&amp;L</a>
-        <a class="nav-item" data-target="ahorro"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Ahorro</a>
-        <a class="nav-item" data-target="ventas"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Detalle Ventas</a>
+        <a class="nav-item" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
+        <a class="nav-item" data-target="metas"><span class="nav-icon"><svg class="ico"><use href="#i-target"/></svg></span> Metas</a>
+        <a class="nav-item" data-target="reportes"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Reportes</a>
       </nav>
 
       <div class="sidebar-foot">
         <div class="lock-chip">
-          <span class="dot glowing"></span>
-          <span id="lock-status-text">Sesión activa (2 Horas)</span>
+          <span class="dot"></span>
+          <span id="lock-status-text">Sesión privada activa</span>
         </div>
       </div>
     </aside>
@@ -70,480 +61,149 @@
     <div class="main-area">
       <header class="topbar">
         <div class="topbar-title">
-          <h1 id="topbar-title">Resumen Ejecutivo General</h1>
-          <p id="topbar-period">Stark HUD Financial OS — Control de Entradas, Salidas &amp; Deudas</p>
+          <h1 id="topbar-title">Resumen financiero</h1>
+          <p id="topbar-period">Vista general de tu dinero</p>
         </div>
         <div class="topbar-actions">
-          <div class="search-box">
-            <span class="mag"><svg class="ico"><use href="#i-search"/></svg></span>
-            <input type="text" id="search-input" placeholder="Buscar contacto, deuda, tarjeta, servicio...">
+          <div class="month-picker">
+            <span class="ps-label">Mes</span>
+            <select id="sel-month" aria-label="Mes"></select>
           </div>
-          <button class="icon-btn notify-btn" id="notify-btn" title="Recordatorio"><svg class="ico"><use href="#i-bell"/></svg><span class="notify-dot" id="notify-dot"></span></button>
+          <button class="btn-add" id="add-mov-btn" title="Agregar movimiento">+ Agregar</button>
           <button class="icon-btn" id="sync-btn" title="Sincronizar Google Sheets"><svg class="ico"><use href="#i-sync"/></svg></button>
+          <button class="icon-btn notify-btn" id="notify-btn" title="Recordatorio"><svg class="ico"><use href="#i-bell"/></svg><span class="notify-dot" id="notify-dot"></span></button>
           <button class="icon-btn" id="lock-btn" title="Bloquear panel"><svg class="ico"><use href="#i-lock"/></svg></button>
         </div>
       </header>
 
-      <main class="content" id="content">
+      <main class="content">
 
-        <div class="ticker stark-ticker">
-          <span class="live-tag"><span class="dot"></span> STARK HUD ONLINE</span>
-          <div class="ticker-msg" id="ticker-msg">Sesión activa por 2 horas · Deuda total estimada: S/ 165k - 185k PEN · Compromiso mensual: S/ 8,971</div>
-        </div>
+        <!-- ============ RESUMEN ============ -->
+        <div id="view-resumen" class="view active">
 
-        <section class="kpi-grid" id="kpi-grid">
-          <div class="kpi-card stark-kpi">
-            <div class="kpi-head"><span class="kpi-label">Ingresos del Mes</span><span class="kpi-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
-            <div class="kpi-value cyan-glow" id="kpi-revenue">$0</div>
-            <div class="kpi-delta up" id="kpi-revenue-delta">Julio 2026</div>
-          </div>
-          <div class="kpi-card stark-kpi">
-            <div class="kpi-head"><span class="kpi-label">Deudas del Mes</span><span class="kpi-icon" style="color:var(--danger)"><svg class="ico"><use href="#i-card"/></svg></span></div>
-            <div class="kpi-value red-glow" id="kpi-exp">S/ 0</div>
-            <div class="kpi-delta" id="kpi-exp-delta" style="color:var(--text-count)">Compromiso mensual</div>
-          </div>
-          <div class="kpi-card stark-kpi kpi-saldo">
-            <div class="kpi-head"><span class="kpi-label">Deudas Pendientes</span><span class="kpi-icon saldo-icon"><svg class="ico"><use href="#i-shield"/></svg></span></div>
-            <div class="kpi-value gold-glow" id="kpi-saldo">S/ 0</div>
-            <div class="kpi-delta" id="kpi-saldo-delta" style="color:var(--warning)">Estimado total</div>
-          </div>
-          <div class="kpi-card stark-kpi">
-            <div class="kpi-head"><span class="kpi-label">Disponible (Activos)</span><span class="kpi-icon" style="color:var(--green)"><svg class="ico"><use href="#i-statement"/></svg></span></div>
-            <div class="kpi-value green-glow" id="kpi-net-margin">S/ 0</div>
-            <div class="kpi-delta up" id="kpi-net-margin-delta">Líquido disponible</div>
-          </div>
-        </section>
-
-        <!-- RESUMEN FINANCIERO RÁPIDO (Stark HUD) -->
-        <div id="view-financial-module">
-          <div class="section-row">
-            <h2>Resumen Stark HUD — Vista completa</h2>
-            <span class="pill" style="background:rgba(217,119,87,0.14); color:#D97757">Julio 2026</span>
-          </div>
-          <div class="financial-alert" id="financial-alert" style="display:none;"></div>
-          <div class="financial-alerts" id="financial-alerts"></div>
-          <div class="financial-grid" id="financial-grid"></div>
-        </div>
-
-        <!-- SECCIÓN 1: VISTAS PRINCIPALES DE VENTAS -->
-        <div id="view-sales-module">
-          <section class="charts-grid">
-            <div class="chart-card stark-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Ingresos por d&#237;a (USD)</div>
-                  <div class="chart-sub" id="chart-revenue-sub">D&#237;a a d&#237;a del periodo</div>
-                </div>
-                <span class="legend-item"><span class="legend-dot" style="background:#00F2FE"></span> USD diarios</span>
+          <section class="hero-card">
+            <div class="hero-left">
+              <div class="hero-label">SALDO NETO DEL MES</div>
+              <div class="hero-value" id="hero-saldo">US$ 0</div>
+              <div class="hero-growth up" id="hero-growth">↑ +18.4% vs. mes anterior</div>
+            </div>
+            <div class="hero-meta" id="hero-meta">
+              <svg viewBox="0 0 120 120" width="128" height="128" id="meta-ring" aria-label="Progreso de meta">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+                <circle id="meta-ring-fill" cx="60" cy="60" r="50" fill="none" stroke="#55F58A" stroke-width="10" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="meta-ring-text">
+                <div class="meta-label">META MENSUAL</div>
+                <div class="meta-pct" id="meta-pct">0%</div>
+                <div class="meta-sub" id="meta-sub">US$ 7,600 de la meta alcanzada</div>
               </div>
-              <div class="period-select" id="period-select">
-                <span class="ps-label">Mes</span>
-                <select id="sel-month" aria-label="Mes"></select>
-                <span class="ps-label">A&#241;o</span>
-                <select id="sel-year" aria-label="A&#241;o"></select>
-                <button class="ps-reset" id="ps-reset" title="Limpiar filtro"><svg class="ico"><use href="#i-x"/></svg></button>
-              </div>
-              <div class="chart-body" id="chart-revenue"></div>
             </div>
           </section>
+
+          <section class="mini-cards">
+            <div class="mini-card green">
+              <div class="mini-head"><span class="mini-label">INGRESOS</span><span class="mini-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
+              <div class="mini-value" id="mini-ingresos">US$ 0</div>
+              <div class="mini-sub">Mes de julio 2026</div>
+            </div>
+            <div class="mini-card amber">
+              <div class="mini-head"><span class="mini-label">GASTOS</span><span class="mini-icon"><svg class="ico"><use href="#i-card"/></svg></span></div>
+              <div class="mini-value" id="mini-gastos">US$ 0</div>
+              <div class="mini-sub">Negocio + personal</div>
+            </div>
+            <div class="mini-card red">
+              <div class="mini-head"><span class="mini-label">DEUDAS DEL MES</span><span class="mini-icon"><svg class="ico"><use href="#i-shield"/></svg></span></div>
+              <div class="mini-value" id="mini-deudas">S/ 0</div>
+              <div class="mini-sub">Créditos + junta ≈ $2,392</div>
+            </div>
+          </section>
+
+          <section class="mid-grid">
+            <div class="panel">
+              <div class="panel-head"><h3>Flujo mensual</h3><span class="legend"><span class="lg-dot inc"></span> Ingresos <span class="lg-dot exp"></span> Gastos</span></div>
+              <div class="chart-body" id="chart-flow"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Gastos por categoría</h3><span class="legend-sub">Julio 2026</span></div>
+              <div class="chart-body" id="chart-cat"></div>
+            </div>
+            <div class="panel actions-panel">
+              <div class="panel-head"><h3>Esta semana</h3><span class="legend-sub">Acciones de decisión</span></div>
+              <div class="week-actions" id="week-actions"></div>
+            </div>
+          </section>
+
+          <section class="bottom-grid">
+            <div class="panel table-panel">
+              <div class="panel-head"><h3>Movimientos recientes</h3><span class="legend-sub" id="mov-count"></span></div>
+              <div class="table-scroll" id="mov-table"></div>
+            </div>
+            <div class="panel assets-panel">
+              <div class="assets-label">ACTIVOS DISPONIBLES</div>
+              <div class="assets-value" id="assets-value">S/ 0</div>
+              <div class="assets-sub">Disponible en cuentas</div>
+              <div class="assets-bars" id="assets-bars"></div>
+            </div>
+          </section>
+
         </div>
 
-        <!-- MÓDULO NUEVO 1: VENTAS (COMBO IA PACK - 3 MESES HISTÓRICOS) -->
-        <div id="view-combo-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Ventas — Combo IA Pack (Histórico de Performance de los Últimos 3 Meses)</h2>
-            <span class="pill" style="background:rgba(0,242,254,0.15); color:var(--cyan-stark)">Producto Principal Digital</span>
-          </div>
-
-          <div class="combo-summary-grid" id="combo-summary-grid"></div>
-
-          <div class="chart-card stark-card" style="margin-top: 20px;">
-            <div class="chart-head">
-              <div>
-                <div class="chart-title">Comparativa de Performance Mensual (Mayo — Agosto 2026)</div>
-                <div class="chart-sub">Ventas vs Gasto Ads vs Ganancia Neta</div>
-              </div>
-            </div>
-            <div class="chart-body" id="combo-chart-body"></div>
-          </div>
-        </div>
-
-        <!-- MÓDULO NUEVO DE INGRESOS POR MES -->
-        <div id="view-monthly-income-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Ingresos por Mes — Desglose Evolutivo 2026</h2>
-            <span class="pill" style="background:rgba(0,230,118,0.15); color:var(--green-stark)">Vista Mensual Consolidada</span>
-          </div>
-
-          <div class="chart-card stark-card">
-            <div class="chart-head">
-              <div>
-                <div class="chart-title">Evolución de Ingresos Mensuales 2026</div>
-                <div class="chart-sub">Facturación en USD por Mes</div>
-              </div>
-            </div>
-            <div class="table-scroll" style="margin-top:16px;">
-              <table class="stark-table">
-                <thead>
-                  <tr>
-                    <th>Mes</th>
-                    <th>Ventas Totales (USD)</th>
-                    <th>Inversión Ads (USD)</th>
-                    <th>Utilidad Bruta (USD)</th>
-                    <th>ROAS Consolidado</th>
-                    <th>Estado de Margen</th>
-                  </tr>
-                </thead>
-                <tbody id="monthly-income-tbody"></tbody>
+        <!-- ============ INGRESOS ============ -->
+        <div id="view-ingresos" class="view" style="display:none;">
+          <div class="panel">
+            <div class="panel-head"><h3>Ingresos por mes</h3><span class="legend-sub">Combo IA · últimos 3 meses</span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Mes</th><th>Ingresos</th><th>Gasto pauta</th><th>Ganancia neta</th><th>ROAS</th></tr></thead>
+                <tbody id="ingresos-tbody"></tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- MÓDULO NUEVO 2: DEUDAS Y ESTRATEGIA FINANCIERA (ESTRATEGIA) -->
-        <div id="view-debts-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Tablero General ESTRATEGIA — Control de Deudas &amp; Plan de Pago</h2>
-            <span class="pill" style="background:rgba(255,46,147,0.15); color:var(--danger)">Deuda Estimada: S/ 165,000 – 185,000 PEN</span>
-          </div>
-
-          <div class="debt-alert-banner">
-            <span class="alert-icon">🚨</span>
-            <div>
-              <strong>ALERTA CRÍTICA SEPTIEMBRE 2026:</strong> Es el primer mes donde caen simultáneamente las 4 cuotas fijos de créditos formales (Días 2, 11 y 19) acumulando <strong>S/ 6,971 PEN</strong> + <strong>S/ 2,000 PEN</strong> de junta (Total compromiso mensual: <strong>S/ 8,971 PEN</strong> <span class="usd-mini">(≈ $2,392 USD)</span>).
-            </div>
-          </div>
-
-          <div class="debt-sections-grid">
-            <div class="debt-card">
-              <h3>1. Créditos Formales (Cuotas Fijas Mensuales)</h3>
-              <p class="sub">Compromiso mensual: <strong>S/ 6,971 / mes</strong> <span class="usd-mini">(≈ $1,859 USD)</span> · Saldo total: <strong>S/ 66,169 PEN</strong> <span class="usd-mini">(≈ $17,645 USD)</span></p>
-              <div class="table-scroll">
-                <table class="stark-table">
-                  <thead>
-                    <tr>
-                      <th>Crédito</th>
-                      <th>Cuota Mensual</th>
-                      <th>Vencimiento</th>
-                      <th>Cuotas Restantes</th>
-                      <th>Periodo</th>
-                      <th>Saldo Pendiente</th>
-                    </tr>
-                  </thead>
-                  <tbody id="debt-formal-tbody"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="debt-card">
-              <h3>2. Deudas Informales &amp; Personas (Sin Cuota Fija)</h3>
-              <p class="sub">Subtotal estimado: <strong>S/ 95,000 – 115,000 PEN</strong> <span class="usd-mini">(≈ $25,333 – $30,667 USD)</span></p>
-              <div class="table-scroll">
-                <table class="stark-table">
-                  <thead>
-                    <tr>
-                      <th>Acreedor</th>
-                      <th>Monto Registrado</th>
-                      <th>Observación / Hoja</th>
-                      <th>Prioridad</th>
-                    </tr>
-                  </thead>
-                  <tbody id="debt-informal-tbody"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="debt-card">
-              <h3>3. Tarjetas de Crédito &amp; SBS (Cierre Junio)</h3>
-              <div class="table-scroll">
-                <table class="stark-table">
-                  <thead>
-                    <tr>
-                      <th>Tarjeta / Reporte</th>
-                      <th>Saldo PEN</th>
-                      <th>Saldo USD</th>
-                      <th>Garantía</th>
-                      <th>Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody id="debt-cards-tbody"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="debt-card">
-              <h3>4. Compromisos Semanales &amp; Activos a Favor</h3>
-              <div class="table-scroll">
-                <table class="stark-table">
-                  <thead>
-                    <tr>
-                      <th>Concepto</th>
-                      <th>Monto Semanal / Saldo</th>
-                      <th>Detalle / Plazo</th>
-                      <th>Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody id="debt-weekly-tbody"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <div class="chart-card stark-card" style="margin-top: 20px;">
-            <div class="chart-head">
-              <div>
-                <div class="chart-title">Roadmap de Cascada Financiera (Orden de Pagos Recomendado)</div>
-                <div class="chart-sub">Estrategia para liquidar deudas maximizando el flujo del Combo IA Pack</div>
-              </div>
-            </div>
-            <div class="strategy-steps-grid" id="strategy-steps-grid"></div>
-          </div>
-        </div>
-
-        <!-- MÓDULO NUEVO 3: PUNTOS DE MEJORA MES A MES -->
-        <div id="view-roadmap-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Puntos de Mejora Mes a Mes — Análisis Evolutivo</h2>
-            <span class="pill" style="background:rgba(255,183,3,0.15); color:var(--warning)">Optimización Continua</span>
-          </div>
-
-          <div class="roadmap-timeline" id="roadmap-timeline"></div>
-        </div>
-
-        <!-- SECCIÓN 2: MÓDULO DE GASTOS Y TARJETAS AUDITADAS -->
-        <div id="view-expenses-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Auditor&#237;a de Gastos Punto a Punto — Julio 2026</h2>
-            <span class="pill" id="exp-total-badge">Scotiabank + BCP + Binance</span>
-          </div>
-
-          <div class="exp-summary-grid">
-            <div class="exp-card-mini stark-card">
-              <div class="ec-title">Marketing &amp; Publicidad</div>
-              <div class="ec-val">$1,121.34 USD</div>
-              <div class="ec-sub">S/ 4,205.03 PEN (Mayor gasto del mes)</div>
-            </div>
-            <div class="exp-card-mini stark-card">
-              <div class="ec-title">SaaS, IA &amp; Servidores</div>
-              <div class="ec-val">$492.32 USD</div>
-              <div class="ec-sub">S/ 1,846.20 PEN (Software &amp; Cloud)</div>
-            </div>
-            <div class="exp-card-mini stark-card">
-              <div class="ec-title">Gastos Personales (Estilo Vida)</div>
-              <div class="ec-val">S/ 2,081.21 PEN</div>
-              <div class="ec-sub">$554.99 USD (Delivery, Cine, Viajes)</div>
-            </div>
-            <div class="exp-card-mini stark-card">
-              <div class="ec-title">Ahorro Warda BCP</div>
-              <div class="ec-val" style="color:var(--green)">S/ 4,301.03 PEN</div>
-              <div class="ec-sub">Ahorro e inversi&#243;n en BCP</div>
-            </div>
-          </div>
-
-          <div class="table-card stark-card" style="margin-top: 20px;">
-            <div class="table-toolbar" style="gap: 12px; flex-wrap: wrap;">
-              <span class="h">Desglose de Cargos Auditados</span>
-              <div class="exp-filters">
-                <select id="exp-filter-source" class="exp-select" aria-label="Fuente">
-                  <option value="all">Todas las fuentes</option>
-                  <option value="Scotiabank Visa Oro">Scotiabank Visa Oro</option>
-                  <option value="BCP Ahorros">BCP Ahorros</option>
-                  <option value="Binance Card">Binance Card</option>
-                </select>
-                <select id="exp-filter-type" class="exp-select" aria-label="Tipo">
-                  <option value="all">Negocio &amp; Personal</option>
-                  <option value="Negocio">Solo Negocio</option>
-                  <option value="Personal">Solo Personal</option>
-                </select>
-                <select id="exp-filter-cat" class="exp-select" aria-label="Categoría">
-                  <option value="all">Todas las categorías</option>
-                  <option value="Marketing &amp; Ads">Marketing &amp; Ads</option>
-                  <option value="Inteligencia Artificial">Inteligencia Artificial</option>
-                  <option value="Infraestructura &amp; SaaS">Infraestructura &amp; SaaS</option>
-                  <option value="Educación &amp; Comunidades">Educación &amp; Comunidades</option>
-                  <option value="Servicios Cloud &amp; Email">Servicios Cloud &amp; Email</option>
-                  <option value="Alimentación &amp; Delivery">Alimentación &amp; Delivery</option>
-                  <option value="Entretenimiento &amp; Ocio">Entretenimiento &amp; Ocio</option>
-                  <option value="Compras &amp; Retail">Compras &amp; Retail</option>
-                  <option value="Transporte &amp; Viajes">Transporte &amp; Viajes</option>
-                </select>
-              </div>
-            </div>
+        <!-- ============ GASTOS ============ -->
+        <div id="view-gastos" class="view" style="display:none;">
+          <div class="panel">
+            <div class="panel-head"><h3>Gastos auditados — Julio 2026</h3><span class="legend-sub" id="gastos-total"></span></div>
             <div class="table-scroll">
-              <table class="stark-table">
-                <thead>
-                  <tr>
-                    <th>Fecha</th>
-                    <th>Fuente / Tarjeta</th>
-                    <th>Descripción</th>
-                    <th>Categoría</th>
-                    <th>Tipo</th>
-                    <th>Monto USD</th>
-                    <th>Monto PEN</th>
-                    <th>Diagnóstico</th>
-                  </tr>
-                </thead>
+              <table class="tbl">
+                <thead><tr><th>Fecha</th><th>Fuente</th><th>Descripción</th><th>Categoría</th><th>Tipo</th><th>USD</th><th>PEN</th><th>Estado</th></tr></thead>
                 <tbody id="exp-table-body"></tbody>
               </table>
             </div>
           </div>
         </div>
 
-        <!-- SECCIÓN 3: ESTADO DE RESULTADOS (P&L CONSOLIDADO) -->
-        <div id="view-pnl-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Estado de Resultados (P&amp;L Consolidado) — Julio 2026</h2>
-            <span class="pill" style="background:var(--green-soft); color:var(--green)">Margen Saludable 60.2%</span>
-          </div>
-
-          <div class="pnl-container">
-            <div class="pnl-card stark-card">
-              <div class="pnl-header">
-                <h3>Estado de Pérdidas y Ganancias (P&amp;L)</h3>
-                <span class="pnl-period">Base Mensual Auditada</span>
-              </div>
-              <div class="pnl-list">
-                <div class="pnl-row positive">
-                  <span class="lbl">(+) Ingresos Brutos Comerciales (Ventas)</span>
-                  <span class="val">$4,058.00 USD</span>
-                </div>
-                <div class="pnl-row negative">
-                  <span class="lbl">(-) Marketing &amp; Publicidad (Inversión)</span>
-                  <span class="val">-$1,121.34 USD</span>
-                </div>
-                <div class="pnl-row negative">
-                  <span class="lbl">(-) Herramientas Tech, SaaS &amp; Cloud</span>
-                  <span class="val">-$492.32 USD</span>
-                </div>
-                <div class="pnl-divider"></div>
-                <div class="pnl-row highlight-green">
-                  <span class="lbl">(=) GANANCIA BRUTA OPERATIVA DEL NEGOCIO</span>
-                  <span class="val">$2,444.34 USD (60.2%)</span>
-                </div>
-                <div class="pnl-row negative">
-                  <span class="lbl">(-) Gastos Personales Auditados (Estilo Vida)</span>
-                  <span class="val">-$554.99 USD</span>
-                </div>
-                <div class="pnl-divider"></div>
-                <div class="pnl-row highlight-gold">
-                  <span class="lbl">(=) SUPERÁVIT FINANCIERO DISPONIBLE LIBRE</span>
-                  <span class="val">$1,889.35 USD</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="pnl-insights-card stark-card">
-              <h3>🔍 Diagnóstico del Flujo de Caja</h3>
-              <div class="pnl-insight-item">
-                <div class="pi-title">🚀 Potencia Comercial Alta</div>
-                <p>Tu negocio genera <strong>$4,058 USD</strong> de ingresos con un gasto operativo contenido. La máquina comercial está encendida.</p>
-              </div>
-              <div class="pnl-insight-item">
-                <div class="pi-title">⚠️ Fuga en Servicios Cloud &amp; Storage</div>
-                <p>Estás registrando 4 pagos simultáneos de Google One ($60.51 + $22.42 + $22.41 + S/ 8.44) en un mismo mes. Esta duplicidad drena <strong>+$80 USD/mes</strong> innecesariamente.</p>
-              </div>
-              <div class="pnl-insight-item">
-                <div class="pi-title">💡 Reasignación Estratégica</div>
-                <p>Al aplicar las optimizaciones de SaaS, liberarás <strong>+$155 USD/mes</strong> que puedes reinvertir en el negocio o directamente al ahorro.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECCIÓN 4: PLAN DE AHORRO E INTERACTIVO DE OPTIMIZACIÓN -->
-        <div id="view-savings-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Plan Ejecutivo de Optimización &amp; Ahorro</h2>
-            <span class="pill" style="background:rgba(251,191,36,0.15); color:var(--warning)">Ahorro Estimado: +$155 USD / mes</span>
-          </div>
-
-          <div class="savings-grid">
-            <div class="sav-card stark-card">
-              <div class="sav-head">
-                <span class="sav-badge opt">Prioridad Alta</span>
-                <h3>1. Unificación de Google Cloud &amp; Google One</h3>
-              </div>
-              <p class="sav-desc">Tienes cobros múltiples de Google One ($60.51, $22.42, $22.41) en Scotiabank y BCP. Cancela la duplicidad y consolida en un solo plan familiar o de empresa.</p>
-              <div class="sav-footer">
-                <span class="sav-saving">Ahorro mensual: <strong>+$80.00 USD</strong></span>
-                <span class="sav-annual">($960 USD/año)</span>
-              </div>
-            </div>
-
-            <div class="sav-card stark-card">
-              <div class="sav-head">
-                <span class="sav-badge opt">Prioridad Media</span>
-                <h3>2. Limpieza de Membresías en Skool</h3>
-                <span class="sav-badge status">6 cobros activos</span>
-              </div>
-              <p class="sav-desc">Estás pagando 6 cobros pequeños en Skool ($17, $12, $9, $3, $14, $9). Se recomienda cancelar 3 comunidades inactivas.</p>
-              <div class="sav-footer">
-                <span class="sav-saving">Ahorro mensual: <strong>+$30.00 USD</strong></span>
-                <span class="sav-annual">($360 USD/año)</span>
-              </div>
-            </div>
-
-            <div class="sav-card stark-card">
-              <div class="sav-head">
-                <span class="sav-badge opt">Prioridad Media</span>
-                <h3>3. Ajuste de Suscripciones IA (ChatGPT vs Claude)</h3>
-              </div>
-              <p class="sav-desc">Mantienes ChatGPT Plus ($23.60) y Claude Pro ($23.60). Si utilizas Claude para desarrollo, puedes optimizar el plan de ChatGPT según demanda.</p>
-              <div class="sav-footer">
-                <span class="sav-saving">Ahorro mensual: <strong>+$23.60 USD</strong></span>
-                <span class="sav-annual">($283 USD/año)</span>
-              </div>
-            </div>
-
-            <div class="sav-card stark-card">
-              <div class="sav-head">
-                <span class="sav-badge opt">Estilo de Vida</span>
-                <h3>4. Racionalización de Streaming &amp; Entretenimiento</h3>
-              </div>
-              <p class="sav-desc">Pagos combinados en Apple Billing ($41.05 USD), YouTube Premium ($17.56 USD) y Netflix. Agrupar en planes familiares reduce costos directos.</p>
-              <div class="sav-footer">
-                <span class="sav-saving">Ahorro mensual: <strong>+$22.00 USD</strong></span>
-                <span class="sav-annual">($264 USD/año)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SECCIÓN DE DETALLE DE VENTAS (TABLA ORIGINAL MEJORADA) -->
-        <div id="view-sales-table-module">
-          <div class="section-row" style="margin-top: 36px;">
-            <h2>Detalle de ventas</h2>
-            <span class="pill" id="table-total">0 registros</span>
-          </div>
-
-          <section class="table-card stark-card">
-            <div class="table-toolbar">
-              <span class="h">Transacciones</span>
-              <span class="count" id="table-count"></span>
-              <button class="icon-btn" id="export-btn" title="Exportar CSV" style="margin-left:auto;"><svg class="ico"><use href="#i-download"/></svg></button>
-            </div>
+        <!-- ============ DEUDAS ============ -->
+        <div id="view-deudas" class="view" style="display:none;">
+          <div class="debt-alert-banner" id="debt-banner"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Créditos formales</h3><span class="legend-sub" id="debt-total"></span></div>
             <div class="table-scroll">
-              <table class="stark-table">
-                <thead>
-                  <tr>
-                    <th data-sort="fecha">Fecha <span class="arr"></span></th>
-                    <th data-sort="hora">Hora</th>
-                    <th data-sort="contacto">Contacto</th>
-                    <th data-sort="pa&#237;s">Pa&#237;s</th>
-                    <th data-sort="canal">Canal</th>
-                    <th data-sort="producto">Producto</th>
-                    <th data-sort="monto">Monto</th>
-                    <th data-sort="usd">USD <span class="arr"></span></th>
-                  </tr>
-                </thead>
-                <tbody id="table-body"></tbody>
+              <table class="tbl">
+                <thead><tr><th>Crédito</th><th>Cuota mensual</th><th>Vencimiento</th><th>Cuotas</th><th>Periodo</th><th>Saldo pendiente</th></tr></thead>
+                <tbody id="debt-formal-tbody"></tbody>
               </table>
             </div>
-            <div class="pagination">
-              <span class="info" id="page-info"></span>
-              <div class="btns" id="page-btns"></div>
+          </div>
+        </div>
+
+        <!-- ============ METAS ============ -->
+        <div id="view-metas" class="view" style="display:none;">
+          <div class="meta-cards" id="metas-grid"></div>
+        </div>
+
+        <!-- ============ REPORTES ============ -->
+        <div id="view-reportes" class="view" style="display:none;">
+          <div class="panel">
+            <div class="panel-head"><h3>Reporte mensual consolidado</h3><span class="legend-sub">Evolución del trimestre</span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Mes</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th><th>ROAS</th><th>Estado</th></tr></thead>
+                <tbody id="reportes-tbody"></tbody>
+              </table>
             </div>
-          </section>
+          </div>
         </div>
 
       </main>
@@ -556,7 +216,7 @@
   <!-- CHAT AGENTE IA -->
   <div class="agent-chat" id="agent-chat">
     <button class="agent-fab" id="agent-fab" aria-label="Agente IA">
-      <svg class="ico" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v1h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V7a5 5 0 0 1 5-5z" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="#1F1E1D"/><circle cx="15" cy="12" r="1" fill="#1F1E1D"/></svg>
+      <svg class="ico" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v1h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V7a5 5 0 0 1 5-5z" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="#070A09"/><circle cx="15" cy="12" r="1" fill="#070A09"/></svg>
     </button>
     <div class="agent-panel" id="agent-panel">
       <div class="agent-head">
@@ -566,7 +226,7 @@
       <div class="agent-body" id="agent-body">
         <div class="agent-msg bot">Hola, soy tu agente financiero. Pregúntame cómo vas, cuánto debes, tus gastos, fugas o ingresos. ⚡</div>
       </div>
-      <div class="agent-chips" id="agent-chips">
+      <div class="agent-chips">
         <button class="agent-chip" data-q="¿Cómo voy hoy?">¿Cómo voy hoy?</button>
         <button class="agent-chip" data-q="¿Cuánto debo?">¿Cuánto debo?</button>
         <button class="agent-chip" data-q="¿Gastos del mes?">¿Gastos del mes?</button>
@@ -582,10 +242,10 @@
   <div class="toast-wrap" id="toast-wrap"></div>
 
   <div class="gate" id="gate">
-    <div class="gate-card stark-gate" id="gate-card">
+    <div class="gate-card" id="gate-card">
       <div class="gate-lock"><svg class="ico"><use href="#i-lock"/></svg></div>
       <h2>Panel Stark HUD Protegido</h2>
-      <p class="sub">Ingresa tu código de acceso para desbloquear la sesión por 2 horas.</p>
+      <p class="sub">Ingresa tu código de acceso para desbloquear la sesión.</p>
       <div class="gate-input">
         <input type="password" id="gate-input" placeholder="Código de acceso" autocomplete="off" inputmode="text">
         <button class="eye" id="gate-eye" type="button" aria-label="Mostrar codigo">
@@ -593,16 +253,16 @@
           <svg class="ico eye-off"><use href="#i-eye-off"/></svg>
         </button>
       </div>
-      <button class="gate-btn stark-btn" id="gate-btn" type="button">Desbloquear Stark HUD</button>
+      <button class="gate-btn" id="gate-btn" type="button">Desbloquear Stark HUD</button>
       <div class="gate-error" id="gate-error"></div>
     </div>
   </div>
 
-  <script src="js/data.js?v=19"></script>
-  <script src="js/data2.js?v=19"></script>
-  <script src="js/expenses_data.js?v=19"></script>
-  <script src="js/combo_ia_data.js?v=19"></script>
-  <script src="js/debts_data.js?v=19"></script>
-  <script src="js/dashboard.js?v=19"></script>
+  <script src="js/data.js?v=20"></script>
+  <script src="js/data2.js?v=20"></script>
+  <script src="js/expenses_data.js?v=20"></script>
+  <script src="js/combo_ia_data.js?v=20"></script>
+  <script src="js/debts_data.js?v=20"></script>
+  <script src="js/dashboard.js?v=20"></script>
 </body>
 </html>
