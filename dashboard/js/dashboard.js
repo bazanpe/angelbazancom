@@ -337,17 +337,106 @@
     for (var k in byYm) {
       var y = Math.floor(k / 100), m = (k % 100) - 1;
       spend += byYm[k].usd / roasTargetFor(y, m);
-      leads += byYm[k].count / convTargetFor(y);
+    leads += byYm[k].count / convTargetFor(y);
     }
     return { revenue: revenue, count: count, spend: spend, roas: spend ? revenue / spend : 0, conv: leads ? count / leads : 0 };
   }
 
   // ============================================================
-  // GATE
+  // GATE & SESSION PERSISTENCE (2 HOURS)
   // ============================================================
   var gate = document.getElementById('gate');
   var gateCard = document.getElementById('gate-card');
   var gateInput = document.getElementById('gate-input');
+  var gateBtn = document.getElementById('gate-btn');
+  var gateError = document.getElementById('gate-error');
+  var gateEye = document.getElementById('gate-eye');
+  var appShell = document.querySelector('.app-shell');
+
+  var SESSION_DURATION_MS = 2 * 60 * 60 * 1000; // 2 horas (7,200,000 ms)
+
+  function unlock() {
+    if (appShell) appShell.classList.add('unlocked');
+    if (gate) gate.classList.add('hidden');
+    var lockText = document.getElementById('lock-status-text');
+    if (lockText) lockText.textContent = 'Sesión activa (2 Horas)';
+    try {
+      localStorage.setItem('va_stark_session_ts', Date.now().toString());
+    } catch (e) {}
+  }
+
+  function lock() {
+    var savedTs = null;
+    try {
+      savedTs = localStorage.getItem('va_stark_session_ts');
+    } catch (e) {}
+
+    if (savedTs && (Date.now() - parseInt(savedTs, 10)) < SESSION_DURATION_MS) {
+      unlock();
+      return;
+    }
+
+    if (appShell) appShell.classList.remove('unlocked');
+    if (gate) gate.classList.remove('hidden');
+    if (gateInput) gateInput.value = '';
+    if (gateError) gateError.textContent = '';
+    var lockText = document.getElementById('lock-status-text');
+    if (lockText) lockText.textContent = 'Stark HUD Bloqueado';
+  }
+
+  function forceLock() {
+    try {
+      localStorage.removeItem('va_stark_session_ts');
+    } catch (e) {}
+    if (appShell) appShell.classList.remove('unlocked');
+    if (gate) gate.classList.remove('hidden');
+    if (gateInput) gateInput.value = '';
+    if (gateError) gateError.textContent = '';
+    var lockText = document.getElementById('lock-status-text');
+    if (lockText) lockText.textContent = 'Stark HUD Bloqueado';
+  }
+
+  function tryUnlock() {
+    if (!gateInput) return;
+    var val = gateInput.value.trim();
+    if (!val) {
+      if (gateError) gateError.textContent = 'Ingresa el código de acceso.';
+      return;
+    }
+    if (val === ACCESS_CODE) {
+      if (gateError) gateError.textContent = '';
+      unlock();
+    } else {
+      if (gateError) gateError.textContent = 'Código incorrecto. Inténtalo de nuevo.';
+      if (gateCard) {
+        gateCard.classList.remove('gate-shake');
+        void gateCard.offsetWidth;
+        gateCard.classList.add('gate-shake');
+      }
+    }
+  }
+
+  if (gateBtn) gateBtn.addEventListener('click', tryUnlock);
+  if (gateInput) {
+    gateInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') tryUnlock();
+    });
+  }
+  if (gateEye && gateInput) {
+    gateEye.addEventListener('click', function () {
+      var isPass = gateInput.type === 'password';
+      gateInput.type = isPass ? 'text' : 'password';
+      gateEye.classList.toggle('off', isPass);
+      gateEye.setAttribute('aria-label', isPass ? 'Ocultar codigo' : 'Mostrar codigo');
+    });
+  }
+  var lockBtnEl = document.getElementById('lock-btn');
+  if (lockBtnEl) lockBtnEl.addEventListener('click', forceLock);
+
+  // ============================================================
+  // TOOLTIP
+  // ============================================================
+  var tipEl = document.getElementById('chart-tip');
   function showTip(html, ev) {
     tipEl.innerHTML = html;
     tipEl.classList.add('visible');
@@ -362,12 +451,14 @@
   function bindTips() {
     ['chart-revenue', 'chart-countries'].forEach(function (id) {
       var el = document.getElementById(id);
-      el.addEventListener('mousemove', function (ev) {
-        var t = ev.target;
-        var tip = (t && typeof t.getAttribute === 'function') ? t.getAttribute('data-tip') : null;
-        if (tip) showTip(tip, ev); else hideTip();
-      });
-      el.addEventListener('mouseleave', hideTip);
+      if (el) {
+        el.addEventListener('mousemove', function (ev) {
+          var t = ev.target;
+          var tip = (t && typeof t.getAttribute === 'function') ? t.getAttribute('data-tip') : null;
+          if (tip) showTip(tip, ev); else hideTip();
+        });
+        el.addEventListener('mouseleave', hideTip);
+      }
     });
   }
 
