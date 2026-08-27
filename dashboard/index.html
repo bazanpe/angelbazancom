@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>STARK HUD — Resumen Financiero</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=20">
+  <title>STARK HUD â€” Resumen Financiero</title>
+  <link rel="stylesheet" href="css/dashboard.css?v=21">
 </head>
 <body>
 
@@ -53,7 +53,7 @@
       <div class="sidebar-foot">
         <div class="lock-chip">
           <span class="dot"></span>
-          <span id="lock-status-text">Sesión privada activa</span>
+          <span id="lock-status-text">SesiÃ³n privada activa</span>
         </div>
       </div>
     </aside>
@@ -83,9 +83,9 @@
 
           <section class="hero-card">
             <div class="hero-left">
-              <div class="hero-label">SALDO NETO DEL MES</div>
+              <div class="hero-label">ACTIVOS DISPONIBLES</div>
               <div class="hero-value" id="hero-saldo">US$ 0</div>
-              <div class="hero-growth up" id="hero-growth">↑ +18.4% vs. mes anterior</div>
+              <div class="hero-growth up" id="hero-growth">â†‘ +18.4% vs. mes anterior</div>
             </div>
             <div class="hero-meta" id="hero-meta">
               <svg viewBox="0 0 120 120" width="128" height="128" id="meta-ring" aria-label="Progreso de meta">
@@ -114,7 +114,7 @@
             <div class="mini-card red">
               <div class="mini-head"><span class="mini-label">DEUDAS DEL MES</span><span class="mini-icon"><svg class="ico"><use href="#i-shield"/></svg></span></div>
               <div class="mini-value" id="mini-deudas">S/ 0</div>
-              <div class="mini-sub">Créditos + junta ≈ $2,392</div>
+              <div class="mini-sub">CrÃ©ditos + junta â‰ˆ $2,392</div>
             </div>
           </section>
 
@@ -124,22 +124,22 @@
               <div class="chart-body" id="chart-flow"></div>
             </div>
             <div class="panel">
-              <div class="panel-head"><h3>Gastos por categoría</h3><span class="legend-sub">Julio 2026</span></div>
+              <div class="panel-head"><h3>Gastos por categorÃ­a</h3><span class="legend-sub">Julio 2026</span></div>
               <div class="chart-body" id="chart-cat"></div>
             </div>
             <div class="panel actions-panel">
-              <div class="panel-head"><h3>Esta semana</h3><span class="legend-sub">Acciones de decisión</span></div>
+              <div class="panel-head"><h3>Esta semana</h3><span class="legend-sub">Acciones de decisiÃ³n</span></div>
               <div class="week-actions" id="week-actions"></div>
             </div>
           </section>
 
           <section class="bottom-grid">
             <div class="panel table-panel">
-              <div class="panel-head"><h3>Movimientos recientes</h3><span class="legend-sub" id="mov-count"></span></div>
+              <div class="panel-head"><h3>Movimientos</h3><span class="legend-sub" id="mov-count"></span></div>
               <div class="table-scroll" id="mov-table"></div>
             </div>
             <div class="panel assets-panel">
-              <div class="assets-label">ACTIVOS DISPONIBLES</div>
+              <div class="assets-label">ACTIVOS EN CUENTAS</div>
               <div class="assets-value" id="assets-value">S/ 0</div>
               <div class="assets-sub">Disponible en cuentas</div>
               <div class="assets-bars" id="assets-bars"></div>
@@ -151,7 +151,7 @@
         <!-- ============ INGRESOS ============ -->
         <div id="view-ingresos" class="view" style="display:none;">
           <div class="panel">
-            <div class="panel-head"><h3>Ingresos por mes</h3><span class="legend-sub">Combo IA · últimos 3 meses</span></div>
+            <div class="panel-head"><h3>Ingresos por mes</h3><span class="legend-sub">Combo IA Â· Ãºltimos 3 meses</span></div>
             <div class="table-scroll">
               <table class="tbl">
                 <thead><tr><th>Mes</th><th>Ingresos</th><th>Gasto pauta</th><th>Ganancia neta</th><th>ROAS</th></tr></thead>
@@ -164,10 +164,10 @@
         <!-- ============ GASTOS ============ -->
         <div id="view-gastos" class="view" style="display:none;">
           <div class="panel">
-            <div class="panel-head"><h3>Gastos auditados — Julio 2026</h3><span class="legend-sub" id="gastos-total"></span></div>
+            <div class="panel-head"><h3>Gastos auditados â€” Julio 2026</h3><span class="legend-sub" id="gastos-total"></span></div>
             <div class="table-scroll">
               <table class="tbl">
-                <thead><tr><th>Fecha</th><th>Fuente</th><th>Descripción</th><th>Categoría</th><th>Tipo</th><th>USD</th><th>PEN</th><th>Estado</th></tr></thead>
+                <thead><tr><th>Fecha</th><th>Fuente</th><th>DescripciÃ³n</th><th>CategorÃ­a</th><th>Tipo</th><th>USD</th><th>PEN</th><th>Estado</th></tr></thead>
                 <tbody id="exp-table-body"></tbody>
               </table>
             </div>
@@ -178,10 +178,10 @@
         <div id="view-deudas" class="view" style="display:none;">
           <div class="debt-alert-banner" id="debt-banner"></div>
           <div class="panel">
-            <div class="panel-head"><h3>Créditos formales</h3><span class="legend-sub" id="debt-total"></span></div>
+            <div class="panel-head"><h3>CrÃ©ditos formales</h3><span class="legend-sub" id="debt-total"></span></div>
             <div class="table-scroll">
               <table class="tbl">
-                <thead><tr><th>Crédito</th><th>Cuota mensual</th><th>Vencimiento</th><th>Cuotas</th><th>Periodo</th><th>Saldo pendiente</th></tr></thead>
+                <thead><tr><th>CrÃ©dito</th><th>Cuota mensual</th><th>Vencimiento</th><th>Cuotas</th><th>Periodo</th><th>Saldo pendiente</th></tr></thead>
                 <tbody id="debt-formal-tbody"></tbody>
               </table>
             </div>
@@ -196,7 +196,7 @@
         <!-- ============ REPORTES ============ -->
         <div id="view-reportes" class="view" style="display:none;">
           <div class="panel">
-            <div class="panel-head"><h3>Reporte mensual consolidado</h3><span class="legend-sub">Evolución del trimestre</span></div>
+            <div class="panel-head"><h3>Reporte mensual consolidado</h3><span class="legend-sub">EvoluciÃ³n del trimestre</span></div>
             <div class="table-scroll">
               <table class="tbl">
                 <thead><tr><th>Mes</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th><th>ROAS</th><th>Estado</th></tr></thead>
@@ -220,17 +220,17 @@
     </button>
     <div class="agent-panel" id="agent-panel">
       <div class="agent-head">
-        <span class="agent-title">Agente Stark · IA financiera</span>
-        <button class="agent-close" id="agent-close" aria-label="Cerrar">×</button>
+        <span class="agent-title">Agente Stark Â· IA financiera</span>
+        <button class="agent-close" id="agent-close" aria-label="Cerrar">Ã—</button>
       </div>
       <div class="agent-body" id="agent-body">
-        <div class="agent-msg bot">Hola, soy tu agente financiero. Pregúntame cómo vas, cuánto debes, tus gastos, fugas o ingresos. ⚡</div>
+        <div class="agent-msg bot">Hola, soy tu agente financiero. PregÃºntame cÃ³mo vas, cuÃ¡nto debes, tus gastos, fugas o ingresos. âš¡</div>
       </div>
       <div class="agent-chips">
-        <button class="agent-chip" data-q="¿Cómo voy hoy?">¿Cómo voy hoy?</button>
-        <button class="agent-chip" data-q="¿Cuánto debo?">¿Cuánto debo?</button>
-        <button class="agent-chip" data-q="¿Gastos del mes?">¿Gastos del mes?</button>
-        <button class="agent-chip" data-q="¿Puntos de fuga?">¿Puntos de fuga?</button>
+        <button class="agent-chip" data-q="Â¿CÃ³mo voy hoy?">Â¿CÃ³mo voy hoy?</button>
+        <button class="agent-chip" data-q="Â¿CuÃ¡nto debo?">Â¿CuÃ¡nto debo?</button>
+        <button class="agent-chip" data-q="Â¿Gastos del mes?">Â¿Gastos del mes?</button>
+        <button class="agent-chip" data-q="Â¿Puntos de fuga?">Â¿Puntos de fuga?</button>
       </div>
       <form class="agent-input-row" id="agent-form">
         <input type="text" id="agent-input" placeholder="Escribe tu pregunta..." autocomplete="off">
@@ -245,9 +245,9 @@
     <div class="gate-card" id="gate-card">
       <div class="gate-lock"><svg class="ico"><use href="#i-lock"/></svg></div>
       <h2>Panel Stark HUD Protegido</h2>
-      <p class="sub">Ingresa tu código de acceso para desbloquear la sesión.</p>
+      <p class="sub">Ingresa tu cÃ³digo de acceso para desbloquear la sesiÃ³n.</p>
       <div class="gate-input">
-        <input type="password" id="gate-input" placeholder="Código de acceso" autocomplete="off" inputmode="text">
+        <input type="password" id="gate-input" placeholder="CÃ³digo de acceso" autocomplete="off" inputmode="text">
         <button class="eye" id="gate-eye" type="button" aria-label="Mostrar codigo">
           <svg class="ico eye-on"><use href="#i-eye"/></svg>
           <svg class="ico eye-off"><use href="#i-eye-off"/></svg>
@@ -258,11 +258,11 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=20"></script>
-  <script src="js/data2.js?v=20"></script>
-  <script src="js/expenses_data.js?v=20"></script>
-  <script src="js/combo_ia_data.js?v=20"></script>
-  <script src="js/debts_data.js?v=20"></script>
-  <script src="js/dashboard.js?v=20"></script>
+  <script src="js/data.js?v=21"></script>
+  <script src="js/data2.js?v=21"></script>
+  <script src="js/expenses_data.js?v=21"></script>
+  <script src="js/combo_ia_data.js?v=21"></script>
+  <script src="js/debts_data.js?v=21"></script>
+  <script src="js/dashboard.js?v=21"></script>
 </body>
 </html>

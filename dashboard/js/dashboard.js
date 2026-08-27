@@ -122,9 +122,9 @@
   // RENDER: RESUMEN
   // ============================================================
   function renderHero() {
-    document.getElementById('hero-saldo').textContent = fmtUSD(saldo);
+    document.getElementById('hero-saldo').textContent = fmtPEN(disponible);
     var growth = document.getElementById('hero-growth');
-    growth.innerHTML = '↑ +18.4% vs. mes anterior';
+    growth.innerHTML = 'Disponible en cuentas · Ahorro Warda ' + fmtPEN(warda);
     growth.className = 'hero-growth up';
 
     var pctEl = document.getElementById('meta-pct');
@@ -220,29 +220,58 @@
     }).join('');
   }
 
+  var MOV_BATCH = 30;
+  var movAll = [];
+  var movShown = 0;
+  var movObs = null;
+  function buildMovementsList() {
+    movAll = [];
+    comboMonths.forEach(function (m) {
+      movAll.push({ name: 'Combo IA — Hotmart', cat: 'Ingresos', date: m.month, usd: m.revenueUSD, type: 'inc' });
+    });
+    expItems.forEach(function (it) {
+      movAll.push({ name: it.desc, cat: it.cat, date: it.date, usd: it.usd, type: 'exp' });
+    });
+    movAll.sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  }
   function renderMovements() {
     var el = document.getElementById('mov-table');
     var countEl = document.getElementById('mov-count');
     if (!el) return;
-    var rows = [];
-    comboMonths.forEach(function (m) {
-      rows.push({ name: 'Combo IA — Hotmart', cat: 'Ingresos', date: m.month, usd: m.revenueUSD, type: 'inc' });
-    });
-    expItems.slice().reverse().slice(0, 12).forEach(function (it) {
-      rows.push({ name: it.desc, cat: it.cat, date: it.date, usd: it.usd, type: 'exp', pen: it.pen });
-    });
-    var html = '<table class="tbl"><thead><tr><th>Movimiento</th><th>Categoría</th><th>Fecha</th><th>Monto</th></tr></thead><tbody>';
-    rows.forEach(function (r) {
-      html += '<tr>' +
-        '<td class="cell-title">' + esc(r.name) + '</td>' +
-        '<td>' + esc(r.cat) + '</td>' +
-        '<td>' + esc(r.date) + '</td>' +
-        '<td class="' + (r.type === 'inc' ? 'amt-inc' : 'amt-exp') + '">' + (r.type === 'inc' ? '+' : '−') + fmtUSD(r.usd) + '</td>' +
-        '</tr>';
-    });
-    html += '</tbody></table>';
-    el.innerHTML = html;
-    if (countEl) countEl.textContent = rows.length + ' movimientos';
+    buildMovementsList();
+    movShown = 0;
+    if (movObs) { movObs.disconnect(); movObs = null; }
+    el.innerHTML = '<table class="tbl"><thead><tr><th>Movimiento</th><th>Categoría</th><th>Fecha</th><th>Monto</th></tr></thead>' +
+      '<tbody id="mov-body"></tbody></table>' +
+      '<div class="mov-sentinel" id="mov-sentinel"></div>';
+    if (countEl) countEl.textContent = movAll.length + ' movimientos';
+
+    var body = document.getElementById('mov-body');
+    var root = el;
+    function loadMore() {
+      var next = movAll.slice(movShown, movShown + MOV_BATCH);
+      next.forEach(function (r) {
+        var tr = document.createElement('tr');
+        tr.innerHTML = '<td class="cell-title">' + esc(r.name) + '</td>' +
+          '<td>' + esc(r.cat) + '</td>' +
+          '<td>' + esc(r.date) + '</td>' +
+          '<td class="' + (r.type === 'inc' ? 'amt-inc' : 'amt-exp') + '">' + (r.type === 'inc' ? '+' : '−') + fmtUSD(r.usd) + '</td>';
+        body.appendChild(tr);
+      });
+      movShown += next.length;
+      var sent = document.getElementById('mov-sentinel');
+      if (sent && movShown >= movAll.length) sent.style.display = 'none';
+    }
+    loadMore();
+    if ('IntersectionObserver' in window) {
+      var sentinel = document.getElementById('mov-sentinel');
+      if (sentinel) {
+        movObs = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) loadMore();
+        }, { root: root, rootMargin: '200px' });
+        movObs.observe(sentinel);
+      }
+    }
   }
 
   function renderAssets() {

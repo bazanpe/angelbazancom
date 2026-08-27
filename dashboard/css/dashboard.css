@@ -301,7 +301,7 @@ select:focus { border-color: var(--green); }
 /* ============ BOTTOM GRID ============ */
 .bottom-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; }
 
-.table-scroll { overflow-x: auto; max-height: 380px; }
+.table-scroll { overflow: auto; max-height: 520px; }
 
 .tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
 
@@ -558,3 +558,5 @@ select:focus { border-color: var(--green); }
   .hero-value { font-size: 38px; }
   .mini-cards { gap: 12px; }
 }
+
+.mov-sentinel { height: 8px; }
