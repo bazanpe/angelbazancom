@@ -687,3 +687,68 @@ select:focus { border-color: var(--green); }
 .sw { width: 9px; height: 9px; border-radius: 3px; display: inline-block; margin-right: 6px; }
 .chart-bars { display: flex; flex-direction: column; gap: 12px; }
 @media (max-width: 900px) { .debt-charts { grid-template-columns: 1fr; } }
+
+/* ============ REPORTES — DESGLOSE ============ */
+.reporte-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+.rk-card {
+  background: var(--panel-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rk-label { font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-count); }
+.rk-value { font-size: 20px; font-weight: 900; font-family: var(--font-mono); color: var(--text-title); }
+.rk-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 11px;
+  border-radius: 999px;
+}
+.rk-badge.ok { background: rgba(85, 245, 138, 0.14); color: var(--green); }
+.rk-badge.bad { background: rgba(255, 107, 107, 0.14); color: var(--red); }
+.reportes-detail { display: flex; flex-direction: column; gap: 18px; }
+
+/* ============ METAS — DESGLOSE ============ */
+.metas-detail { display: flex; flex-direction: column; gap: 18px; margin-top: 20px; }
+.meta-hero {
+  background: linear-gradient(135deg, rgba(85, 245, 138, 0.12), rgba(85, 245, 138, 0.04));
+  border: 1px solid rgba(85, 245, 138, 0.25);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.meta-hero-num { font-size: 48px; font-weight: 900; color: var(--green); letter-spacing: -0.03em; }
+.meta-hero-bar { height: 14px; background: var(--panel-3); border-radius: 8px; overflow: hidden; }
+.meta-hero-fill { height: 100%; border-radius: 8px; background: linear-gradient(90deg, var(--green-2), var(--green)); }
+.meta-hero-row { display: flex; justify-content: space-between; gap: 10px; font-size: 15px; color: var(--text); }
+.meta-hero-row span { color: var(--text-count); }
+.meta-hero-row b { font-family: var(--font-mono); font-weight: 800; color: var(--text-title); }
+.meta-columns { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: start; }
+.meta-sum { display: flex; flex-direction: column; gap: 12px; }
+.meta-sum-row { display: flex; justify-content: space-between; gap: 10px; font-size: 14.5px; color: var(--text); border-bottom: 1px dashed var(--border-soft); padding-bottom: 8px; }
+.meta-sum-row b { font-family: var(--font-mono); font-weight: 800; color: var(--text-title); }
+.meta-note {
+  background: rgba(255, 176, 32, 0.08);
+  border-left: 3px solid var(--amber);
+  padding: 11px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  margin-top: 6px;
+}
+@media (max-width: 900px) { .meta-columns { grid-template-columns: 1fr; } }
+
+/* ============ NEGOCIO — DÍA DE PAGO ============ */
+.dia-pago { color: var(--green); font-weight: 700; white-space: nowrap; }

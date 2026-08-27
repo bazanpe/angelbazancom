@@ -497,21 +497,72 @@
 
   function renderMetas() {
     var grid = document.getElementById('metas-grid');
-    if (!grid) return;
-    var falta = Math.max(0, META - saldo);
-    var cards = [
-      { t: 'Meta de saldo neto', v: metaPct + '%', s: fmtUSD(saldo) + ' de ' + fmtUSD(META), p: metaPct },
-      { t: 'Ahorro mensual', v: falta > 0 ? 'Faltan US$ ' + falta.toLocaleString('en-US') : '¡Meta cumplida!', s: 'Estás al ' + metaPct + '%', p: metaPct },
-      { t: 'Ahorro Meta Scotiabank', v: fmtPEN(warda), s: 'En ahorro e inversión', p: 100 }
-    ];
-    grid.innerHTML = cards.map(function (c) {
-      return '<div class="meta-card"><h4>' + c.t + '</h4><div class="mc-value">' + c.v + '</div><div class="mc-sub">' + c.s + '</div><div class="mc-progress"><div class="mc-fill" style="width:' + Math.min(100, c.p) + '%"></div></div></div>';
-    }).join('');
+    var det = document.getElementById('metas-detail');
+    if (grid) {
+      var falta = Math.max(0, META - saldo);
+      var cards = [
+        { t: 'Meta de saldo neto', v: metaPct + '%', s: fmtUSD(saldo) + ' de ' + fmtUSD(META), p: metaPct },
+        { t: 'Ahorro mensual', v: falta > 0 ? 'Faltan US$ ' + falta.toLocaleString('en-US') : '¡Meta cumplida!', s: 'Estás al ' + metaPct + '%', p: metaPct },
+        { t: 'Ahorro Meta Scotiabank', v: fmtPEN(warda), s: 'En ahorro e inversión', p: 100 }
+      ];
+      grid.innerHTML = cards.map(function (c) {
+        return '<div class="meta-card"><h4>' + c.t + '</h4><div class="mc-value">' + c.v + '</div><div class="mc-sub">' + c.s + '</div><div class="mc-progress"><div class="mc-fill" style="width:' + Math.min(100, c.p) + '%"></div></div></div>';
+      }).join('');
+    }
+    if (det) {
+      var falta = Math.max(0, META - saldo);
+      var rows = '';
+      var acum = 0, sumIng = 0, sumGas = 0, sumSal = 0;
+      comboMonths.forEach(function (m) {
+        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+        var s = m.revenueUSD - g;
+        sumIng += m.revenueUSD; sumGas += g; sumSal += s; acum += s;
+        rows += '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
+          '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
+          '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(g) + '</td>' +
+          '<td style="font-family:JetBrains Mono,monospace;font-weight:700;color:' + (s >= 0 ? 'var(--green)' : 'var(--red)') + ';">' + fmtUSD(s) + '</td>' +
+          '<td style="font-family:JetBrains Mono,monospace;">' + fmtUSD(acum) + '</td></tr>';
+      });
+      var ritmo = comboMonths.length ? sumSal / comboMonths.length : 0;
+      var meses = ritmo > 0 ? Math.ceil(falta / ritmo) : 99;
+      var falta6 = Math.round(falta / 6);
+      det.innerHTML = '<div class="meta-hero">' +
+        '<div class="meta-hero-num">' + metaPct + '%</div>' +
+        '<div class="meta-hero-bar"><div class="meta-hero-fill" style="width:' + Math.min(100, metaPct) + '%"></div></div>' +
+        '<div class="meta-hero-row"><span>Saldo neto</span><b>' + fmtUSD(saldo) + '</b></div>' +
+        '<div class="meta-hero-row"><span>Meta</span><b>' + fmtUSD(META) + '</b></div>' +
+        '<div class="meta-hero-row"><span>Faltante</span><b style="color:var(--amber);">' + fmtUSD(falta) + '</b></div>' +
+        '<div class="meta-hero-row"><span>Ritmo promedio</span><b>' + fmtUSD(ritmo) + '/mes</b></div>' +
+        '<div class="meta-hero-row"><span>Proyección a la meta</span><b style="color:var(--green);">' + (meses > 60 ? 'Más de 5 años' : meses + (meses === 1 ? ' mes' : ' meses')) + '</b></div>' +
+        '</div>' +
+        '<div class="meta-columns">' +
+        '<div class="panel"><div class="panel-head"><h3>Desglose mensual del saldo</h3><span class="legend-sub">Ingresos − gastos</span></div>' +
+        '<div class="table-scroll"><table class="tbl tbl-sm"><thead><tr><th>Mes</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th><th>Acumulado</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>' +
+        '<div class="panel"><div class="panel-head"><h3>Resumen del trimestre</h3></div>' +
+        '<div class="meta-sum">' +
+        '<div class="meta-sum-row"><span>Ingresos totales</span><b>' + fmtUSD(sumIng) + '</b></div>' +
+        '<div class="meta-sum-row"><span>Gastos totales</span><b>−' + fmtUSD(sumGas) + '</b></div>' +
+        '<div class="meta-sum-row"><span>Saldo acumulado</span><b style="color:var(--green);">' + fmtUSD(sumSal) + '</b></div>' +
+        '<div class="meta-sum-row"><span>Ahorro Meta Scotiabank</span><b>' + fmtPEN(warda) + '</b></div>' +
+        '<div class="meta-note">💡 Para alcanzar los <b>US$ 7,600</b> en 6 meses necesitas ahorrar <b>US$ ' + falta6.toLocaleString('en-US') + '/mes</b>.</div>' +
+        '</div></div></div>';
+    }
   }
 
   function renderReportes() {
     var tb = document.getElementById('reportes-tbody');
+    var kpi = document.getElementById('reporte-kpis');
+    var detail = document.getElementById('reportes-detail');
     if (!tb) return;
+    var tIng = 0, tGas = 0, tSal = 0, tRoas = 0, best = null, bestC = null, bestCRev = 0;
+    comboMonths.forEach(function (m) {
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+      var s = m.revenueUSD - g;
+      tIng += m.revenueUSD; tGas += g; tSal += s; tRoas += m.roas;
+      if (!best || s > best.s) best = { m: m.month, s: s };
+      (m.countries || []).forEach(function (c) { if (c.revenue > bestCRev) { bestCRev = c.revenue; bestC = c.country; } });
+    });
+    var promRoas = comboMonths.length ? tRoas / comboMonths.length : 0;
     tb.innerHTML = comboMonths.map(function (m) {
       var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
       var s = m.revenueUSD - g;
@@ -521,8 +572,45 @@
         '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(g) + '</td>' +
         '<td style="font-family:JetBrains Mono,monospace;font-weight:700;color:' + (ok ? 'var(--green)' : 'var(--red)') + ';">' + fmtUSD(s) + '</td>' +
         '<td style="font-family:JetBrains Mono,monospace;">' + m.roas.toFixed(2) + 'x</td>' +
-        '<td><span class="usd-mini" style="color:' + (ok ? 'var(--green)' : 'var(--red)') + ';font-weight:700;">' + (ok ? 'Positivo' : 'Revisar') + '</span></td></tr>';
+        '<td><span class="rk-badge ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Positivo' : 'Revisar') + '</span></td></tr>';
     }).join('');
+    if (kpi) {
+      kpi.innerHTML = [
+        ['Ingresos totales', fmtUSD(tIng)],
+        ['Gastos totales', '−' + fmtUSD(tGas)],
+        ['Saldo acumulado', fmtUSD(tSal)],
+        ['ROAS promedio', promRoas.toFixed(2) + 'x'],
+        ['Mejor mes', best ? best.m : '—'],
+        ['Mejor país', bestC || '—']
+      ].map(function (k) {
+        return '<div class="rk-card"><span class="rk-label">' + k[0] + '</span><span class="rk-value">' + k[1] + '</span></div>';
+      }).join('');
+    }
+    if (detail) {
+      detail.innerHTML = comboMonths.map(function (m) {
+        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+        var s = m.revenueUSD - g;
+        var ok = s >= 0;
+        var ctry = (m.countries || []).map(function (c) {
+          return '<tr><td class="cell-title">' + esc(c.country) + '</td>' +
+            '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(c.ads) + '</td>' +
+            '<td class="amt-inc">' + fmtUSD(c.revenue) + '</td>' +
+            '<td style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(c.profit) + '</td></tr>';
+        }).join('');
+        return '<div class="ing-card">' +
+          '<div class="ing-head"><div class="ing-title">' + esc(m.month) + '</div><span class="rk-badge ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Positivo' : 'Revisar') + '</span></div>' +
+          '<div class="ing-metrics">' +
+          '<div class="ing-metric"><span class="ing-label">Ingresos</span><span class="ing-value up">' + fmtUSD(m.revenueUSD) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Gasto pauta</span><span class="ing-value down">−' + fmtUSD(m.adsUSD || 0) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Herramientas</span><span class="ing-value down">−' + fmtUSD(m.toolsUSD || 0) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Retiros</span><span class="ing-value down">−' + fmtUSD(m.withdrawalsUSD || 0) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Saldo</span><span class="ing-value ' + (ok ? 'up' : 'down') + '">' + fmtUSD(s) + '</span></div>' +
+          '</div>' +
+          (m.highlights ? '<div class="ing-highlight">💡 <b>Destacado:</b> ' + esc(m.highlights) + '</div>' : '') +
+          '<table class="tbl tbl-sm"><thead><tr><th>País</th><th>Pauta</th><th>Ingresos</th><th>Ganancia</th></tr></thead><tbody>' + ctry + '</tbody></table>' +
+          '</div>';
+      }).join('');
+    }
   }
 
   // ============================================================
@@ -850,12 +938,15 @@
     var tools = [];
     if (window.BUSINESS_DATA && window.BUSINESS_DATA.tools) tools = tools.concat(window.BUSINESS_DATA.tools);
     loadNegocioExtra().forEach(function (t) { tools.push(t); });
+    tools.forEach(function (t) { t.dia = parseInt(t.fecha, 10); if (isNaN(t.dia)) t.dia = 99; });
+    tools.sort(function (a, b) { return a.dia - b.dia || String(a.name).localeCompare(String(b.name)); });
     var total = 0;
     tb.innerHTML = tools.map(function (t) {
       total += t.usd;
-      return '<tr><td class="cell-title">' + esc(t.name) + '</td><td>' + esc(t.fecha) + '</td><td class="amt-exp">' + fmtUSD2(t.usd) + '</td></tr>';
+      var dia = t.dia <= 31 ? ('0' + t.dia).slice(-2) + ' de cada mes' : esc(t.fecha);
+      return '<tr><td class="cell-title">' + esc(t.name) + '</td><td class="dia-pago">' + dia + '</td><td class="amt-exp">' + fmtUSD2(t.usd) + '</td></tr>';
     }).join('');
-    if (tot) tot.textContent = tools.length + ' herramientas \u00B7 TOTAL: ' + fmtUSD2(total) + ' \u2248 S/ ' + (total * FX).toFixed(2);
+    if (tot) tot.textContent = tools.length + ' herramientas \u00B7 ordenadas por d\u00EDa de pago \u00B7 TOTAL: ' + fmtUSD2(total) + ' \u2248 S/ ' + (total * FX).toFixed(2);
   }
   function bindNegocioForm() {
     var btn = document.getElementById('nf-add');
