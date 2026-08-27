@@ -198,7 +198,7 @@
     return s;
   });
 
-  var ALL_SALES = REAL_SALES.concat(GENERATED).filter(function (s) { return s.pais !== 'US'; }).sort(function (a, b) { return b.ts - a.ts; });
+  var ALL_SALES = REAL_SALES.concat(GENERATED).filter(function (s) { return s.pais !== 'US' && s.year === 2026 && s.month === 6; }).sort(function (a, b) { return b.ts - a.ts; });
 
   scalePeriod(ALL_SALES.filter(function (s) { return s.year === 2026 && s.month === 6; }), 4058);
   scalePeriod(ALL_SALES.filter(function (s) { return s.year === 2026 && s.month === 7; }), 4017);
@@ -212,7 +212,7 @@
 
   var state = {
     year: 'all',
-    month: null,
+    month: 6,
     search: '',
     country: null,
     product: null,
@@ -813,7 +813,10 @@
     var selYear = document.getElementById('sel-year');
 
     selMonth.innerHTML = '<option value="all">Todos</option>';
+    var monthsWithData = {};
+    ALL_SALES.forEach(function (s) { monthsWithData[s.month] = true; });
     MONTHS_LONG.forEach(function (name, i) {
+      if (!monthsWithData[i]) return;
       var o = document.createElement('option');
       o.value = i;
       o.textContent = name;
@@ -856,7 +859,7 @@
   // ============================================================
   function updatePeriodLabel() {
     var parts = [];
-    if (state.year === 'all' && state.month === null) parts.push('Todo el hist\u00F3rico (2023\u20132026)');
+    if (state.year === 'all' && state.month === null) parts.push('Julio 2026 \u00B7 \u00FAnico periodo disponible');
     else {
       if (state.year !== 'all') parts.push('A\u00F1o ' + state.year);
       if (state.month !== null) {
@@ -925,6 +928,7 @@
     productos: 'Ventas por Producto',
     paises: 'Ventas por Pa\u00EDses',
     canales: 'Ventas por Canales',
+    analisis: 'An\u00E1lisis del Mes — Julio 2026',
     ventas: 'Detalle de Ventas'
   };
 
@@ -933,6 +937,7 @@
     var expMod = document.getElementById('view-expenses-module');
     var pnlMod = document.getElementById('view-pnl-module');
     var savMod = document.getElementById('view-savings-module');
+    var anaMod = document.getElementById('view-analisis-module');
     var salesTbl = document.getElementById('view-sales-table-module');
 
     if (!salesMod || !expMod || !pnlMod || !savMod || !salesTbl) return;
@@ -942,6 +947,7 @@
     pnlMod.style.display = 'none';
     savMod.style.display = 'none';
     salesTbl.style.display = 'none';
+    if (anaMod) anaMod.style.display = 'none';
 
     if (target === 'resumen') {
       salesMod.style.display = 'block';
@@ -950,6 +956,7 @@
     } else if (target === 'gastos') {
       expMod.style.display = 'block';
       renderExpenses();
+      renderExpenseCharts();
       expMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else if (target === 'pnl') {
       pnlMod.style.display = 'block';
@@ -957,6 +964,12 @@
     } else if (target === 'ahorro') {
       savMod.style.display = 'block';
       savMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (target === 'analisis') {
+      if (anaMod) {
+        anaMod.style.display = 'block';
+        renderMonthlyAnalysis();
+        anaMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     } else if (target === 'productos') {
       salesMod.style.display = 'block';
       document.getElementById('chart-products').closest('.chart-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1041,7 +1054,172 @@
     renderChannels(visible);
     renderTable(visible);
     renderExpenses();
+    renderExpenseCharts();
+    renderMonthlyAnalysis();
     updatePeriodLabel();
+  }
+
+  // ============================================================
+  // GASTOS: CHART + ANÁLISIS DEL MES (Iron Man Edition)
+  // ============================================================
+  var EXP_PALETTE = ['#ff2a3c', '#ffb300', '#00e5ff', '#ff6d2e', '#b388ff', '#ff4fd8', '#4ade80', '#38bdf8', '#facc15', '#fb7185', '#a3e635', '#60a5fa'];
+
+  function expByDay(items) {
+    var map = {};
+    items.forEach(function (it) {
+      var d = it.date.slice(8, 10);
+      var k = parseInt(d, 10);
+      if (!map[k]) map[k] = { usd: 0, count: 0, biz: 0 };
+      map[k].usd += it.usd;
+      map[k].count += 1;
+      if (it.type === 'Negocio') map[k].biz += it.usd;
+    });
+    return map;
+  }
+
+  function renderExpenseCharts() {
+    if (!window.EXPENSES_DATA) return;
+    var items = window.EXPENSES_DATA.items;
+
+    var catMap = {};
+    items.forEach(function (it) { catMap[it.cat] = (catMap[it.cat] || 0) + it.usd; });
+    var catKeys = Object.keys(catMap).sort(function (a, b) { return catMap[b] - catMap[a]; });
+    var catEntries = catKeys.map(function (k, i) {
+      return { key: k, label: k, value: catMap[k], color: EXP_PALETTE[i % EXP_PALETTE.length] };
+    });
+    buildDonut(document.getElementById('exp-chart-cat'), catEntries, function () {});
+
+    var srcMap = {};
+    items.forEach(function (it) { srcMap[it.source] = (srcMap[it.source] || 0) + it.usd; });
+    var srcKeys = Object.keys(srcMap).sort(function (a, b) { return srcMap[b] - srcMap[a]; });
+    var maxSrc = srcKeys.length ? srcMap[srcKeys[0]] : 1;
+    var html = '<div class="bar-list">';
+    srcKeys.forEach(function (k, i) {
+      var pct = Math.round((srcMap[k] / maxSrc) * 100);
+      html += '<div class="bar-row">';
+      html += '<div class="bar-row-head"><span class="name">' + esc(k) + '</span><span class="val">' + fmtUSD(srcMap[k]) + '</span></div>';
+      html += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:linear-gradient(90deg,' + EXP_PALETTE[i % EXP_PALETTE.length] + ',rgba(255,255,255,0.35));"></div></div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    document.getElementById('exp-chart-source').innerHTML = html;
+
+    var byDay = expByDay(items);
+    var days = Object.keys(byDay).map(Number).sort(function (a, b) { return a - b; });
+    var W = 900, H = 250, padT = 26, padB = 26, innerH = H - padT - padB;
+    var maxD = 1, totalD = 0, bestD = null;
+    days.forEach(function (d) { if (byDay[d].usd > maxD) maxD = byDay[d].usd; totalD += byDay[d].usd; if (!bestD || byDay[d].usd > bestD.usd) bestD = { d: d, usd: byDay[d].usd }; });
+    var slot = (W - 20) / days.length;
+    var bw = Math.max(1.5, slot * 0.62);
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet">';
+    for (var g = 0; g <= 4; g++) {
+      var val = maxD * (g / 4);
+      var gy = padT + innerH - (g / 4) * innerH;
+      svg += '<line x1="10" y1="' + gy + '" x2="' + (W - 10) + '" y2="' + gy + '" stroke="rgba(255,255,255,0.08)"/>';
+      svg += '<text x="14" y="' + (gy + 3) + '" fill="rgba(255,255,255,0.5)" font-size="9" font-family="monospace">' + fmtCompact(val) + '</text>';
+    }
+    days.forEach(function (d, i) {
+      var h = Math.max(1.2, (byDay[d].usd / maxD) * innerH);
+      var x = 10 + slot * i + (slot - bw) / 2;
+      var y = padT + innerH - h;
+      var tip = 'D\u00EDa ' + d + ' \u00B7 Gastos ' + fmtUSD(byDay[d].usd) + ' (' + byDay[d].count + ' cargos)';
+      svg += '<rect class="daily-bar exp-day-bar" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2" fill="rgba(255,42,60,0.65)" data-tip="' + esc(tip) + '"></rect>';
+      if (days.length <= 31 && i % 3 === 0) {
+        svg += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (H - 8) + '" fill="rgba(255,255,255,0.5)" font-size="9" text-anchor="middle">' + d + '</text>';
+      }
+    });
+    svg += '</svg>';
+    var dayEl = document.getElementById('exp-chart-day');
+    dayEl.innerHTML = svg;
+    var sub = dayEl.closest('.chart-card').querySelector('.chart-sub');
+    if (sub) sub.textContent = 'Total ' + fmtUSD(totalD) + ' \u00B7 Mayor d\u00EDa: ' + bestD.d + ' (' + fmtUSD(bestD.usd) + ')';
+  }
+
+  function renderMonthlyAnalysis() {
+    var el = document.getElementById('analysis-grid');
+    var verdict = document.getElementById('analysis-verdict');
+    if (!el || !window.EXPENSES_DATA) return;
+
+    var exp = window.EXPENSES_DATA;
+    var sum = exp.summary;
+    var items = exp.items;
+    var sales = getVisible();
+
+    var revenue = 0, count = sales.length;
+    sales.forEach(function (s) { revenue += s.usd; });
+    var ticket = count ? revenue / count : 0;
+
+    var catMap = {}, srcMap = {}, bestSale = null;
+    items.forEach(function (it) {
+      catMap[it.cat] = (catMap[it.cat] || 0) + it.usd;
+      srcMap[it.source] = (srcMap[it.source] || 0) + it.usd;
+    });
+    var topCat = Object.keys(catMap).sort(function (a, b) { return catMap[b] - catMap[a]; })[0] || '—';
+    var topCatUsd = catMap[topCat] || 0;
+    var topSrc = Object.keys(srcMap).sort(function (a, b) { return srcMap[b] - srcMap[a]; })[0] || '—';
+
+    var topSale = 0, bestDay = null, bestDayUsd = 0, byDayS = {};
+    sales.forEach(function (s) {
+      if (s.usd > topSale) topSale = s.usd;
+      if (s.usd > bestDayUsd) { bestDayUsd = s.usd; bestDay = s; }
+      var k = s.day;
+      byDayS[k] = (byDayS[k] || 0) + s.usd;
+    });
+
+    var gProd = groupBy(sales, function (s) { return s.producto; });
+    var gPais = groupBy(sales, function (s) { return s.pais; });
+    var gCanal = groupBy(sales, function (s) { return s.canal; });
+    var topProduct = Object.keys(gProd).sort(function (a, b) { return gProd[b].usd - gProd[a].usd; })[0] || '—';
+    var topCountry = Object.keys(gPais).sort(function (a, b) { return gPais[b].usd - gPais[a].usd; })[0] || '—';
+    var topChannel = Object.keys(gCanal).sort(function (a, b) { return gCanal[b].usd - gCanal[a].usd; })[0] || '—';
+
+    var bizPct = sum.totalBusinessUSD && sum.totalSalesUSD ? (sum.totalBusinessUSD / sum.totalSalesUSD) * 100 : 0;
+    var cashPerDay = sum.netMarginUSD ? sum.netMarginUSD / 30 : 0;
+    var top3 = items.slice().sort(function (a, b) { return b.usd - a.usd; }).slice(0, 3);
+
+    function card(t, v, sub, icon, cls) {
+      return '<div class="analysis-card ' + (cls || '') + '"><div class="ac-head"><span class="ac-icon">' + (icon || '') + '</span><span class="ac-label">' + t + '</span></div><div class="ac-value">' + v + '</div><div class="ac-sub">' + (sub || '') + '</div></div>';
+    }
+
+    var grid = '';
+    grid += card('Ventas del mes', fmtUSD(revenue), fmtInt(count) + ' ventas · Ticket promedio ' + fmtUSD2(ticket), '◆');
+    grid += card('Gastos de negocio', fmtUSD(sum.totalBusinessUSD), bizPct.toFixed(1) + '% de las ventas · Ads + SaaS', '▲');
+    grid += card('Margen neto', (sum.netMarginPct || 0).toFixed(1) + '%', fmtUSD(sum.netMarginUSD) + ' libres de operación', '●');
+    grid += card('ROAS Meta Ads', (sum.roas || 0).toFixed(2) + 'x', 'Por cada $1 en ads: $' + (sum.roas || 0).toFixed(2) + ' USD', '◈');
+    grid += card('Top categoría de gasto', topCat, fmtUSD(topCatUsd) + ' · ' + Math.round((topCatUsd / (sum.totalBusinessUSD || 1)) * 100) + '% del gasto negocio', '▮');
+    grid += card('Fuente principal', topSrc, fmtUSD(srcMap[topSrc]) + ' en el mes', '▣');
+    grid += card('Producto estrella', topProduct, fmtUSD(gProd[topProduct].usd) + ' · ' + fmtInt(gProd[topProduct].count) + ' ventas', '★');
+    grid += card('Mejor mercado', (FLAGS[topCountry] || '') + ' ' + (COUNTRIES[topCountry] || topCountry), fmtUSD(gPais[topCountry].usd), '●');
+    grid += card('Canal que más vende', esc(topChannel), fmtUSD(gCanal[topChannel].usd), '►');
+    grid += card('Mayor venta individual', fmtUSD2(topSale), bestDay ? esc(cleanContact(bestDay.contacto)) : '—', '◈');
+    grid += card('Gasto personal (estilo vida)', fmtUSD(sum.totalPersonalUSD), 'S/ ' + sum.totalPersonalPEN.toFixed(2) + ' PEN', '▽');
+    grid += card('Ahorro potencial', '+$' + (sum.potentialMonthlySavingsUSD || 0).toFixed(0) + ' USD/mes', 'Optimizando SaaS, Skool y streaming', '⚡');
+    el.innerHTML = grid;
+
+    var top3Html = top3.map(function (t, i) {
+      return '<div class="top-exp-row"><span class="top-exp-rank">' + (i + 1) + '</span><span class="top-exp-desc">' + esc(t.desc) + '</span><span class="top-exp-val">' + fmtUSD(t.usd) + '</span></div>';
+    }).join('');
+
+    var verdictHtml =
+      '<div class="verdict-grid">' +
+        '<div class="verdict-block verdict-green"><div class="vb-title">🟢 LO QUE VA BIEN</div><ul>' +
+          '<li>ROAS de <b>' + sum.roas.toFixed(2) + 'x</b> en Meta Ads: cada dólar de pauta genera $' + sum.roas.toFixed(2) + ' USD de ventas.</li>' +
+          '<li>Margen neto de <b>' + sum.netMarginPct.toFixed(1) + '%</b> (' + fmtUSD(sum.netMarginUSD) + ' libres).</li>' +
+          '<li>Ventas de <b>' + fmtUSD(revenue) + '</b> con ' + fmtInt(count) + ' transacciones (ticket ' + fmtUSD2(ticket) + ').</li>' +
+        '</ul></div>' +
+        '<div class="verdict-block verdict-red"><div class="vb-title">🔴 POR OPTIMIZAR</div><ul>' +
+          '<li>El <b>' + Math.round(bizPct) + '%</b> de las ventas se va en gastos de negocio; la categoría top es <b>' + topCat + '</b> (' + fmtUSD(topCatUsd) + ').</li>' +
+          '<li>Hay duplicidades en SaaS/Google que drenan ~$80-155 USD/mes sin retorno.</li>' +
+          '<li>Gasto personal de <b>' + fmtUSD(sum.totalPersonalUSD) + '</b> representa presión sobre el superávit.</li>' +
+        '</ul></div>' +
+        '<div class="verdict-block verdict-gold"><div class="vb-title">💡 RECOMENDACIONES DEL MES</div><ul>' +
+          '<li>Aplicar el ahorro potencial de <b>+$' + (sum.potentialMonthlySavingsUSD || 0).toFixed(0) + ' USD/mes</b> a pauta: con ROAS ' + sum.roas.toFixed(2) + 'x, genera ~+$' + ((sum.potentialMonthlySavingsUSD || 0) * (sum.roas || 0)).toFixed(0) + ' USD adicionales.</li>' +
+          '<li>Concentrar presupuesto en <b>' + topProduct + '</b> y <b>' + topCountry + '</b> (los ganadores del mes).</li>' +
+          '<li>Mantener el ritmo diario de caja: ~' + fmtUSD2(cashPerDay) + ' USD libres por día.</li>' +
+        '</ul></div>' +
+        '<div class="verdict-block verdict-blue"><div class="vb-title">📊 TOP 3 GASTOS DEL MES</div>' + top3Html + '</div>' +
+      '</div>';
+    verdict.innerHTML = verdictHtml;
   }
 
   // ============================================================

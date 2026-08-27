@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>DASHBOARD - Panel Ejecutivo & Finanzas</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=8">
+  <link rel="stylesheet" href="css/dashboard.css?v=9">
 </head>
 <body>
 
@@ -50,6 +50,7 @@
         <a class="nav-item" data-target="productos"><span class="nav-icon"><svg class="ico"><use href="#i-box"/></svg></span> Productos</a>
         <a class="nav-item" data-target="pa&#237;ses"><span class="nav-icon"><svg class="ico"><use href="#i-globe"/></svg></span> Pa&#237;ses</a>
         <a class="nav-item" data-target="canales"><span class="nav-icon"><svg class="ico"><use href="#i-signal"/></svg></span> Canales</a>
+        <a class="nav-item" data-target="analisis"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Análisis del Mes</a>
         <a class="nav-item" data-target="ventas"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Detalle Ventas</a>
       </nav>
 
@@ -188,6 +189,36 @@
               <div class="ec-title">Ahorro Warda BCP</div>
               <div class="ec-val" style="color:var(--green)">S/ 4,301.03 PEN</div>
               <div class="ec-sub">Ahorro e inversi&#243;n en BCP</div>
+            </div>
+          </div>
+
+          <div class="exp-charts-grid">
+            <div class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <div class="chart-title">Gastos por categoría</div>
+                  <div class="chart-sub">Distribución en USD — Julio 2026</div>
+                </div>
+              </div>
+              <div class="chart-body" id="exp-chart-cat"></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <div class="chart-title">Gastos por fuente</div>
+                  <div class="chart-sub">Tarjetas y cuentas</div>
+                </div>
+              </div>
+              <div class="chart-body" id="exp-chart-source"></div>
+            </div>
+            <div class="chart-card" style="grid-column: 1 / -1;">
+              <div class="chart-head">
+                <div>
+                  <div class="chart-title">Gastos por día</div>
+                  <div class="chart-sub">USD diarios de Julio 2026</div>
+                </div>
+              </div>
+              <div class="chart-body" id="exp-chart-day"></div>
             </div>
           </div>
 
@@ -360,6 +391,16 @@
           </div>
         </div>
 
+        <!-- SECCIÓN: ANÁLISIS DEL MES -->
+        <div id="view-analisis-module" style="display:none; margin-top: 24px;">
+          <div class="section-row">
+            <h2>Análisis del Mes — Julio 2026</h2>
+            <span class="pill" style="background:rgba(34,197,94,0.15); color:var(--green)">Diagnóstico Automatizado</span>
+          </div>
+          <div class="analysis-grid" id="analysis-grid"></div>
+          <div class="analysis-verdict" id="analysis-verdict"></div>
+        </div>
+
         <!-- SECCIÓN DE DETALLE DE VENTAS (TABLA ORIGINAL MEJORADA) -->
         <div id="view-sales-table-module">
           <div class="section-row" style="margin-top: 36px;">
@@ -421,10 +462,10 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=8"></script>
-  <script src="js/data2.js?v=8"></script>
-  <script src="js/expenses_data.js?v=8"></script>
-  <script src="js/dashboard.js?v=8"></script>
+  <script src="js/data.js?v=9"></script>
+  <script src="js/data2.js?v=9"></script>
+  <script src="js/expenses_data.js?v=9"></script>
+  <script src="js/dashboard.js?v=9"></script>
 </body>
 </html>
 
