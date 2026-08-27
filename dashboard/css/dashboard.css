@@ -977,3 +977,179 @@ tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--gold); }
 
 .leak-title { font-size: 13px; font-weight: 700; color: var(--text-title); }
 .leak-rec { font-size: 12px; color: var(--text-count); margin-top: 2px; line-height: 1.4; }
+
+/* ============================================================
+   STARK IRONMAN HUD THEME & DEBT / COMBO IA MODULE STYLES
+   ============================================================ */
+:root {
+  --cyan-stark: #00F2FE;
+  --cyan-glow: rgba(0, 242, 254, 0.35);
+  --gold-stark: #FFB703;
+  --gold-glow: rgba(255, 183, 3, 0.35);
+  --red-stark: #FF2E93;
+  --red-glow: rgba(255, 46, 147, 0.35);
+  --green-stark: #00E676;
+  --green-glow: rgba(0, 230, 118, 0.35);
+}
+
+body.stark-theme {
+  background: #040810;
+  color: #c0d1e5;
+}
+
+body.stark-theme::before {
+  background:
+    radial-gradient(800px at 10% 0%, rgba(0, 242, 254, 0.08), transparent 65%),
+    radial-gradient(900px at 90% 10%, rgba(255, 183, 3, 0.08), transparent 65%),
+    radial-gradient(900px at 50% 100%, rgba(255, 46, 147, 0.06), transparent 65%);
+}
+
+.stark-card {
+  background: linear-gradient(145deg, rgba(10, 19, 34, 0.92), rgba(6, 12, 22, 0.95)) !important;
+  border: 1px solid rgba(0, 242, 254, 0.18) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(0, 242, 254, 0.05) !important;
+  position: relative;
+}
+.stark-card:hover {
+  border-color: rgba(0, 242, 254, 0.4) !important;
+  box-shadow: 0 12px 40px rgba(0, 242, 254, 0.15), inset 0 0 12px rgba(0, 242, 254, 0.1) !important;
+}
+
+.stark-kpi {
+  background: linear-gradient(135deg, rgba(12, 24, 43, 0.95), rgba(7, 14, 26, 0.98)) !important;
+  border: 1px solid rgba(0, 242, 254, 0.22) !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4) !important;
+}
+
+.cyan-glow { color: var(--cyan-stark) !important; text-shadow: 0 0 12px var(--cyan-glow); }
+.gold-glow { color: var(--gold-stark) !important; text-shadow: 0 0 12px var(--gold-glow); }
+.red-glow { color: var(--red-stark) !important; text-shadow: 0 0 12px var(--red-glow); }
+.green-glow { color: var(--green-stark) !important; text-shadow: 0 0 12px var(--green-glow); }
+
+.nav-highlight-gold {
+  color: var(--gold-stark) !important;
+  border-left: 3px solid var(--gold-stark) !important;
+}
+.nav-highlight-red {
+  color: var(--red-stark) !important;
+  border-left: 3px solid var(--red-stark) !important;
+}
+
+.dot.glowing {
+  box-shadow: 0 0 10px var(--green-stark);
+  background: var(--green-stark);
+}
+
+.debt-alert-banner {
+  background: linear-gradient(90deg, rgba(255, 46, 147, 0.18), rgba(255, 183, 3, 0.15));
+  border: 1px solid var(--red-stark);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba(255, 46, 147, 0.2);
+}
+.debt-alert-banner .alert-icon { font-size: 1.8rem; }
+.debt-alert-banner div { font-size: 0.95rem; color: #f8fafc; line-height: 1.45; }
+
+.debt-sections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 20px;
+}
+@media (max-width: 950px) {
+  .debt-sections-grid { grid-template-columns: 1fr; }
+}
+
+.debt-card {
+  background: linear-gradient(145deg, rgba(10, 19, 34, 0.95), rgba(6, 12, 22, 0.98));
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.debt-card h3 { font-size: 1.1rem; color: #f8fafc; margin-bottom: 4px; }
+.debt-card .sub { font-size: 0.85rem; color: var(--text-count); margin-bottom: 16px; }
+
+.stark-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.stark-table th {
+  background: rgba(0, 242, 254, 0.08);
+  color: var(--cyan-stark);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+}
+.stark-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(140, 176, 190, 0.1);
+  color: #e2e8f0;
+}
+.stark-table tr:hover td {
+  background: rgba(0, 242, 254, 0.04);
+}
+
+.strategy-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 16px 0;
+}
+.step-card {
+  background: #081220;
+  border: 1px solid rgba(0, 242, 254, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+}
+.step-card h4 { color: var(--gold-stark); font-size: 1rem; margin-bottom: 8px; }
+.step-card p { font-size: 0.85rem; color: var(--text-sub); line-height: 1.45; }
+
+/* Combo IA Summary Grid */
+.combo-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.combo-month-card {
+  background: linear-gradient(145deg, rgba(10, 19, 34, 0.95), rgba(6, 12, 22, 0.98));
+  border: 1px solid rgba(0, 242, 254, 0.25);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.combo-month-card h3 { font-size: 1.2rem; color: var(--cyan-stark); margin-bottom: 12px; }
+.combo-metric { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.9rem; }
+.combo-metric .lbl { color: var(--text-count); }
+.combo-metric .val { font-weight: 700; color: #f8fafc; font-family: var(--font-mono); }
+
+/* Roadmap Timeline */
+.roadmap-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.timeline-item {
+  background: linear-gradient(145deg, rgba(10, 19, 34, 0.95), rgba(6, 12, 22, 0.98));
+  border: 1px solid rgba(255, 183, 3, 0.25);
+  border-left: 4px solid var(--gold-stark);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.timeline-header h3 { font-size: 1.15rem; color: var(--gold-stark); }
+.timeline-badge { font-size: 0.8rem; padding: 4px 10px; border-radius: 999px; background: rgba(255, 183, 3, 0.15); color: var(--gold-stark); font-weight: 700; }
+.timeline-content p { font-size: 0.9rem; color: #e2e8f0; line-height: 1.5; margin-bottom: 10px; }
+.timeline-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.timeline-tag { font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; background: rgba(0, 242, 254, 0.12); color: var(--cyan-stark); }
+

@@ -348,52 +348,6 @@
   var gate = document.getElementById('gate');
   var gateCard = document.getElementById('gate-card');
   var gateInput = document.getElementById('gate-input');
-  var gateBtn = document.getElementById('gate-btn');
-  var gateError = document.getElementById('gate-error');
-  var gateEye = document.getElementById('gate-eye');
-  var appShell = document.querySelector('.app-shell');
-
-  function unlock() {
-    appShell.classList.add('unlocked');
-    gate.classList.add('hidden');
-    document.getElementById('lock-status-text').textContent = 'Sesi\u00F3n privada activa';
-  }
-  function lock() {
-    appShell.classList.remove('unlocked');
-    gate.classList.remove('hidden');
-    gateInput.value = '';
-    gateError.textContent = '';
-    document.getElementById('lock-status-text').textContent = 'Panel bloqueado';
-  }
-
-  function tryUnlock() {
-    var val = gateInput.value.trim();
-    if (!val) { gateError.textContent = 'Ingresa el c\u00F3digo de acceso.'; return; }
-    if (val === ACCESS_CODE) {
-      gateError.textContent = '';
-      unlock();
-    } else {
-      gateError.textContent = 'C\u00F3digo incorrecto. Int\u00E9ntalo de nuevo.';
-      gateCard.classList.remove('gate-shake');
-      void gateCard.offsetWidth;
-      gateCard.classList.add('gate-shake');
-    }
-  }
-
-  gateBtn.addEventListener('click', tryUnlock);
-  gateInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryUnlock(); });
-  gateEye.addEventListener('click', function () {
-    var isPass = gateInput.type === 'password';
-    gateInput.type = isPass ? 'text' : 'password';
-    gateEye.classList.toggle('off', isPass);
-    gateEye.setAttribute('aria-label', isPass ? 'Ocultar codigo' : 'Mostrar codigo');
-  });
-  document.getElementById('lock-btn').addEventListener('click', lock);
-
-  // ============================================================
-  // TOOLTIP
-  // ============================================================
-  var tipEl = document.getElementById('chart-tip');
   function showTip(html, ev) {
     tipEl.innerHTML = html;
     tipEl.classList.add('visible');
@@ -895,81 +849,6 @@
         '<td><span class="pill ' + (item.type === 'Negocio' ? 'up' : '') + '">' + esc(item.type) + '</span></td>' +
         '<td style="font-family:var(--font-mono); font-weight:700; color:var(--text-title);">$' + item.usd.toFixed(2) + ' USD</td>' +
         '<td style="font-family:var(--font-mono);">S/ ' + item.pen.toFixed(2) + '</td>' +
-        '<td><span class="diag-badge ' + badgeClass + '">' + esc(item.status) + '</span></td>';
-      tbody.appendChild(tr);
-    });
-  }
-
-  var NAV_TITLES = {
-    resumen: 'Resumen Ejecutivo General',
-    gastos: 'Auditor\u00EDa de Gastos & Tarjetas (Julio 2026)',
-    pnl: 'Estado de Resultados (P&L Consolidado)',
-    ahorro: 'Plan Ejecutivo de Optimizaci\u00F3n & Ahorro',
-    productos: 'Ventas por Producto',
-    paises: 'Ventas por Pa\u00EDses',
-    canales: 'Ventas por Canales',
-    analisis: 'An\u00E1lisis del Mes — Julio 2026',
-    ventas: 'Detalle de Ventas'
-  };
-
-  function switchTab(target) {
-    var salesMod = document.getElementById('view-sales-module');
-    var expMod = document.getElementById('view-expenses-module');
-    var pnlMod = document.getElementById('view-pnl-module');
-    var savMod = document.getElementById('view-savings-module');
-    var anaMod = document.getElementById('view-analisis-module');
-    var salesTbl = document.getElementById('view-sales-table-module');
-
-    if (!salesMod || !expMod || !pnlMod || !savMod || !salesTbl) return;
-
-    salesMod.style.display = 'none';
-    expMod.style.display = 'none';
-    pnlMod.style.display = 'none';
-    savMod.style.display = 'none';
-    salesTbl.style.display = 'none';
-    if (anaMod) anaMod.style.display = 'none';
-
-    if (target === 'resumen') {
-      salesMod.style.display = 'block';
-      salesTbl.style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (target === 'gastos') {
-      expMod.style.display = 'block';
-      renderExpenses();
-      renderExpenseCharts();
-      expMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (target === 'pnl') {
-      pnlMod.style.display = 'block';
-      pnlMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (target === 'ahorro') {
-      savMod.style.display = 'block';
-      savMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (target === 'analisis') {
-      if (anaMod) {
-        anaMod.style.display = 'block';
-        renderMonthlyAnalysis();
-        anaMod.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    } else if (target === 'productos') {
-      salesMod.style.display = 'block';
-      document.getElementById('chart-products').closest('.chart-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (target === 'paises') {
-      salesMod.style.display = 'block';
-      document.getElementById('chart-countries').closest('.chart-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (target === 'canales') {
-      salesMod.style.display = 'block';
-      document.getElementById('chart-channels').closest('.chart-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (target === 'ventas') {
-      salesMod.style.display = 'block';
-      salesTbl.style.display = 'block';
-      document.querySelector('.table-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  function bindTopbar() {
-    var search = document.getElementById('search-input');
-    var debounce;
-    search.addEventListener('input', function () {
       clearTimeout(debounce);
       debounce = setTimeout(function () {
         state.search = search.value.trim();

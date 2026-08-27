@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>DASHBOARD - Panel Ejecutivo & Finanzas</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=10">
+  <title>STARK HUD - Panel Ejecutivo, Deudas & Finanzas</title>
+  <link rel="stylesheet" href="css/dashboard.css?v=12">
 </head>
-<body>
+<body class="stark-theme">
 
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
@@ -29,35 +29,39 @@
       <symbol id="i-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
       <symbol id="i-statement" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></symbol>
       <symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+      <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-3.05 11a22.35 22.35 0 0 1-3.95 2z"/></symbol>
     </defs>
   </svg>
 
   <div class="app-shell app-blur">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">VA</div>
+        <div class="brand-mark">STARK</div>
         <div>
-          <div class="brand-name">FINANZAS &amp; VENTAS</div>
-          <div class="brand-sub">Panel Ejecutivo</div>
+          <div class="brand-name">STARK HUD v3.0</div>
+          <div class="brand-sub">Control Financiero &amp; Deudas</div>
         </div>
       </div>
 
       <nav class="sidebar-nav" id="sidebar-nav">
-        <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen General</a>
-        <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos &amp; Tarjetas</a>
-        <a class="nav-item" data-target="pnl"><span class="nav-icon"><svg class="ico"><use href="#i-statement"/></svg></span> Estado P&amp;L</a>
+        <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen Stark HUD</a>
+        <a class="nav-item nav-highlight-gold" data-target="comboia"><span class="nav-icon"><svg class="ico"><use href="#i-rocket"/></svg></span> Combo IA Pack (3 Meses)</a>
+        <a class="nav-item nav-highlight-red" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Estrategia &amp; Deudas Totales</a>
+        <a class="nav-item" data-target="roadmap"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Puntos de Mejora Mes a Mes</a>
+        <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos Auditados &amp; Tarjetas</a>
+        <a class="nav-item" data-target="pnl"><span class="nav-icon"><svg class="ico"><use href="#i-statement"/></svg></span> Estado P&amp;L Consolidado</a>
         <a class="nav-item" data-target="ahorro"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Plan de Ahorro</a>
         <a class="nav-item" data-target="productos"><span class="nav-icon"><svg class="ico"><use href="#i-box"/></svg></span> Productos</a>
         <a class="nav-item" data-target="pa&#237;ses"><span class="nav-icon"><svg class="ico"><use href="#i-globe"/></svg></span> Pa&#237;ses</a>
         <a class="nav-item" data-target="canales"><span class="nav-icon"><svg class="ico"><use href="#i-signal"/></svg></span> Canales</a>
-        <a class="nav-item" data-target="analisis"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Análisis del Mes</a>
         <a class="nav-item" data-target="ventas"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Detalle Ventas</a>
       </nav>
 
       <div class="sidebar-foot">
         <div class="lock-chip">
-          <span class="dot"></span>
-          <span id="lock-status-text">Sesi&#243;n ejecutiva activa</span>
+          <span class="dot glowing"></span>
+          <span id="lock-status-text">Sesión activa (2 Horas)</span>
         </div>
       </div>
     </aside>
@@ -66,12 +70,12 @@
       <header class="topbar">
         <div class="topbar-title">
           <h1 id="topbar-title">Resumen Ejecutivo General</h1>
-          <p id="topbar-period">Ventas, Gastos Auditados &amp; Flujo Financiero — Julio 2026</p>
+          <p id="topbar-period">Stark HUD Financial OS — Control de Entradas, Salidas &amp; Deudas</p>
         </div>
         <div class="topbar-actions">
           <div class="search-box">
             <span class="mag"><svg class="ico"><use href="#i-search"/></svg></span>
-            <input type="text" id="search-input" placeholder="Buscar contacto, servicio, tarjeta...">
+            <input type="text" id="search-input" placeholder="Buscar contacto, deuda, tarjeta, servicio...">
           </div>
           <button class="icon-btn" id="lock-btn" title="Bloquear panel"><svg class="ico"><use href="#i-lock"/></svg></button>
         </div>
@@ -79,44 +83,44 @@
 
       <main class="content" id="content">
 
-        <div class="ticker">
-          <span class="live-tag"><span class="dot"></span> AUDITOR&#205;A FINANCIERA &amp; SALUD OPERATIVA</span>
-          <div class="ticker-msg" id="ticker-msg">Cargando datos financieros de Julio 2026...</div>
+        <div class="ticker stark-ticker">
+          <span class="live-tag"><span class="dot"></span> STARK HUD ONLINE</span>
+          <div class="ticker-msg" id="ticker-msg">Sesión activa por 2 horas · Deuda total estimada: S/ 165k - 185k PEN · Compromiso mensual: S/ 8,971</div>
         </div>
 
         <section class="kpi-grid" id="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-head"><span class="kpi-label">Ingresos Totales (Entradas)</span><span class="kpi-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
-            <div class="kpi-value" id="kpi-revenue">$0</div>
-            <div class="kpi-delta up" id="kpi-revenue-delta">Julio 2026</div>
+          <div class="kpi-card stark-kpi">
+            <div class="kpi-head"><span class="kpi-label">Ventas Combo IA (Junio)</span><span class="kpi-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
+            <div class="kpi-value cyan-glow" id="kpi-revenue">$15,076.22</div>
+            <div class="kpi-delta up" id="kpi-revenue-delta">Pico Histórico de Ventas</div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-head"><span class="kpi-label">Gastos Totales (Salidas)</span><span class="kpi-icon" style="color:var(--danger)"><svg class="ico"><use href="#i-card"/></svg></span></div>
-            <div class="kpi-value" id="kpi-exp" style="color:#ff6b81">$0</div>
-            <div class="kpi-delta" style="color:var(--text-count)">Negocio + Personal del mes</div>
+          <div class="kpi-card stark-kpi">
+            <div class="kpi-head"><span class="kpi-label">Compromiso Mensual Fijo</span><span class="kpi-icon" style="color:var(--danger)"><svg class="ico"><use href="#i-card"/></svg></span></div>
+            <div class="kpi-value red-glow" id="kpi-exp">S/ 8,971</div>
+            <div class="kpi-delta" style="color:var(--text-count)">S/ 6,971 Créditos + S/ 2,000 Junta</div>
           </div>
-          <div class="kpi-card kpi-saldo">
-            <div class="kpi-head"><span class="kpi-label">Saldo del Mes (Superávit)</span><span class="kpi-icon saldo-icon"><svg class="ico"><use href="#i-trend"/></svg></span></div>
-            <div class="kpi-value kpi-value-saldo" id="kpi-saldo">$0</div>
-            <div class="kpi-delta up" id="kpi-saldo-delta">Entradas − Salidas</div>
+          <div class="kpi-card stark-kpi kpi-saldo">
+            <div class="kpi-head"><span class="kpi-label">Deuda Total Estimada</span><span class="kpi-icon saldo-icon"><svg class="ico"><use href="#i-shield"/></svg></span></div>
+            <div class="kpi-value gold-glow" id="kpi-saldo">S/ 165k - 185k</div>
+            <div class="kpi-delta" style="color:var(--warning)">Formales (66k) + Sandra/Eva (95k)</div>
           </div>
-          <div class="kpi-card">
-            <div class="kpi-head"><span class="kpi-label">Margen Neto Negocio</span><span class="kpi-icon" style="color:var(--green)"><svg class="ico"><use href="#i-statement"/></svg></span></div>
-            <div class="kpi-value" id="kpi-net-margin" style="color:var(--green)">0%</div>
-            <div class="kpi-delta up" id="kpi-net-margin-delta">Libres de operación</div>
+          <div class="kpi-card stark-kpi">
+            <div class="kpi-head"><span class="kpi-label">Margen Neto Promedio</span><span class="kpi-icon" style="color:var(--green)"><svg class="ico"><use href="#i-statement"/></svg></span></div>
+            <div class="kpi-value green-glow" id="kpi-net-margin">60.2%</div>
+            <div class="kpi-delta up" id="kpi-net-margin-delta">Libres para amortización</div>
           </div>
         </section>
 
         <!-- SECCIÓN 1: VISTAS PRINCIPALES DE VENTAS -->
         <div id="view-sales-module">
           <section class="charts-grid">
-            <div class="chart-card">
+            <div class="chart-card stark-card">
               <div class="chart-head">
                 <div>
                   <div class="chart-title">Ingresos por d&#237;a (USD)</div>
                   <div class="chart-sub" id="chart-revenue-sub">D&#237;a a d&#237;a del periodo</div>
                 </div>
-                <span class="legend-item"><span class="legend-dot" style="background:#22C55E"></span> USD diarios</span>
+                <span class="legend-item"><span class="legend-dot" style="background:#00F2FE"></span> USD diarios</span>
               </div>
               <div class="period-select" id="period-select">
                 <span class="ps-label">Mes</span>
@@ -128,7 +132,7 @@
               <div class="chart-body" id="chart-revenue"></div>
             </div>
 
-            <div class="chart-card">
+            <div class="chart-card stark-card">
               <div class="chart-head">
                 <div>
                   <div class="chart-title">Ingresos por producto</div>
@@ -140,7 +144,7 @@
           </section>
 
           <section class="charts-grid">
-            <div class="chart-card">
+            <div class="chart-card stark-card">
               <div class="chart-head">
                 <div>
                   <div class="chart-title">Ventas por pa&#237;s</div>
@@ -150,7 +154,7 @@
               <div class="chart-body" id="chart-countries"></div>
             </div>
 
-            <div class="chart-card">
+            <div class="chart-card stark-card">
               <div class="chart-head">
                 <div>
                   <div class="chart-title">Ventas por canal</div>
@@ -162,6 +166,136 @@
           </section>
         </div>
 
+        <!-- MÓDULO NUEVO 1: COMBO IA PACK (3 MESES HISTÓRICOS) -->
+        <div id="view-combo-module" style="display:none; margin-top: 24px;">
+          <div class="section-row">
+            <h2>Combo IA Pack — Histórico de Performance (Últimos 3 Meses)</h2>
+            <span class="pill" style="background:rgba(0,242,254,0.15); color:var(--cyan-stark)">Producto Principal Digital</span>
+          </div>
+
+          <div class="combo-summary-grid" id="combo-summary-grid"></div>
+
+          <div class="chart-card stark-card" style="margin-top: 20px;">
+            <div class="chart-head">
+              <div>
+                <div class="chart-title">Comparativa de Performance Mensual (Mayo — Agosto 2026)</div>
+                <div class="chart-sub">Ventas vs Gasto Ads vs Ganancia Neta</div>
+              </div>
+            </div>
+            <div class="chart-body" id="combo-chart-body"></div>
+          </div>
+        </div>
+
+        <!-- MÓDULO NUEVO 2: DEUDAS Y ESTRATEGIA FINANCIERA (ESTRATEGIA) -->
+        <div id="view-debts-module" style="display:none; margin-top: 24px;">
+          <div class="section-row">
+            <h2>Tablero General ESTRATEGIA — Control de Deudas &amp; Plan de Pago</h2>
+            <span class="pill" style="background:rgba(255,46,147,0.15); color:var(--danger)">Deuda Estimada: S/ 165,000 – 185,000 PEN</span>
+          </div>
+
+          <div class="debt-alert-banner">
+            <span class="alert-icon">🚨</span>
+            <div>
+              <strong>ALERTA CRÍTICA SEPTIEMBRE 2026:</strong> Es el primer mes donde caen simultáneamente las 4 cuotas fijos de créditos formales (Días 2, 11 y 19) acumulando <strong>S/ 6,971 PEN</strong> + <strong>S/ 2,000 PEN</strong> de junta (Total compromiso mensual: <strong>S/ 8,971 PEN</strong>).
+            </div>
+          </div>
+
+          <div class="debt-sections-grid">
+            <div class="debt-card">
+              <h3>1. Créditos Formales (Cuotas Fijas Mensuales)</h3>
+              <p class="sub">Compromiso mensual: <strong>S/ 6,971 / mes</strong> · Saldo total: <strong>S/ 66,169 PEN</strong></p>
+              <div class="table-scroll">
+                <table class="stark-table">
+                  <thead>
+                    <tr>
+                      <th>Crédito</th>
+                      <th>Cuota Mensual</th>
+                      <th>Vencimiento</th>
+                      <th>Cuotas Restantes</th>
+                      <th>Periodo</th>
+                      <th>Saldo Pendiente</th>
+                    </tr>
+                  </thead>
+                  <tbody id="debt-formal-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="debt-card">
+              <h3>2. Deudas Informales &amp; Personas (Sin Cuota Fija)</h3>
+              <p class="sub">Subtotal estimado: <strong>S/ 95,000 – 115,000 PEN</strong></p>
+              <div class="table-scroll">
+                <table class="stark-table">
+                  <thead>
+                    <tr>
+                      <th>Acreedor</th>
+                      <th>Monto Registrado</th>
+                      <th>Observación / Hoja</th>
+                      <th>Prioridad</th>
+                    </tr>
+                  </thead>
+                  <tbody id="debt-informal-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="debt-card">
+              <h3>3. Tarjetas de Crédito &amp; SBS (Cierre Junio)</h3>
+              <div class="table-scroll">
+                <table class="stark-table">
+                  <thead>
+                    <tr>
+                      <th>Tarjeta / Reporte</th>
+                      <th>Saldo PEN</th>
+                      <th>Saldo USD</th>
+                      <th>Garantía</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="debt-cards-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="debt-card">
+              <h3>4. Compromisos Semanales &amp; Activos a Favor</h3>
+              <div class="table-scroll">
+                <table class="stark-table">
+                  <thead>
+                    <tr>
+                      <th>Concepto</th>
+                      <th>Monto Semanal / Saldo</th>
+                      <th>Detalle / Plazo</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody id="debt-weekly-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-card stark-card" style="margin-top: 20px;">
+            <div class="chart-head">
+              <div>
+                <div class="chart-title">Roadmap de Cascada Financiera (Orden de Pagos Recomendado)</div>
+                <div class="chart-sub">Estrategia para liquidar deudas maximizando el flujo del Combo IA Pack</div>
+              </div>
+            </div>
+            <div class="strategy-steps-grid" id="strategy-steps-grid"></div>
+          </div>
+        </div>
+
+        <!-- MÓDULO NUEVO 3: PUNTOS DE MEJORA MES A MES -->
+        <div id="view-roadmap-module" style="display:none; margin-top: 24px;">
+          <div class="section-row">
+            <h2>Puntos de Mejora Mes a Mes — Análisis Evolutivo</h2>
+            <span class="pill" style="background:rgba(255,183,3,0.15); color:var(--warning)">Optimización Continua</span>
+          </div>
+
+          <div class="roadmap-timeline" id="roadmap-timeline"></div>
+        </div>
+
         <!-- SECCIÓN 2: MÓDULO DE GASTOS Y TARJETAS AUDITADAS -->
         <div id="view-expenses-module" style="display:none; margin-top: 24px;">
           <div class="section-row">
@@ -170,80 +304,29 @@
           </div>
 
           <div class="exp-summary-grid">
-            <div class="exp-card-mini">
+            <div class="exp-card-mini stark-card">
               <div class="ec-title">Marketing &amp; Publicidad</div>
               <div class="ec-val">$1,121.34 USD</div>
               <div class="ec-sub">S/ 4,205.03 PEN (Mayor gasto del mes)</div>
             </div>
-            <div class="exp-card-mini">
+            <div class="exp-card-mini stark-card">
               <div class="ec-title">SaaS, IA &amp; Servidores</div>
               <div class="ec-val">$492.32 USD</div>
               <div class="ec-sub">S/ 1,846.20 PEN (Software &amp; Cloud)</div>
             </div>
-            <div class="exp-card-mini">
+            <div class="exp-card-mini stark-card">
               <div class="ec-title">Gastos Personales (Estilo Vida)</div>
               <div class="ec-val">S/ 2,081.21 PEN</div>
               <div class="ec-sub">$554.99 USD (Delivery, Cine, Viajes)</div>
             </div>
-            <div class="exp-card-mini">
+            <div class="exp-card-mini stark-card">
               <div class="ec-title">Ahorro Warda BCP</div>
               <div class="ec-val" style="color:var(--green)">S/ 4,301.03 PEN</div>
               <div class="ec-sub">Ahorro e inversi&#243;n en BCP</div>
             </div>
           </div>
 
-          <div class="exp-charts-grid">
-            <div class="chart-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Gastos por categoría</div>
-                  <div class="chart-sub">Distribución en USD — Julio 2026</div>
-                </div>
-              </div>
-              <div class="chart-body" id="exp-chart-cat"></div>
-            </div>
-            <div class="chart-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Gastos por fuente</div>
-                  <div class="chart-sub">Tarjetas y cuentas</div>
-                </div>
-              </div>
-              <div class="chart-body" id="exp-chart-source"></div>
-            </div>
-            <div class="chart-card" style="grid-column: 1 / -1;">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Gastos por día</div>
-                  <div class="chart-sub">USD diarios de Julio 2026</div>
-                </div>
-              </div>
-              <div class="chart-body" id="exp-chart-day"></div>
-            </div>
-          </div>
-
-          <div class="exp-charts-grid">
-            <div class="chart-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Desglose por categoría</div>
-                  <div class="chart-sub">Cantidad de cargos, USD, PEN y % del total</div>
-                </div>
-              </div>
-              <div class="chart-body" id="exp-breakdown"></div>
-            </div>
-            <div class="chart-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Puntos de fuga detectados</div>
-                  <div class="chart-sub">Duplicidades, suscripciones y cargos recurrentes</div>
-                </div>
-              </div>
-              <div class="chart-body" id="exp-leaks"></div>
-            </div>
-          </div>
-
-          <div class="table-card" style="margin-top: 20px;">
+          <div class="table-card stark-card" style="margin-top: 20px;">
             <div class="table-toolbar" style="gap: 12px; flex-wrap: wrap;">
               <span class="h">Desglose de Cargos Auditados</span>
               <div class="exp-filters">
@@ -273,7 +356,7 @@
               </div>
             </div>
             <div class="table-scroll">
-              <table>
+              <table class="stark-table">
                 <thead>
                   <tr>
                     <th>Fecha</th>
@@ -300,7 +383,7 @@
           </div>
 
           <div class="pnl-container">
-            <div class="pnl-card">
+            <div class="pnl-card stark-card">
               <div class="pnl-header">
                 <h3>Estado de Pérdidas y Ganancias (P&amp;L)</h3>
                 <span class="pnl-period">Base Mensual Auditada</span>
@@ -335,7 +418,7 @@
               </div>
             </div>
 
-            <div class="pnl-insights-card">
+            <div class="pnl-insights-card stark-card">
               <h3>🔍 Diagnóstico del Flujo de Caja</h3>
               <div class="pnl-insight-item">
                 <div class="pi-title">🚀 Potencia Comercial Alta</div>
@@ -361,7 +444,7 @@
           </div>
 
           <div class="savings-grid">
-            <div class="sav-card">
+            <div class="sav-card stark-card">
               <div class="sav-head">
                 <span class="sav-badge opt">Prioridad Alta</span>
                 <h3>1. Unificación de Google Cloud &amp; Google One</h3>
@@ -373,7 +456,7 @@
               </div>
             </div>
 
-            <div class="sav-card">
+            <div class="sav-card stark-card">
               <div class="sav-head">
                 <span class="sav-badge opt">Prioridad Media</span>
                 <h3>2. Limpieza de Membresías en Skool</h3>
@@ -386,7 +469,7 @@
               </div>
             </div>
 
-            <div class="sav-card">
+            <div class="sav-card stark-card">
               <div class="sav-head">
                 <span class="sav-badge opt">Prioridad Media</span>
                 <h3>3. Ajuste de Suscripciones IA (ChatGPT vs Claude)</h3>
@@ -398,7 +481,7 @@
               </div>
             </div>
 
-            <div class="sav-card">
+            <div class="sav-card stark-card">
               <div class="sav-head">
                 <span class="sav-badge opt">Estilo de Vida</span>
                 <h3>4. Racionalización de Streaming &amp; Entretenimiento</h3>
@@ -412,16 +495,6 @@
           </div>
         </div>
 
-        <!-- SECCIÓN: ANÁLISIS DEL MES -->
-        <div id="view-analisis-module" style="display:none; margin-top: 24px;">
-          <div class="section-row">
-            <h2>Análisis del Mes — Julio 2026</h2>
-            <span class="pill" style="background:rgba(34,197,94,0.15); color:var(--green)">Diagnóstico Automatizado</span>
-          </div>
-          <div class="analysis-grid" id="analysis-grid"></div>
-          <div class="analysis-verdict" id="analysis-verdict"></div>
-        </div>
-
         <!-- SECCIÓN DE DETALLE DE VENTAS (TABLA ORIGINAL MEJORADA) -->
         <div id="view-sales-table-module">
           <div class="section-row" style="margin-top: 36px;">
@@ -429,14 +502,14 @@
             <span class="pill" id="table-total">0 registros</span>
           </div>
 
-          <section class="table-card">
+          <section class="table-card stark-card">
             <div class="table-toolbar">
               <span class="h">Transacciones</span>
               <span class="count" id="table-count"></span>
               <button class="icon-btn" id="export-btn" title="Exportar CSV" style="margin-left:auto;"><svg class="ico"><use href="#i-download"/></svg></button>
             </div>
             <div class="table-scroll">
-              <table>
+              <table class="stark-table">
                 <thead>
                   <tr>
                     <th data-sort="fecha">Fecha <span class="arr"></span></th>
@@ -467,26 +540,27 @@
   <button class="to-top" id="to-top" aria-label="Volver arriba"><svg class="ico"><use href="#i-up"/></svg></button>
 
   <div class="gate" id="gate">
-    <div class="gate-card" id="gate-card">
+    <div class="gate-card stark-gate" id="gate-card">
       <div class="gate-lock"><svg class="ico"><use href="#i-lock"/></svg></div>
-      <h2>Panel protegido</h2>
-      <p class="sub">Este tablero contiene tu informaci&#243;n ejecutiva y de ventas. Ingresa tu c&#243;digo de acceso para desbloquearlo.</p>
+      <h2>Panel Stark HUD Protegido</h2>
+      <p class="sub">Ingresa tu código de acceso para desbloquear la sesión por 2 horas.</p>
       <div class="gate-input">
-        <input type="password" id="gate-input" placeholder="C&#243;digo de acceso" autocomplete="off" inputmode="text">
+        <input type="password" id="gate-input" placeholder="Código de acceso" autocomplete="off" inputmode="text">
         <button class="eye" id="gate-eye" type="button" aria-label="Mostrar codigo">
           <svg class="ico eye-on"><use href="#i-eye"/></svg>
           <svg class="ico eye-off"><use href="#i-eye-off"/></svg>
         </button>
       </div>
-      <button class="gate-btn" id="gate-btn" type="button">Desbloquear tablero</button>
+      <button class="gate-btn stark-btn" id="gate-btn" type="button">Desbloquear Stark HUD</button>
       <div class="gate-error" id="gate-error"></div>
     </div>
   </div>
 
-  <script src="js/data.js?v=10"></script>
-  <script src="js/data2.js?v=10"></script>
-  <script src="js/expenses_data.js?v=10"></script>
-  <script src="js/dashboard.js?v=10"></script>
+  <script src="js/data.js?v=12"></script>
+  <script src="js/data2.js?v=12"></script>
+  <script src="js/expenses_data.js?v=12"></script>
+  <script src="js/combo_ia_data.js?v=12"></script>
+  <script src="js/debts_data.js?v=12"></script>
+  <script src="js/dashboard.js?v=12"></script>
 </body>
 </html>
-
