@@ -141,7 +141,7 @@
   function renderHero() {
     document.getElementById('hero-saldo').textContent = fmtPEN(disponible);
     var growth = document.getElementById('hero-growth');
-    growth.innerHTML = 'Disponible en cuentas · Ahorro Warda ' + fmtPEN(warda);
+    growth.innerHTML = 'Disponible en cuentas · Ahorro Meta Scotiabank ' + fmtPEN(warda);
     growth.className = 'hero-growth up';
 
     var ms = monthSaldo();
@@ -408,6 +408,51 @@
       }).join('');
       if (ptot) ptot.textContent = 'Total pagado: ' + fmtUSD(totalP) + ' (mayo\u2013julio)';
     }
+    renderDebtCharts();
+  }
+
+  function renderDebtCharts() {
+    var donut = document.getElementById('debt-donut');
+    var bars = document.getElementById('debt-bars');
+    if (!donut || !formalCredits.length) return;
+    var paid = 0, pending = 0;
+    var per = formalCredits.map(function (c) {
+      var p = Math.min(payCount(c.name), c.remainingQuota);
+      paid += p; pending += (c.remainingQuota - p);
+      return { name: c.name, total: c.remainingQuota, paid: p, pend: c.remainingQuota - p, saldo: c.pendingBalancePEN };
+    });
+    var totalQ = paid + pending;
+    var donutHtml = '';
+    if (totalQ > 0) {
+      var aPaid = (paid / totalQ) * Math.PI * 2;
+      var cx = 60, cy = 60, r = 50;
+      function arc(ang0, ang1, color) {
+        var x0 = cx + r * Math.cos(ang0 - Math.PI / 2), y0 = cy + r * Math.sin(ang0 - Math.PI / 2);
+        var x1 = cx + r * Math.cos(ang1 - Math.PI / 2), y1 = cy + r * Math.sin(ang1 - Math.PI / 2);
+        var large = (ang1 - ang0) > Math.PI ? 1 : 0;
+        return '<path d="M ' + cx + ' ' + cy + ' L ' + x0.toFixed(2) + ' ' + y0.toFixed(2) + ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + x1.toFixed(2) + ' ' + y1.toFixed(2) + ' Z" fill="' + color + '"></path>';
+      }
+      donutHtml = '<svg viewBox="0 0 120 120" width="132" height="132" style="flex-shrink:0;">' +
+        arc(0, aPaid, '#55F58A') + arc(aPaid, Math.PI * 2, 'rgba(255,107,107,0.35)') +
+        '<text x="60" y="56" fill="#F4F6F5" font-size="20" font-weight="800" text-anchor="middle" font-family="Inter,sans-serif">' + Math.round(paid / totalQ * 100) + '%</text>' +
+        '<text x="60" y="72" fill="#7A8580" font-size="8" text-anchor="middle" font-family="Inter,sans-serif">PAGADO</text></svg>' +
+        '<div class="donut-legend"><div><span class="sw" style="background:#55F58A"></span> Cuotas pagadas: ' + paid + '</div>' +
+        '<div><span class="sw" style="background:rgba(255,107,107,0.5)"></span> Pendientes: ' + pending + '</div></div>';
+    } else {
+      donutHtml = '<div class="empty">Sin cuotas</div>';
+    }
+    donut.innerHTML = donutHtml;
+
+    var maxPend = 1;
+    per.forEach(function (c) { if (c.pend > maxPend) maxPend = c.pend; });
+    bars.innerHTML = per.map(function (c) {
+      var pct = Math.round(c.pend / maxPend * 100);
+      var tip = c.name + ' \u00B7 ' + c.pend + ' cuotas pendientes \u00B7 Saldo S/ ' + c.saldo.toLocaleString();
+      return '<div class="cat-row" data-tip="' + esc(tip) + '">' +
+        '<div class="cat-head"><span>' + esc(c.name.split('(')[0].trim()) + '</span><span style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">' + c.pend + ' pend.</span></div>' +
+        '<div class="cat-track"><div class="cat-fill" style="width:' + pct + '%;background:linear-gradient(90deg,#FF6B6B,#FFB020);"></div></div>' +
+        '</div>';
+    }).join('');
   }
 
   function renderMetas() {
@@ -417,7 +462,7 @@
     var cards = [
       { t: 'Meta de saldo neto', v: metaPct + '%', s: fmtUSD(saldo) + ' de ' + fmtUSD(META), p: metaPct },
       { t: 'Ahorro mensual', v: falta > 0 ? 'Faltan US$ ' + falta.toLocaleString('en-US') : '¡Meta cumplida!', s: 'Estás al ' + metaPct + '%', p: metaPct },
-      { t: 'Ahorro Warda BCP', v: fmtPEN(warda), s: 'En ahorro e inversión', p: 100 }
+      { t: 'Ahorro Meta Scotiabank', v: fmtPEN(warda), s: 'En ahorro e inversión', p: 100 }
     ];
     grid.innerHTML = cards.map(function (c) {
       return '<div class="meta-card"><h4>' + c.t + '</h4><div class="mc-value">' + c.v + '</div><div class="mc-sub">' + c.s + '</div><div class="mc-progress"><div class="mc-fill" style="width:' + Math.min(100, c.p) + '%"></div></div></div>';
@@ -448,6 +493,7 @@
     ingresos: 'Ingresos',
     gastos: 'Gastos',
     deudas: 'Deudas',
+    pagos: 'Pagos',
     metas: 'Metas',
     reportes: 'Reportes'
   };
@@ -463,6 +509,7 @@
     else if (target === 'ingresos') renderIngresos();
     else if (target === 'gastos') renderGastos();
     else if (target === 'deudas') renderDeudas();
+    else if (target === 'pagos') renderPagos();
     else if (target === 'metas') renderMetas();
     else if (target === 'reportes') renderReportes();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -584,7 +631,22 @@
     if (has('septiembre', 'alerta', 'critico')) return 'Septiembre es crítico: S/ 8,971 (≈$2,392 USD) entre créditos y junta.';
     if (has('disponible', 'activo', 'efectivo')) return 'Activos líquidos disponibles: ' + fmtPEN(disponible) + '.';
     if (has('meta', 'objetivo')) return 'Tu meta mensual es US$ ' + META.toLocaleString('en-US') + ' y llevas ' + metaPct + '% (' + fmtUSD(saldo) + ').';
-    if (has('hola', 'buenas', 'hey')) return '¡Hola! Soy tu agente financiero. Pregúntame cómo vas, cuánto debes, tus gastos, fugas o metas.';
+      if (has('registrar pago', 'registra pago', 'anota pago', 'pago de', 'pague', 'paguE', 'abone', 'abonE')) {
+      var am = t.match(/(\d+[.,]?\d*)/);
+      var amt = am ? parseFloat(am[1].replace(',', '.')) : NaN;
+      var desc = q.replace(/registrar pago|registra pago|anota pago|pago de|pague|paguE|abone|abonE|por|\$|usd/gi, '').replace(/\d+[.,]?\d*/g, '').trim();
+      if (isNaN(amt) || !desc) {
+        return 'Para registrar un pago dime: "registrar pago [concepto] por [monto] USD". Ej: "registrar pago Santander por 800 USD".';
+      }
+      var hoy = new Date();
+      var dd = ('0' + hoy.getDate()).slice(-2), mm = ('0' + (hoy.getMonth() + 1)).slice(-2);
+      var arr = loadPagosExtra();
+      arr.push({ fecha: dd + '/' + mm, desc: desc, usd: amt });
+      savePagosExtra(arr);
+      renderPagos();
+      return '\u2705 Pago registrado: "' + desc + '" por ' + fmtUSD(amt) + '. Lo ver\u00E1s en la secci\u00F3n Pagos.';
+    }
+  if (has('hola', 'buenas', 'hey')) return '¡Hola! Soy tu agente financiero. Pregúntame cómo vas, cuánto debes, tus gastos, fugas o metas.';
     if (has('gracias')) return '¡Con gusto! Aquí estoy cuando me necesites.';
     return 'Puedo ayudarte con: ingresos, deudas, gastos, fugas, saldo, disponible, metas o el resumen del mes.';
   }
@@ -705,6 +767,38 @@
       renderResumen();
     });
   }
+  function loadPagosExtra() { try { return JSON.parse(localStorage.getItem('stark_pagos_extra') || '[]'); } catch (e) { return []; } }
+  function savePagosExtra(arr) { localStorage.setItem('stark_pagos_extra', JSON.stringify(arr)); }
+  function renderPagos() {
+    var tb = document.getElementById('payments-tbody');
+    var tot = document.getElementById('payments-total');
+    if (!tb) return;
+    var rows = [];
+    if (window.PAYMENTS_HISTORY) window.PAYMENTS_HISTORY.forEach(function (p) { rows.push({ fecha: p.fecha, desc: p.desc, usd: p.usd, extra: false }); });
+    loadPagosExtra().forEach(function (p) { rows.push({ fecha: p.fecha, desc: p.desc, usd: p.usd, extra: true }); });
+    rows.sort(function (a, b) { return String(a.fecha).localeCompare(String(b.fecha)); });
+    var total = 0;
+    tb.innerHTML = rows.map(function (r) {
+      total += r.usd;
+      return '<tr><td>' + esc(r.fecha) + '</td><td class="cell-title">' + esc(r.desc) + (r.extra ? ' <span class="usd-mini">(diario)</span>' : '') + '</td><td class="amt-exp">' + fmtUSD(r.usd) + '</td></tr>';
+    }).join('');
+    if (tot) tot.textContent = 'Total: ' + fmtUSD(total) + ' \u00B7 ' + rows.length + ' pagos';
+  }
+  function bindPagosForm() {
+    var btn = document.getElementById('pf-add');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var desc = document.getElementById('pf-desc').value.trim();
+      var usd = parseFloat(document.getElementById('pf-usd').value);
+      if (!desc || isNaN(usd) || usd <= 0) { showToast('Pagos', 'Completa concepto y monto USD v\u00E1lido.'); return; }
+      var fecha = (document.getElementById('pf-fecha').value || '2026-07-27').slice(5).split('-').reverse().join('/');
+      var arr = loadPagosExtra(); arr.push({ fecha: fecha, desc: desc, usd: usd }); savePagosExtra(arr);
+      document.getElementById('pf-desc').value = '';
+      document.getElementById('pf-usd').value = '';
+      showToast('Pago registrado', desc + ' \u00B7 ' + fmtUSD(usd));
+      renderPagos();
+    });
+  }
   // ============================================================
   // INIT
   // ============================================================
@@ -713,5 +807,6 @@
   renderResumen();
   switchTab('resumen');
   bindExtras();
+  bindPagosForm();
   lock();
 })();
