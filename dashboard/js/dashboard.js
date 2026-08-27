@@ -1054,9 +1054,6 @@
     renderKpis(visible);
     renderFinancial();
     renderRevenueChart(visible);
-    renderProducts(visible);
-    renderCountries(visible);
-    renderChannels(visible);
     renderTable(visible);
     renderExpenses();
     renderComboIA();

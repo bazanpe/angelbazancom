@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>STARK HUD - Panel Ejecutivo, Ventas & Finanzas</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=17">
+  <link rel="stylesheet" href="css/dashboard.css?v=18">
 </head>
 <body class="stark-theme">
 
@@ -48,17 +48,14 @@
       </div>
 
       <nav class="sidebar-nav" id="sidebar-nav">
-        <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen Stark HUD</a>
+        <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen</a>
         <a class="nav-item nav-highlight-gold" data-target="ventas_combo"><span class="nav-icon"><svg class="ico"><use href="#i-rocket"/></svg></span> Ventas</a>
-        <a class="nav-item nav-highlight-red" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Estrategia &amp; Deudas Totales</a>
-        <a class="nav-item" data-target="roadmap"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Puntos de Mejora Mes a Mes</a>
-        <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos Auditados &amp; Tarjetas</a>
-        <a class="nav-item" data-target="pnl"><span class="nav-icon"><svg class="ico"><use href="#i-statement"/></svg></span> Estado P&amp;L Consolidado</a>
-        <a class="nav-item" data-target="ahorro"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Plan de Ahorro</a>
-        <a class="nav-item" data-target="productos"><span class="nav-icon"><svg class="ico"><use href="#i-box"/></svg></span> Productos</a>
-        <a class="nav-item" data-target="pa&#237;ses"><span class="nav-icon"><svg class="ico"><use href="#i-globe"/></svg></span> Pa&#237;ses</a>
-        <a class="nav-item" data-target="canales"><span class="nav-icon"><svg class="ico"><use href="#i-signal"/></svg></span> Canales</a>
-        <a class="nav-item" data-target="ventas"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Detalle Ventas (Tabla)</a>
+        <a class="nav-item nav-highlight-red" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
+        <a class="nav-item" data-target="roadmap"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Puntos de Mejora</a>
+        <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
+        <a class="nav-item" data-target="pnl"><span class="nav-icon"><svg class="ico"><use href="#i-statement"/></svg></span> P&amp;L</a>
+        <a class="nav-item" data-target="ahorro"><span class="nav-icon"><svg class="ico"><use href="#i-zap"/></svg></span> Ahorro</a>
+        <a class="nav-item" data-target="ventas"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Detalle Ventas</a>
       </nav>
 
       <div class="sidebar-foot">
@@ -118,11 +115,11 @@
         <!-- RESUMEN FINANCIERO RÁPIDO (Stark HUD) -->
         <div id="view-financial-module">
           <div class="section-row">
-            <h2>¿Cómo voy hoy? — Resumen Financiero Rápido</h2>
+            <h2>Resumen Stark HUD — Vista completa</h2>
             <span class="pill" style="background:rgba(217,119,87,0.14); color:#D97757">Julio 2026</span>
           </div>
-          <div class="financial-grid" id="financial-grid"></div>
           <div class="financial-alert" id="financial-alert" style="display:none;"></div>
+          <div class="financial-grid" id="financial-grid"></div>
         </div>
 
         <!-- SECCIÓN 1: VISTAS PRINCIPALES DE VENTAS -->
@@ -144,38 +141,6 @@
                 <button class="ps-reset" id="ps-reset" title="Limpiar filtro"><svg class="ico"><use href="#i-x"/></svg></button>
               </div>
               <div class="chart-body" id="chart-revenue"></div>
-            </div>
-
-            <div class="chart-card stark-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Ingresos por producto</div>
-                  <div class="chart-sub">Distribuci&#243;n en USD</div>
-                </div>
-              </div>
-              <div class="chart-body" id="chart-products"></div>
-            </div>
-          </section>
-
-          <section class="charts-grid">
-            <div class="chart-card stark-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Ventas por pa&#237;s</div>
-                  <div class="chart-sub">Haz clic en un pa&#237;s para filtrar</div>
-                </div>
-              </div>
-              <div class="chart-body" id="chart-countries"></div>
-            </div>
-
-            <div class="chart-card stark-card">
-              <div class="chart-head">
-                <div>
-                  <div class="chart-title">Ventas por canal</div>
-                  <div class="chart-sub">L&#237;neas de WhatsApp</div>
-                </div>
-              </div>
-              <div class="chart-body" id="chart-channels"></div>
             </div>
           </section>
         </div>
@@ -630,11 +595,11 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=17"></script>
-  <script src="js/data2.js?v=17"></script>
-  <script src="js/expenses_data.js?v=17"></script>
-  <script src="js/combo_ia_data.js?v=17"></script>
-  <script src="js/debts_data.js?v=17"></script>
-  <script src="js/dashboard.js?v=17"></script>
+  <script src="js/data.js?v=18"></script>
+  <script src="js/data2.js?v=18"></script>
+  <script src="js/expenses_data.js?v=18"></script>
+  <script src="js/combo_ia_data.js?v=18"></script>
+  <script src="js/debts_data.js?v=18"></script>
+  <script src="js/dashboard.js?v=18"></script>
 </body>
 </html>
