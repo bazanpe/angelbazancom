@@ -505,6 +505,50 @@ select:focus { border-color: var(--border-strong); box-shadow: 0 0 0 3px rgba(21
 .sav-annual { color: var(--text-count); font-size: 12px; }
 
 /* ============ FINANCIAL (Resumen rápido) ============ */
+.financial-alerts {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.alert-chip {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 13px 15px;
+  box-shadow: var(--shadow);
+  border-left: 3px solid var(--text-count);
+}
+.alert-chip.red { border-left-color: var(--red); background: linear-gradient(90deg, rgba(214,69,80,0.06), var(--panel)); }
+.alert-chip.gold { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(176,122,27,0.08), var(--panel)); }
+.alert-chip.green { border-left-color: var(--green); background: linear-gradient(90deg, rgba(46,125,79,0.07), var(--panel)); }
+.alert-chip.cyan { border-left-color: var(--cyan); background: linear-gradient(90deg, rgba(14,124,134,0.07), var(--panel)); }
+
+.alert-tag {
+  font-family: var(--font-hud);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: 6px;
+  padding: 2px 8px;
+  color: #fff;
+  background: var(--text-count);
+  flex-shrink: 0;
+}
+.alert-chip.red .alert-tag { background: var(--red); }
+.alert-chip.gold .alert-tag { background: var(--gold); }
+.alert-chip.green .alert-tag { background: var(--green); }
+.alert-chip.cyan .alert-tag { background: var(--cyan); }
+
+.alert-title { font-size: 13px; font-weight: 700; color: var(--text-title); line-height: 1.35; }
+.alert-sub { font-size: 12px; color: var(--text-count); margin-top: 2px; line-height: 1.4; }
+
+.usd-mini { font-size: 11px; color: var(--text-count); font-weight: 600; }
+
 .financial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .fin-card {
   background: var(--panel);
@@ -561,7 +605,7 @@ select:focus { border-color: var(--border-strong); box-shadow: 0 0 0 3px rgba(21
 .to-top {
   position: fixed;
   right: 22px;
-  bottom: 22px;
+  bottom: 92px;
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -646,7 +690,7 @@ select:focus { border-color: var(--border-strong); box-shadow: 0 0 0 3px rgba(21
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1200px) {
-  .kpi-grid, .financial-grid, .combo-summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi-grid, .financial-grid, .combo-summary-grid, .financial-alerts { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 900px) {
@@ -739,8 +783,8 @@ select:focus { border-color: var(--border-strong); box-shadow: 0 0 0 3px rgba(21
 .toast-msg { font-size: 12.5px; color: #D8D2C8; line-height: 1.45; }
 @keyframes toast-in { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: none; } }
 
-/* ============ CHAT AGENTE IA ============ */
-.agent-chat { position: fixed; left: 22px; bottom: 22px; z-index: 1400; }
+/* ============ CHAT AGENTE IA (derecha) ============ */
+.agent-chat { position: fixed; right: 22px; bottom: 22px; z-index: 1400; left: auto; }
 
 .agent-fab {
   width: 58px;
@@ -761,7 +805,8 @@ select:focus { border-color: var(--border-strong); box-shadow: 0 0 0 3px rgba(21
 
 .agent-panel {
   position: absolute;
-  left: 0;
+  right: 0;
+  left: auto;
   bottom: 70px;
   width: 360px;
   max-width: calc(100vw - 44px);

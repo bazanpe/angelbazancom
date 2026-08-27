@@ -242,6 +242,9 @@
     return '$' + Math.round(n);
   }
   function fmtInt(n) { return n.toLocaleString('en-US'); }
+  var FX = 3.75;
+  function usdEquiv(pen) { return '$' + Math.round(pen / FX).toLocaleString('en-US'); }
+  function penEquiv(usd) { return 'S/ ' + Math.round(usd * FX).toLocaleString('en-US'); }
   function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
   var raf = typeof requestAnimationFrame === 'function' ? requestAnimationFrame : function (cb) { setTimeout(function () { cb(performance.now()); }, 16); };
@@ -401,11 +404,11 @@
     var rd = document.getElementById('kpi-revenue-delta');
     if (rd) rd.innerHTML = 'Ingresos del mes \u00B7 Combo IA \u00B7 Julio 2026';
     var ed = document.getElementById('kpi-exp-delta');
-    if (ed) ed.innerHTML = 'S/ 6,971 cr\u00E9ditos + S/ 2,000 junta';
+    if (ed) ed.innerHTML = 'Total ' + Math.round(compromisoPEN).toLocaleString('en-US') + ' \u2248 ' + usdEquiv(compromisoPEN) + ' USD';
     var sd = document.getElementById('kpi-saldo-delta');
-    if (sd) sd.innerHTML = 'Formales + informales estimadas';
+    if (sd) sd.innerHTML = 'Formales + informales \u2248 ' + usdEquiv((deudaMin + deudaMax) / 2) + ' USD';
     var md = document.getElementById('kpi-net-margin-delta');
-    if (md) md.innerHTML = 'Activos l\u00EDquidos disponibles';
+    if (md) md.innerHTML = 'L\u00EDquido \u2248 ' + usdEquiv(disponiblePEN) + ' USD';
   }
 
   function dailyData(visible) {
@@ -746,11 +749,11 @@
       formalTbody.innerHTML = data.formalCredits.map(function (c) {
         return '<tr>' +
           '<td style="font-weight:700; color:var(--text-title);">' + esc(c.name) + '</td>' +
-          '<td style="color:var(--danger); font-family:var(--font-mono); font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + '</td>' +
+          '<td style="color:var(--danger); font-family:var(--font-mono); font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
           '<td>DÃ­a ' + c.dueDateDay + ' de cada mes</td>' +
           '<td>' + c.remainingQuota + ' cuotas</td>' +
           '<td>' + esc(c.range) + '</td>' +
-          '<td style="font-family:var(--font-mono); font-weight:800; color:var(--gold-stark);">S/ ' + c.pendingBalancePEN.toLocaleString() + '</td>' +
+          '<td style="font-family:var(--font-mono); font-weight:800; color:var(--gold-stark);">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td>' +
           '</tr>';
       }).join('');
     }
@@ -1100,9 +1103,9 @@
     grid += card('Ingresos del mes', usd(ingresos), 'Combo IA \u00B7 Julio 2026', 'pos');
     grid += card('Salidas del mes', usd(salidas), 'Negocio + personal', 'neg');
     grid += card('Saldo del mes', usd(saldo), 'Ingresos \u2212 salidas', 'pos');
-    grid += card('Deudas del mes', pen(compromiso), 'S/ 6,971 cr\u00E9ditos + S/ 2,000 junta', 'neg');
-    grid += card('Deudas pendientes', 'S/ ' + Math.round(deudaMin / 1000) + 'k \u2013 ' + Math.round(deudaMax / 1000) + 'k', 'Formales + informales', 'warn');
-    grid += card('Disponible (activos)', pen(disponible), 'L\u00EDquido para emergencias', 'pos');
+    grid += card('Deudas del mes', pen(compromiso), 'S/ 6,971 + S/ 2,000 \u2248 ' + usdEquiv(compromiso) + ' USD', 'neg');
+    grid += card('Deudas pendientes', 'S/ ' + Math.round(deudaMin / 1000) + 'k \u2013 ' + Math.round(deudaMax / 1000) + 'k', 'Formales + informales \u2248 ' + usdEquiv((deudaMin + deudaMax) / 2) + ' USD', 'warn');
+    grid += card('Disponible (activos)', pen(disponible), 'L\u00EDquido \u2248 ' + usdEquiv(disponible) + ' USD', 'pos');
     grid += card('Mejor mes del trimestre', mejor ? mejor.month : '\u2014', mejor ? usd(mejor.revenueUSD) + ' de facturaci\u00F3n' : '', 'pos');
     grid += card('ROAS julio', roas ? roas.toFixed(2) + 'x' : '\u2014', 'Por cada $1 de publicidad', 'warn');
     grid += card('Margen neto negocio', (margen ? margen.toFixed(1) : '0') + '%', 'Saludable', 'pos');
@@ -1113,7 +1116,7 @@
 
     var alertEl = document.getElementById('financial-alert');
     if (alertEl && alerta) {
-      alertEl.innerHTML = '<span class="alert-icon">\uD83D\uDEA8</span><div>' + esc(alerta) + '</div>';
+      alertEl.innerHTML = '<span class="alert-icon">\uD83D\uDEA8</span><div>' + esc(alerta) + ' <b>(\u2248 ' + usdEquiv(compromiso) + ' USD)</b></div>';
       alertEl.style.display = 'flex';
     }
   }
@@ -1233,6 +1236,11 @@
     return 'Puedo ayudarte con: ingresos, deudas del mes, deudas pendientes, gastos, fugas, saldo, disponible, ahorro, productos, pa\u00EDses, ROAS o el resumen del mes. Reformula tu pregunta.';
   }
 
+  function bindSync() {
+    var btn = document.getElementById('sync-btn');
+    if (!btn) return;
+    btn.addEventListener('click', syncFromSheet);
+  }
   function bindAgent() {
     var fab = document.getElementById('agent-fab');
     var panel = document.getElementById('agent-panel');
@@ -1265,6 +1273,81 @@
       chip.addEventListener('click', function () { ask(chip.getAttribute('data-q')); });
     });
   }
+  function renderAlerts() {
+    var el = document.getElementById('financial-alerts');
+    if (!el) return;
+    var d = agentData();
+    function usd(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+    var chips = [];
+    chips.push({ t: 'CRITICO', c: 'red', title: 'Septiembre: S/ 8,971 (\u2248 ' + usdEquiv(8971) + ' USD)', s: 'Las 4 cuotas de cr\u00E9ditos + junta caen juntas' });
+    chips.push({ t: 'FUGA', c: 'red', title: 'Google One duplicado +$80 USD/mes', s: '4 cobros del mismo servicio en el mes' });
+    chips.push({ t: 'FUGA', c: 'red', title: '6 cobros de Skool +$30 USD/mes', s: 'Comunidades inactivas' });
+    chips.push({ t: 'FUGA', c: 'gold', title: 'IA duplicada +$23.60 USD/mes', s: 'ChatGPT Plus + Claude Pro' });
+    chips.push({ t: 'AHORRO', c: 'green', title: 'Ahorro potencial +$155 USD/mes', s: 'Optimizando SaaS y suscripciones' });
+    chips.push({ t: 'SALUD', c: 'green', title: 'Margen 60.2% \u00B7 Saldo ' + usd(d.saldo), s: 'Operaci\u00F3n saludable este mes' });
+    chips.push({ t: 'OJO', c: 'gold', title: 'ROAS julio 1.60x', s: 'Baj\u00F3 vs 1.81x de junio: revisar creativos' });
+    chips.push({ t: 'BEST', c: 'cyan', title: 'Mejor mes: ' + (d.mejor ? d.mejor.month : '\u2014'), s: d.mejor ? usd(d.mejor.revenueUSD) + ' de facturaci\u00F3n' : '' });
+    el.innerHTML = chips.map(function (a) {
+      return '<div class="alert-chip ' + a.c + '"><span class="alert-tag">' + a.t + '</span><div><div class="alert-title">' + a.title + '</div><div class="alert-sub">' + a.s + '</div></div></div>';
+    }).join('');
+  }
+
+  var GOOGLE_SHEET_CSV = '';
+  function parseSheetRow(row) {
+    var parts = [];
+    var cur = '', inQ = false;
+    for (var i = 0; i < row.length; i++) {
+      var ch = row[i];
+      if (inQ) {
+        if (ch === '"' && row[i + 1] === '"') { cur += '"'; i++; }
+        else if (ch === '"') inQ = false;
+        else cur += ch;
+      } else {
+        if (ch === '"') inQ = true;
+        else if (ch === ',') { parts.push(cur); cur = ''; }
+        else cur += ch;
+      }
+    }
+    parts.push(cur);
+    return parts.map(function (s) { return s.trim(); });
+  }
+  function syncFromSheet() {
+    if (!GOOGLE_SHEET_CSV) {
+      showToast('Google Sheets', 'Configura la URL CSV de tu hoja en GOOGLE_SHEET_CSV dentro de dashboard.js.');
+      return;
+    }
+    showToast('Google Sheets', 'Sincronizando datos desde tu hoja...');
+    fetch(GOOGLE_SHEET_CSV, { cache: 'no-store' })
+      .then(function (r) { return r.text(); })
+      .then(function (txt) {
+        var lines = txt.split(/\r?\n/).filter(function (l) { return l.trim(); });
+        if (lines.length < 2) throw new Error('Hoja vac\u00EDa o formato inesperado');
+        var head = parseSheetRow(lines[0]);
+        var items = [];
+        for (var i = 1; i < lines.length; i++) {
+          var p = parseSheetRow(lines[i]);
+          if (!p[1]) continue;
+          items.push({
+            source: p[6] || 'Google Sheet',
+            date: p[0] || '2026-07-01',
+            desc: p[1] || 'Cargo',
+            cat: p[2] || 'Sin categor\u00EDa',
+            type: p[3] || 'Negocio',
+            usd: parseFloat(p[4]) || 0,
+            pen: parseFloat(p[5]) || 0,
+            status: p[7] || 'Mantener'
+          });
+        }
+        if (window.EXPENSES_DATA) {
+          window.EXPENSES_DATA.items = items;
+          renderAll();
+          showToast('Google Sheets', 'Sincronizado: ' + items.length + ' registros desde Google Sheets.');
+        }
+      })
+      .catch(function (e) {
+        showToast('Google Sheets', 'Error de sincronizaci\u00F3n: ' + e.message);
+      });
+  }
   // ============================================================
   // INIT
   // ============================================================
@@ -1282,6 +1365,8 @@
   switchTab('resumen');
   initReveal();
   lock();
+  renderAlerts();
+  bindSync();
   bindNotifications();
   bindAgent();
 })();
