@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>DASHBOARD - Panel Ejecutivo & Finanzas</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=9">
+  <link rel="stylesheet" href="css/dashboard.css?v=10">
 </head>
 <body>
 
@@ -86,24 +86,24 @@
 
         <section class="kpi-grid" id="kpi-grid">
           <div class="kpi-card">
-            <div class="kpi-head"><span class="kpi-label">Ingresos Totales (Ventas)</span><span class="kpi-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
+            <div class="kpi-head"><span class="kpi-label">Ingresos Totales (Entradas)</span><span class="kpi-icon"><svg class="ico"><use href="#i-cash"/></svg></span></div>
             <div class="kpi-value" id="kpi-revenue">$0</div>
             <div class="kpi-delta up" id="kpi-revenue-delta">Julio 2026</div>
           </div>
           <div class="kpi-card">
-            <div class="kpi-head"><span class="kpi-label">Gastos Operativos (Negocio)</span><span class="kpi-icon" style="color:var(--danger)"><svg class="ico"><use href="#i-card"/></svg></span></div>
-            <div class="kpi-value" id="kpi-exp-biz" style="color:#f87171">$1,613.66</div>
-            <div class="kpi-delta" style="color:var(--text-count)">Ads ($1,121) + SaaS/Tools</div>
+            <div class="kpi-head"><span class="kpi-label">Gastos Totales (Salidas)</span><span class="kpi-icon" style="color:var(--danger)"><svg class="ico"><use href="#i-card"/></svg></span></div>
+            <div class="kpi-value" id="kpi-exp" style="color:#ff6b81">$0</div>
+            <div class="kpi-delta" style="color:var(--text-count)">Negocio + Personal del mes</div>
           </div>
-          <div class="kpi-card kpi-roas">
-            <div class="kpi-head"><span class="kpi-label">ROAS Meta Ads</span><span class="kpi-icon roas-icon"><svg class="ico"><use href="#i-trend"/></svg></span></div>
-            <div class="kpi-value kpi-value-roas" id="kpi-roas">3.62x</div>
-            <div class="kpi-delta" id="kpi-roas-delta" style="color: var(--green);">Excelente retorno en pauta</div>
+          <div class="kpi-card kpi-saldo">
+            <div class="kpi-head"><span class="kpi-label">Saldo del Mes (Superávit)</span><span class="kpi-icon saldo-icon"><svg class="ico"><use href="#i-trend"/></svg></span></div>
+            <div class="kpi-value kpi-value-saldo" id="kpi-saldo">$0</div>
+            <div class="kpi-delta up" id="kpi-saldo-delta">Entradas − Salidas</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-head"><span class="kpi-label">Margen Neto Negocio</span><span class="kpi-icon" style="color:var(--green)"><svg class="ico"><use href="#i-statement"/></svg></span></div>
-            <div class="kpi-value" id="kpi-net-margin" style="color:var(--green)">60.2%</div>
-            <div class="kpi-delta up">$2,444.34 USD libres de operaci&#243;n</div>
+            <div class="kpi-value" id="kpi-net-margin" style="color:var(--green)">0%</div>
+            <div class="kpi-delta up" id="kpi-net-margin-delta">Libres de operación</div>
           </div>
         </section>
 
@@ -171,9 +171,9 @@
 
           <div class="exp-summary-grid">
             <div class="exp-card-mini">
-              <div class="ec-title">Marketing &amp; Meta Ads</div>
+              <div class="ec-title">Marketing &amp; Publicidad</div>
               <div class="ec-val">$1,121.34 USD</div>
-              <div class="ec-sub">S/ 4,205.03 PEN (70% del Negocio)</div>
+              <div class="ec-sub">S/ 4,205.03 PEN (Mayor gasto del mes)</div>
             </div>
             <div class="exp-card-mini">
               <div class="ec-title">SaaS, IA &amp; Servidores</div>
@@ -219,6 +219,27 @@
                 </div>
               </div>
               <div class="chart-body" id="exp-chart-day"></div>
+            </div>
+          </div>
+
+          <div class="exp-charts-grid">
+            <div class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <div class="chart-title">Desglose por categoría</div>
+                  <div class="chart-sub">Cantidad de cargos, USD, PEN y % del total</div>
+                </div>
+              </div>
+              <div class="chart-body" id="exp-breakdown"></div>
+            </div>
+            <div class="chart-card">
+              <div class="chart-head">
+                <div>
+                  <div class="chart-title">Puntos de fuga detectados</div>
+                  <div class="chart-sub">Duplicidades, suscripciones y cargos recurrentes</div>
+                </div>
+              </div>
+              <div class="chart-body" id="exp-leaks"></div>
             </div>
           </div>
 
@@ -290,7 +311,7 @@
                   <span class="val">$4,058.00 USD</span>
                 </div>
                 <div class="pnl-row negative">
-                  <span class="lbl">(-) Inversión Publicitaria Meta Ads (ROAS 3.62x)</span>
+                  <span class="lbl">(-) Marketing &amp; Publicidad (Inversión)</span>
                   <span class="val">-$1,121.34 USD</span>
                 </div>
                 <div class="pnl-row negative">
@@ -318,7 +339,7 @@
               <h3>🔍 Diagnóstico del Flujo de Caja</h3>
               <div class="pnl-insight-item">
                 <div class="pi-title">🚀 Potencia Comercial Alta</div>
-                <p>Tu negocio genera <strong>$4,058 USD</strong> de ventas con un ROAS publicitario de <strong>3.62x</strong>. Por cada $1 invertido en Meta Ads recibes $3.62 USD.</p>
+                <p>Tu negocio genera <strong>$4,058 USD</strong> de ingresos con un gasto operativo contenido. La máquina comercial está encendida.</p>
               </div>
               <div class="pnl-insight-item">
                 <div class="pi-title">⚠️ Fuga en Servicios Cloud &amp; Storage</div>
@@ -326,7 +347,7 @@
               </div>
               <div class="pnl-insight-item">
                 <div class="pi-title">💡 Reasignación Estratégica</div>
-                <p>Al aplicar las optimizaciones de SaaS, liberarás <strong>+$155 USD/mes</strong> que aplicados a tu pauta de Meta Ads generarán <strong>+$560 USD/mes</strong> de ventas adicionales.</p>
+                <p>Al aplicar las optimizaciones de SaaS, liberarás <strong>+$155 USD/mes</strong> que puedes reinvertir en el negocio o directamente al ahorro.</p>
               </div>
             </div>
           </div>
@@ -462,10 +483,10 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=9"></script>
-  <script src="js/data2.js?v=9"></script>
-  <script src="js/expenses_data.js?v=9"></script>
-  <script src="js/dashboard.js?v=9"></script>
+  <script src="js/data.js?v=10"></script>
+  <script src="js/data2.js?v=10"></script>
+  <script src="js/expenses_data.js?v=10"></script>
+  <script src="js/dashboard.js?v=10"></script>
 </body>
 </html>
 

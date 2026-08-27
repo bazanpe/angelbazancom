@@ -420,45 +420,22 @@
   // ============================================================
   // KPIs
   // ============================================================
-  function renderKpis(visible, baseNoYear) {
-    var revenue = 0, count = visible.length;
-    visible.forEach(function (s) { revenue += s.usd; });
-    var countries = {};
-    visible.forEach(function (s) { countries[s.pais] = true; });
-    var countryCount = Object.keys(countries).length;
-
-    var met = periodMetrics(visible);
-
-    animateValue(document.getElementById('kpi-revenue'), revenue, function (v) { return fmtUSD(v); });
-    animateValue(document.getElementById('kpi-count'), count, fmtInt);
-    animateValue(document.getElementById('kpi-countries'), countryCount, fmtInt);
-    animateValue(document.getElementById('kpi-roas'), met.roas, function (v) { return v.toFixed(1) + 'x'; });
-
-    document.getElementById('kpi-roas-delta').innerHTML = 'Inversi\u00F3n en ads <b style="color:var(--green)">' + fmtCompact(met.spend) + '</b>';
-
-    var series = monthlySeries(baseNoYear);
-    var total2025 = (series[2025] || []).reduce(function (a, b) { return a + b; }, 0);
-    var total2026 = (series[2026] || []).reduce(function (a, b) { return a + b; }, 0);
-
-    var revDelta = document.getElementById('kpi-revenue-delta');
-    var cntDelta = document.getElementById('kpi-count-delta');
-    if (state.year === 'all') {
-      var growth = total2025 > 0 ? ((total2026 - total2025) / total2025) * 100 : 0;
-      revDelta.className = 'kpi-delta ' + (growth >= 0 ? 'up' : 'down');
-      revDelta.innerHTML = (growth >= 0 ? '\u25B2' : '\u25BC') + ' ' + Math.abs(growth).toFixed(1) + '% <span class="pill">2026 vs 2025</span>';
-      cntDelta.className = 'kpi-delta up';
-      cntDelta.innerHTML = '<span class="pill">' + YEARS_PRESENT.length + ' a\u00F1os</span>';
-    } else {
-      var months = 0;
-      var s = series[parseInt(state.year, 10)] || [];
-      for (var i = 0; i < 12; i++) if (s[i] > 0) months++;
-      revDelta.className = 'kpi-delta';
-      revDelta.style.color = 'var(--text-count)';
-      revDelta.innerHTML = '<span class="pill">' + months + ' meses</span>';
-      cntDelta.className = 'kpi-delta';
-      cntDelta.style.color = 'var(--text-count)';
-      cntDelta.innerHTML = '<span class="pill">A\u00F1o ' + state.year + '</span>';
-    }
+    function renderKpis(visible, baseNoYear) {
+    var sum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
+    var ingresos = sum ? sum.totalSalesUSD : 0;
+    var gastosBiz = sum ? sum.totalBusinessUSD : 0;
+    var gastosPers = sum ? sum.totalPersonalUSD : 0;
+    var gastosTotal = gastosBiz + gastosPers;
+    var saldo = ingresos - gastosTotal;
+    var margen = sum ? (sum.netMarginPct || 0) : 0;
+    var margenUsd = sum ? sum.netMarginUSD : 0;
+    animateValue(document.getElementById('kpi-revenue'), ingresos, function (v) { return fmtUSD(v); });
+    animateValue(document.getElementById('kpi-exp'), gastosTotal, function (v) { return fmtUSD(v); });
+    animateValue(document.getElementById('kpi-saldo'), saldo, function (v) { return fmtUSD(v); });
+    animateValue(document.getElementById('kpi-net-margin'), margen, function (v) { return v.toFixed(1) + '%'; });
+    document.getElementById('kpi-revenue-delta').innerHTML = 'Julio 2026 \u00B7 ' + fmtInt(visible.length) + ' entradas registradas';
+    document.getElementById('kpi-saldo-delta').innerHTML = 'Libre despu\u00E9s de todo: ' + fmtUSD(saldo);
+    document.getElementById('kpi-net-margin-delta').innerHTML = fmtUSD(margenUsd) + ' libres de operaci\u00F3n';
   }
 
   // ============================================================
@@ -544,7 +521,7 @@
       var isBest = best && d === best;
       var color = isBest ? '#22C55E' : (d.usd > 0 ? 'rgba(34,197,94,0.55)' : 'rgba(140,176,190,0.12)');
       var roas = roasTargetFor(d.y, d.m);
-      var tip = 'D\u00EDa ' + d.label + ' \u00B7 Facturaci\u00F3n ' + fmtUSD(d.usd) + (d.count ? ' \u00B7 ' + d.count + ' ventas' : '') + ' \u00B7 ROAS ' + roas.toFixed(1) + 'x';
+      var tip = 'D\u00EDa ' + d.label + ' \u00B7 Ingresos ' + fmtUSD(d.usd) + (d.count ? ' \u00B7 ' + d.count + ' ventas' : '');
       html += '<rect class="daily-bar' + (isBest ? ' daily-best' : '') + '" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="' + (bw > 2 ? 2 : 0) + '" fill="' + color + '" data-tip="' + esc(tip) + '"></rect>';
       if (n <= 20) {
         html += '<text x="' + (x + bw / 2).toFixed(1) + '" y="' + (y - 4) + '" fill="#A5B0BE" font-size="9" text-anchor="middle" font-family="Inter, sans-serif">' + fmtCompact(d.usd) + '</text>';
@@ -769,13 +746,16 @@
   // ============================================================
   // METRICS BAR
   // ============================================================
-  function renderMetrics(visible) {
-    var met = periodMetrics(visible);
+    function renderMetrics(visible) {
+    var sum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
+    var ingresos = sum ? sum.totalSalesUSD : 0;
+    var gastos = sum ? (sum.totalBusinessUSD + sum.totalPersonalUSD) : 0;
+    var saldo = ingresos - gastos;
     var el = document.getElementById('ticker-msg');
     var best = null, bestUsd = -1;
     visible.forEach(function (s) { if (s.usd > bestUsd) { bestUsd = s.usd; best = s; } });
-    var html = 'Conversi\u00F3n del periodo <b class="metric">' + (met.conv * 100).toFixed(1) + '%</b> \u00B7 ROAS <b class="metric">' + met.roas.toFixed(2) + 'x</b> \u00B7 Inversi\u00F3n en ads <b class="metric">' + fmtCompact(met.spend) + '</b> \u00B7 ' + fmtInt(met.count) + ' ventas';
-    if (best) html += ' \u00B7 Mejor venta: <b>' + esc(cleanContact(best.contacto)) + '</b> (' + fmtUSD2(best.usd) + ')';
+    var html = 'Ingresos del mes <b class="metric">' + fmtUSD(ingresos) + '</b> \u00B7 Salidas <b class="metric">' + fmtUSD(gastos) + '</b> \u00B7 Saldo <b class="metric">' + fmtUSD(saldo) + '</b> \u00B7 ' + fmtInt(visible.length) + ' transacciones';
+    if (best) html += ' \u00B7 Mejor d\u00EDa: d\u00EDa ' + best.day + ' (' + fmtUSD2(bestUsd) + ')';
     el.innerHTML = html;
   }
 
@@ -1055,6 +1035,8 @@
     renderTable(visible);
     renderExpenses();
     renderExpenseCharts();
+    renderExpenseBreakdown();
+    renderExpLeaks();
     renderMonthlyAnalysis();
     updatePeriodLabel();
   }
@@ -1181,19 +1163,21 @@
       return '<div class="analysis-card ' + (cls || '') + '"><div class="ac-head"><span class="ac-icon">' + (icon || '') + '</span><span class="ac-label">' + t + '</span></div><div class="ac-value">' + v + '</div><div class="ac-sub">' + (sub || '') + '</div></div>';
     }
 
+        var gastosTot = sum.totalBusinessUSD + sum.totalPersonalUSD;
+    var saldoMes = sum.totalSalesUSD - gastosTot;
     var grid = '';
-    grid += card('Ventas del mes', fmtUSD(revenue), fmtInt(count) + ' ventas · Ticket promedio ' + fmtUSD2(ticket), '◆');
-    grid += card('Gastos de negocio', fmtUSD(sum.totalBusinessUSD), bizPct.toFixed(1) + '% de las ventas · Ads + SaaS', '▲');
-    grid += card('Margen neto', (sum.netMarginPct || 0).toFixed(1) + '%', fmtUSD(sum.netMarginUSD) + ' libres de operación', '●');
-    grid += card('ROAS Meta Ads', (sum.roas || 0).toFixed(2) + 'x', 'Por cada $1 en ads: $' + (sum.roas || 0).toFixed(2) + ' USD', '◈');
-    grid += card('Top categoría de gasto', topCat, fmtUSD(topCatUsd) + ' · ' + Math.round((topCatUsd / (sum.totalBusinessUSD || 1)) * 100) + '% del gasto negocio', '▮');
-    grid += card('Fuente principal', topSrc, fmtUSD(srcMap[topSrc]) + ' en el mes', '▣');
-    grid += card('Producto estrella', topProduct, fmtUSD(gProd[topProduct].usd) + ' · ' + fmtInt(gProd[topProduct].count) + ' ventas', '★');
-    grid += card('Mejor mercado', (FLAGS[topCountry] || '') + ' ' + (COUNTRIES[topCountry] || topCountry), fmtUSD(gPais[topCountry].usd), '●');
-    grid += card('Canal que más vende', esc(topChannel), fmtUSD(gCanal[topChannel].usd), '►');
-    grid += card('Mayor venta individual', fmtUSD2(topSale), bestDay ? esc(cleanContact(bestDay.contacto)) : '—', '◈');
-    grid += card('Gasto personal (estilo vida)', fmtUSD(sum.totalPersonalUSD), 'S/ ' + sum.totalPersonalPEN.toFixed(2) + ' PEN', '▽');
-    grid += card('Ahorro potencial', '+$' + (sum.potentialMonthlySavingsUSD || 0).toFixed(0) + ' USD/mes', 'Optimizando SaaS, Skool y streaming', '⚡');
+    grid += card('Ingresos del mes', fmtUSD(sum.totalSalesUSD), fmtInt(count) + ' transacciones \u00B7 Ticket promedio ' + fmtUSD2(ticket), '\u25C6');
+    grid += card('Gastos de negocio', fmtUSD(sum.totalBusinessUSD), bizPct.toFixed(1) + '% de los ingresos', '\u25B2');
+    grid += card('Gastos personales', fmtUSD(sum.totalPersonalUSD), 'S/ ' + sum.totalPersonalPEN.toFixed(2) + ' PEN', '\u25BD');
+    grid += card('Gastos totales (salidas)', fmtUSD(gastosTot), fmtInt(items.length) + ' cargos auditados', '\u25AE');
+    grid += card('Saldo del mes', fmtUSD(saldoMes), 'Ingresos \u2212 salidas totales', '\u25CF');
+    grid += card('Margen neto negocio', (sum.netMarginPct || 0).toFixed(1) + '%', fmtUSD(sum.netMarginUSD) + ' libres de operaci\u00F3n', '\u25C8');
+    grid += card('Top categor\u00EDa de gasto', topCat, fmtUSD(topCatUsd) + ' \u00B7 ' + Math.round((topCatUsd / (gastosTot || 1)) * 100) + '% del total gastado', '\u25AE');
+    grid += card('Fuente principal', topSrc, fmtUSD(srcMap[topSrc]) + ' en el mes', '\u25A3');
+    grid += card('Producto estrella', topProduct, fmtUSD(gProd[topProduct].usd) + ' \u00B7 ' + fmtInt(gProd[topProduct].count) + ' ventas', '\u2605');
+    grid += card('Mejor mercado', (FLAGS[topCountry] || '') + ' ' + (COUNTRIES[topCountry] || topCountry), fmtUSD(gPais[topCountry].usd), '\u25CF');
+    grid += card('Mayor ingreso individual', fmtUSD2(topSale), bestDay ? 'd\u00EDa ' + bestDay.day : '\u2014', '\u25C8');
+    grid += card('Ahorro potencial', '+$' + (sum.potentialMonthlySavingsUSD || 0).toFixed(0) + ' USD/mes', 'Optimizando SaaS, Skool y streaming', '\u26A1');
     el.innerHTML = grid;
 
     var top3Html = top3.map(function (t, i) {
@@ -1203,23 +1187,118 @@
     var verdictHtml =
       '<div class="verdict-grid">' +
         '<div class="verdict-block verdict-green"><div class="vb-title">🟢 LO QUE VA BIEN</div><ul>' +
-          '<li>ROAS de <b>' + sum.roas.toFixed(2) + 'x</b> en Meta Ads: cada dólar de pauta genera $' + sum.roas.toFixed(2) + ' USD de ventas.</li>' +
+          '<li>Ingresos de <b>' + fmtUSD(sum.totalSalesUSD) + '</b> con ' + fmtInt(count) + ' transacciones (ticket ' + fmtUSD2(ticket) + ').</li>' +
           '<li>Margen neto de <b>' + sum.netMarginPct.toFixed(1) + '%</b> (' + fmtUSD(sum.netMarginUSD) + ' libres).</li>' +
-          '<li>Ventas de <b>' + fmtUSD(revenue) + '</b> con ' + fmtInt(count) + ' transacciones (ticket ' + fmtUSD2(ticket) + ').</li>' +
+          
         '</ul></div>' +
         '<div class="verdict-block verdict-red"><div class="vb-title">🔴 POR OPTIMIZAR</div><ul>' +
-          '<li>El <b>' + Math.round(bizPct) + '%</b> de las ventas se va en gastos de negocio; la categoría top es <b>' + topCat + '</b> (' + fmtUSD(topCatUsd) + ').</li>' +
+          '<li>El <b>' + Math.round(bizPct) + '%</b> de los ingresos se va en gastos de negocio; la categor&iacute;a top es <b>' + topCat + '</b> (' + fmtUSD(topCatUsd) + ').</li>' +
           '<li>Hay duplicidades en SaaS/Google que drenan ~$80-155 USD/mes sin retorno.</li>' +
-          '<li>Gasto personal de <b>' + fmtUSD(sum.totalPersonalUSD) + '</b> representa presión sobre el superávit.</li>' +
+          '<li>Gasto personal de <b>' + fmtUSD(sum.totalPersonalUSD) + '</b> representa presi&oacute;n sobre el saldo.</li>' +
         '</ul></div>' +
         '<div class="verdict-block verdict-gold"><div class="vb-title">💡 RECOMENDACIONES DEL MES</div><ul>' +
-          '<li>Aplicar el ahorro potencial de <b>+$' + (sum.potentialMonthlySavingsUSD || 0).toFixed(0) + ' USD/mes</b> a pauta: con ROAS ' + sum.roas.toFixed(2) + 'x, genera ~+$' + ((sum.potentialMonthlySavingsUSD || 0) * (sum.roas || 0)).toFixed(0) + ' USD adicionales.</li>' +
-          '<li>Concentrar presupuesto en <b>' + topProduct + '</b> y <b>' + topCountry + '</b> (los ganadores del mes).</li>' +
+          '<li>Aplicar el ahorro potencial de <b>+$' + (sum.potentialMonthlySavingsUSD || 0).toFixed(0) + ' USD/mes</b> directamente al ahorro o reinversi&oacute;n.</li>' +
+          '<li>Eliminar las duplicidades de SaaS (Google, Skool, IA) antes de aumentar cualquier gasto.</li>' +
           '<li>Mantener el ritmo diario de caja: ~' + fmtUSD2(cashPerDay) + ' USD libres por día.</li>' +
         '</ul></div>' +
         '<div class="verdict-block verdict-blue"><div class="vb-title">📊 TOP 3 GASTOS DEL MES</div>' + top3Html + '</div>' +
       '</div>';
     verdict.innerHTML = verdictHtml;
+  }
+
+  function renderExpenseBreakdown() {
+    var el = document.getElementById('exp-breakdown');
+    if (!el || !window.EXPENSES_DATA) return;
+    var items = window.EXPENSES_DATA.items;
+    if (!items.length) { el.innerHTML = '<div class="empty">Sin cargos en el periodo</div>'; return; }
+
+    var catMap = {}, typeMap = { Negocio: 0, Personal: 0 };
+    var totalUsd = 0, totalPen = 0;
+    items.forEach(function (it) {
+      if (!catMap[it.cat]) catMap[it.cat] = { count: 0, usd: 0, pen: 0, negocio: 0 };
+      catMap[it.cat].count++;
+      catMap[it.cat].usd += it.usd;
+      catMap[it.cat].pen += it.pen;
+      if (it.type === 'Negocio') catMap[it.cat].negocio += it.usd;
+      typeMap[it.type] = (typeMap[it.type] || 0) + it.usd;
+      totalUsd += it.usd;
+      totalPen += it.pen;
+    });
+    var cats = Object.keys(catMap).sort(function (a, b) { return catMap[b].usd - catMap[a].usd; });
+
+    var rows = cats.map(function (cat) {
+      var d = catMap[cat];
+      var pct = Math.round((d.usd / totalUsd) * 100);
+      var mix = d.negocio >= d.usd * 0.6 ? 'Negocio' : (d.negocio > 0 ? 'Mixto' : 'Personal');
+      return '<tr>' +
+        '<td><span class="country">' + esc(cat) + '</span></td>' +
+        '<td>' + d.count + '</td>' +
+        '<td style="font-family:var(--font-mono); font-weight:700;">$' + d.usd.toFixed(2) + '</td>' +
+        '<td style="font-family:var(--font-mono);">S/ ' + d.pen.toFixed(2) + '</td>' +
+        '<td><div class="mini-track"><div class="mini-fill" style="width:' + pct + '%"></div></div><span class="mini-pct">' + pct + '%</span></td>' +
+        '<td><span class="pill ' + (mix === 'Negocio' ? 'up' : '') + '">' + mix + '</span></td>' +
+        '</tr>';
+    }).join('');
+
+    el.innerHTML =
+      '<div class="exp-type-summary">' +
+        '<div class="ts-item"><span class="ts-label">Total negocio</span><span class="ts-val">' + fmtUSD(typeMap.Negocio || 0) + '</span></div>' +
+        '<div class="ts-item"><span class="ts-label">Total personal</span><span class="ts-val">' + fmtUSD(typeMap.Personal || 0) + '</span></div>' +
+        '<div class="ts-item"><span class="ts-label">Total del mes</span><span class="ts-val">' + fmtUSD(totalUsd) + '</span></div>' +
+        '<div class="ts-item"><span class="ts-label">Cargos auditados</span><span class="ts-val">' + items.length + '</span></div>' +
+      '</div>' +
+      '<div class="mini-table-scroll"><table>' +
+        '<thead><tr><th>Categor\u00EDa</th><th>Cargos</th><th>USD</th><th>PEN</th><th>% del total</th><th>Tipo</th></tr></thead>' +
+        '<tbody>' + rows + '</tbody></table></div>';
+  }
+
+  var LEAK_VENDORS = [
+    { k: 'GOOGLE', name: 'Google / Google One', rec: 'Cobros m\u00FAltiple del mismo servicio: consolida en un solo plan.' },
+    { k: 'SKOOL', name: 'Skool', rec: 'Varias comunidades activas: cancela las que no usas.' },
+    { k: 'CHATGPT', name: 'ChatGPT / OpenAI', rec: 'Dos o m\u00E1s suscripciones de IA: eval\u00FAa quedarte con una.' },
+    { k: 'CLAUDE', name: 'Claude / Anthropic', rec: 'Suscripci\u00F3n duplicada con ChatGPT: consolida tu stack de IA.' },
+    { k: 'OPENAI', name: 'OpenAI', rec: 'Verifica cu\u00E1ntos planes de IA est\u00E1s pagando a la vez.' },
+    { k: 'NETFLIX', name: 'Netflix', rec: 'Plan familiar reduce el costo por persona.' },
+    { k: 'YOUTUBE', name: 'YouTube Premium', rec: 'Eval\u00FAa el plan familiar compartido.' },
+    { k: 'APPLE', name: 'Apple Billing', rec: 'Agrupa suscripciones en el plan familiar de Apple.' },
+    { k: 'SPOTIFY', name: 'Spotify', rec: 'Plan familiar o descuento anual.' },
+    { k: 'FACEBOOK', name: 'Facebook / Meta', rec: 'Gasto de marketing frecuente: consolida y negocia.' }
+  ];
+
+  function renderExpLeaks() {
+    var el = document.getElementById('exp-leaks');
+    if (!el || !window.EXPENSES_DATA) return;
+    var items = window.EXPENSES_DATA.items;
+
+    var leaks = [];
+    LEAK_VENDORS.forEach(function (v) {
+      var hits = items.filter(function (it) { return (it.desc + ' ' + it.cat).toUpperCase().indexOf(v.k) !== -1; });
+      if (hits.length >= 2) {
+        var total = 0;
+        hits.forEach(function (h) { total += h.usd; });
+        leaks.push({ name: v.name, count: hits.length, total: total, rec: v.rec });
+      }
+    });
+
+    var top = items.slice().sort(function (a, b) { return b.usd - a.usd; }).slice(0, 5);
+
+    var leakHtml = leaks.length
+      ? leaks.map(function (l) {
+          return '<div class="leak-row"><span class="leak-icon">!</span>' +
+            '<div class="leak-body"><div class="leak-title">' + esc(l.name) + ' \u00B7 ' + l.count + ' cargos \u00B7 <b>' + fmtUSD(l.total) + '</b></div>' +
+            '<div class="leak-rec">' + esc(l.rec) + '</div></div></div>';
+        }).join('')
+      : '<div class="empty">Sin duplicidades detectadas este mes</div>';
+
+    el.innerHTML =
+      '<div class="leak-block"><div class="leak-block-title">Cargos recurrentes duplicados</div>' + leakHtml + '</div>' +
+      '<div class="leak-block"><div class="leak-block-title">Top 5 gastos individuales</div>' +
+        top.map(function (t, i) {
+          return '<div class="leak-row top"><span class="leak-icon rank">' + (i + 1) + '</span>' +
+            '<div class="leak-body"><div class="leak-title">' + esc(t.desc) + '</div>' +
+            '<div class="leak-rec">' + fmtUSD(t.usd) + ' \u00B7 ' + esc(t.cat) + ' \u00B7 ' + esc(t.source) + '</div></div></div>';
+        }).join('') +
+      '</div>';
   }
 
   // ============================================================
