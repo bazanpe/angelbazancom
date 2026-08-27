@@ -1,7 +1,9 @@
 (function () {
   'use strict';
 
-  var ACCESS_CODE = '203955';
+  var USER_EMAIL = 'zangelbazan@gmail.com';
+  var ACCESS_PASS = '203955bazan';
+  var SESSION_KEY = 'stark_session';
   var FX = 3.75;
   var MONTHS_LONG = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
@@ -61,34 +63,40 @@
   // ============================================================
   var gate = document.getElementById('gate');
   var gateInput = document.getElementById('gate-input');
+  var gateEmail = document.getElementById('gate-email');
   var gateError = document.getElementById('gate-error');
   var appShell = document.querySelector('.app-shell');
 
   function unlock() {
     appShell.classList.add('unlocked');
     gate.classList.add('hidden');
+    try { localStorage.setItem(SESSION_KEY, '1'); } catch (e) {}
     var st = document.getElementById('lock-status-text');
     if (st) st.textContent = 'Sesión privada activa';
   }
   function lock() {
     appShell.classList.remove('unlocked');
     gate.classList.remove('hidden');
-    gateInput.value = '';
+    if (gateInput) gateInput.value = '';
+    if (gateEmail) gateEmail.value = '';
     if (gateError) gateError.textContent = '';
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
     var st = document.getElementById('lock-status-text');
-    if (st) st.textContent = 'Panel bloqueado';
+    if (st) st.textContent = 'Sesión cerrada';
   }
   function tryUnlock() {
-    var v = gateInput.value.trim();
-    if (!v) { gateError.textContent = 'Ingresa el código de acceso.'; return; }
-    if (v === ACCESS_CODE) { gateError.textContent = ''; unlock(); }
+    var em = gateEmail ? gateEmail.value.trim().toLowerCase() : '';
+    var pw = gateInput ? gateInput.value : '';
+    if (!em || !pw) { gateError.textContent = 'Ingresa tu usuario y contraseña.'; return; }
+    if (em === USER_EMAIL && pw === ACCESS_PASS) { gateError.textContent = ''; unlock(); }
     else {
-      gateError.textContent = 'Código incorrecto. Inténtalo de nuevo.';
+      gateError.textContent = 'Usuario o contraseña incorrectos. Inténtalo de nuevo.';
       var card = document.getElementById('gate-card');
       card.classList.remove('gate-shake'); void card.offsetWidth; card.classList.add('gate-shake');
     }
   }
   document.getElementById('gate-btn').addEventListener('click', tryUnlock);
+  if (gateEmail) gateEmail.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryUnlock(); });
   gateInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') tryUnlock(); });
   document.getElementById('gate-eye').addEventListener('click', function () {
     var isPass = gateInput.type === 'password';
@@ -161,7 +169,7 @@
     var card = document.getElementById('mini-ingresos');
     if (card) {
       var sub = card.closest('.mini-card').querySelector('.mini-sub');
-      if (sub) sub.textContent = monthLabel() + (monthIsJuly() ? ' Â· auditado' : ' Â· combo IA');
+      if (sub) sub.textContent = monthLabel() + (monthIsJuly() ? ' · auditado' : ' · combo IA');
     }
     var gc = document.getElementById('mini-gastos');
     if (gc) {
@@ -325,17 +333,42 @@
   // ============================================================
   function renderIngresos() {
     var tb = document.getElementById('ingresos-tbody');
-    if (!tb) return;
+    var detail = document.getElementById('ingresos-detail');
+    if (!tb && !detail) return;
     var sel = document.getElementById('sel-month-ingresos');
     var filter = sel ? sel.value : 'all';
     var months = filter === 'all' ? comboMonths : comboMonths.filter(function (m) { return m.month.indexOf(filter) !== -1; });
-    tb.innerHTML = months.map(function (m) {
-      return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
-        '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
-        '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(m.adsUSD) + '</td>' +
-        '<td style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(m.profitUSD) + '</td>' +
-        '<td style="font-family:JetBrains Mono,monospace;">' + m.roas.toFixed(2) + 'x</td></tr>';
-    }).join('');
+    if (tb) {
+      tb.innerHTML = months.map(function (m) {
+        return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
+          '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
+          '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(m.adsUSD) + '</td>' +
+          '<td style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(m.profitUSD) + '</td>' +
+          '<td style="font-family:JetBrains Mono,monospace;">' + m.roas.toFixed(2) + 'x</td></tr>';
+      }).join('');
+    }
+    if (detail) {
+      detail.innerHTML = months.map(function (m) {
+        var ctry = (m.countries || []).map(function (c) {
+          return '<tr><td class="cell-title">' + esc(c.country) + '</td>' +
+            '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(c.ads) + '</td>' +
+            '<td class="amt-inc">' + fmtUSD(c.revenue) + '</td>' +
+            '<td style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(c.profit) + '</td></tr>';
+        }).join('');
+        return '<div class="ing-card">' +
+          '<div class="ing-head"><div class="ing-title">' + esc(m.month) + '</div><div class="ing-roas">ROAS ' + m.roas.toFixed(2) + 'x</div></div>' +
+          '<div class="ing-metrics">' +
+          '<div class="ing-metric"><span class="ing-label">Ingresos</span><span class="ing-value up">' + fmtUSD(m.revenueUSD) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Gasto pauta</span><span class="ing-value down">−' + fmtUSD(m.adsUSD || 0) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Herramientas</span><span class="ing-value down">−' + fmtUSD(m.toolsUSD || 0) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Retiros</span><span class="ing-value down">−' + fmtUSD(m.withdrawalsUSD || 0) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Ganancia neta</span><span class="ing-value up">' + fmtUSD(m.profitUSD) + '</span></div>' +
+          '</div>' +
+          (m.highlights ? '<div class="ing-highlight">💡 <b>Destacado:</b> ' + esc(m.highlights) + '</div>' : '') +
+          '<table class="tbl tbl-sm"><thead><tr><th>País</th><th>Pauta</th><th>Ingresos</th><th>Ganancia</th></tr></thead><tbody>' + ctry + '</tbody></table>' +
+          '</div>';
+      }).join('');
+    }
   }
 
   function renderGastos() {
@@ -368,17 +401,21 @@
       formalCredits.forEach(function (c) { totalPend += c.pendingBalancePEN; });
       tb.innerHTML = formalCredits.map(function (c) {
         var paid = payCount(c.name);
-        var shown = Math.min(paid, c.remainingQuota);
-        var pct = Math.min(100, Math.round((paid / c.remainingQuota) * 100));
+        var totalQ = c.totalQuotas || c.remainingQuota;
+        var pend = Math.min(c.remainingQuota, totalQ);
+        var current = c.currentQuota || Math.max(1, totalQ - pend + 1);
+        var shown = Math.min(paid, totalQ);
+        var pct = Math.min(100, Math.max(2, Math.round(((totalQ - pend) / totalQ) * 100)));
         return '<tr>' +
           '<td class="cell-title">' + esc(c.name) + '</td>' +
           '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
           '<td>D\u00EDa ' + c.dueDateDay + '</td>' +
-          '<td>' + c.remainingQuota + ' cuotas</td>' +
+          '<td><b>' + current + '</b> de ' + totalQ + '</td>' +
           '<td>' + esc(c.range) + '</td>' +
           '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;font-weight:800;">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td>' +
-          '<td><div class="pay-progress"><div class="pay-bar" style="width:' + pct + '%"></div></div>' +
-          '<div class="pay-meta">' + shown + ' de ' + c.remainingQuota + ' cuotas pagadas</div>' +
+          '<td><div class="pay-quota-big">' + current + '/' + totalQ + '</div>' +
+          '<div class="pay-progress"><div class="pay-bar" style="width:' + pct + '%"></div></div>' +
+          '<div class="pay-meta">' + pend + ' cuotas por pagar \u00B7 ' + shown + ' pagadas</div>' +
           '<button class="pay-btn" data-name="' + esc(c.name) + '" data-amount="' + c.monthlyFeePEN + '">\u2714 Registrar pago</button></td>' +
           '</tr>';
       }).join('');
@@ -418,8 +455,10 @@
     var paid = 0, pending = 0;
     var per = formalCredits.map(function (c) {
       var p = Math.min(payCount(c.name), c.remainingQuota);
-      paid += p; pending += (c.remainingQuota - p);
-      return { name: c.name, total: c.remainingQuota, paid: p, pend: c.remainingQuota - p, saldo: c.pendingBalancePEN };
+      var total = c.totalQuotas || c.remainingQuota;
+      var pend = Math.min(c.remainingQuota, total);
+      paid += p; pending += pend;
+      return { name: c.name, total: total, cur: c.currentQuota || Math.max(1, total - pend + 1), pend: pend, saldo: c.pendingBalancePEN };
     });
     var totalQ = paid + pending;
     var donutHtml = '';
@@ -447,10 +486,11 @@
     per.forEach(function (c) { if (c.pend > maxPend) maxPend = c.pend; });
     bars.innerHTML = per.map(function (c) {
       var pct = Math.round(c.pend / maxPend * 100);
-      var tip = c.name + ' \u00B7 ' + c.pend + ' cuotas pendientes \u00B7 Saldo S/ ' + c.saldo.toLocaleString();
+      var tip = c.name + ' \u00B7 cuota ' + c.cur + ' de ' + c.total + ' \u00B7 ' + c.pend + ' pendientes \u00B7 Saldo S/ ' + c.saldo.toLocaleString();
       return '<div class="cat-row" data-tip="' + esc(tip) + '">' +
-        '<div class="cat-head"><span>' + esc(c.name.split('(')[0].trim()) + '</span><span style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">' + c.pend + ' pend.</span></div>' +
+        '<div class="cat-head"><span>' + esc(c.name.split('(')[0].trim()) + '</span><span class="pay-quota-big sm">' + c.cur + '/' + c.total + '</span></div>' +
         '<div class="cat-track"><div class="cat-fill" style="width:' + pct + '%;background:linear-gradient(90deg,#FF6B6B,#FFB020);"></div></div>' +
+        '<div class="pay-meta" style="margin-top:4px;">' + c.pend + ' cuotas pendientes \u00B7 Saldo S/ ' + c.saldo.toLocaleString() + '</div>' +
         '</div>';
     }).join('');
   }
@@ -494,6 +534,7 @@
     gastos: 'Gastos',
     deudas: 'Deudas',
     pagos: 'Pagos',
+    negocio: 'Negocio',
     metas: 'Metas',
     reportes: 'Reportes'
   };
@@ -510,6 +551,7 @@
     else if (target === 'gastos') renderGastos();
     else if (target === 'deudas') renderDeudas();
     else if (target === 'pagos') renderPagos();
+    else if (target === 'negocio') renderNegocio();
     else if (target === 'metas') renderMetas();
     else if (target === 'reportes') renderReportes();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -799,6 +841,39 @@
       renderPagos();
     });
   }
+  function loadNegocioExtra() { try { return JSON.parse(localStorage.getItem('stark_negocio_extra') || '[]'); } catch (e) { return []; } }
+  function saveNegocioExtra(arr) { localStorage.setItem('stark_negocio_extra', JSON.stringify(arr)); }
+  function renderNegocio() {
+    var tb = document.getElementById('negocio-tbody');
+    var tot = document.getElementById('negocio-total');
+    if (!tb) return;
+    var tools = [];
+    if (window.BUSINESS_DATA && window.BUSINESS_DATA.tools) tools = tools.concat(window.BUSINESS_DATA.tools);
+    loadNegocioExtra().forEach(function (t) { tools.push(t); });
+    var total = 0;
+    tb.innerHTML = tools.map(function (t) {
+      total += t.usd;
+      return '<tr><td class="cell-title">' + esc(t.name) + '</td><td>' + esc(t.fecha) + '</td><td class="amt-exp">' + fmtUSD2(t.usd) + '</td></tr>';
+    }).join('');
+    if (tot) tot.textContent = tools.length + ' herramientas \u00B7 TOTAL: ' + fmtUSD2(total) + ' \u2248 S/ ' + (total * FX).toFixed(2);
+  }
+  function bindNegocioForm() {
+    var btn = document.getElementById('nf-add');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var nombre = document.getElementById('nf-nombre').value.trim();
+      var usd = parseFloat(document.getElementById('nf-usd').value);
+      if (!nombre || isNaN(usd) || usd <= 0) { showToast('Negocio', 'Completa nombre y monto USD v\u00E1lido.'); return; }
+      var fechaRaw = document.getElementById('nf-fecha').value;
+      var meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+      var fecha = fechaRaw ? parseInt(fechaRaw.slice(8), 10) + ' ' + meses[parseInt(fechaRaw.slice(5, 7), 10) - 1] + ' ' + fechaRaw.slice(0, 4) : 'pr\u00F3ximo pago';
+      var arr = loadNegocioExtra(); arr.push({ name: nombre, fecha: fecha, usd: usd }); saveNegocioExtra(arr);
+      document.getElementById('nf-nombre').value = '';
+      document.getElementById('nf-usd').value = '';
+      showToast('Herramienta agregada', nombre + ' \u00B7 ' + fmtUSD2(usd));
+      renderNegocio();
+    });
+  }
   // ============================================================
   // INIT
   // ============================================================
@@ -808,5 +883,9 @@
   switchTab('resumen');
   bindExtras();
   bindPagosForm();
-  lock();
+  bindNegocioForm();
+  try {
+    if (localStorage.getItem(SESSION_KEY) === '1') { unlock(); }
+    else { lock(); }
+  } catch (e) { lock(); }
 })();
