@@ -61,6 +61,15 @@
   function monthSaldo() { return monthIngresos() - monthGastos(); }
   function monthLabel() { var m = selectedMonth(); return m ? m.month : '\u2014'; }
   function monthIsJuly() { var m = selectedMonth(); return !!m && m.month.indexOf('Julio') !== -1; }
+  function monthIngresosReal() { var m = selectedMonth(); return m ? m.revenueUSD + hotmartFor(m) : 0; }
+  function monthGastosReal() {
+    var m = selectedMonth();
+    if (!m) return 0;
+    var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+    if (m.month.indexOf('Julio') !== -1 && expSum) g += (expSum.totalPersonalUSD || 0);
+    return g;
+  }
+  function monthProfitReal() { return monthIngresosReal() - monthGastosReal(); }
   var deudasMes = debts ? debts.summary.totalMonthlyCommitmentCurrentPEN : 8971;
   var deudaMin = debts ? debts.summary.totalDebtEstimatedMinPEN : 165000;
   var deudaMax = debts ? debts.summary.totalDebtEstimatedMaxPEN : 185000;
@@ -159,10 +168,16 @@
   // RENDER: RESUMEN
   // ============================================================
   function renderHero() {
-    document.getElementById('hero-saldo').textContent = fmtPEN(disponible);
+    var profit = monthProfitReal();
+    var ok = profit >= 0;
+    var hv = document.getElementById('hero-saldo');
+    hv.textContent = fmtUSD(profit);
+    hv.style.color = ok ? '' : 'var(--red)';
+    var lbl = document.querySelector('.hero-left .hero-label');
+    if (lbl) lbl.textContent = 'PROFIT REAL DEL MES \u00B7 ' + monthLabel().toUpperCase();
     var growth = document.getElementById('hero-growth');
-    growth.innerHTML = 'Disponible en cuentas · Ahorro Meta Scotiabank ' + fmtPEN(warda);
-    growth.className = 'hero-growth up';
+    growth.innerHTML = 'INGRESOS ' + fmtUSD(monthIngresosReal()) + ' \u2212 GASTOS ' + fmtUSD(monthGastosReal()) + ' = ' + fmtUSD(profit);
+    growth.className = 'hero-growth ' + (ok ? 'up' : 'down');
 
     var ms = monthSaldo();
     var mpct = Math.min(100, Math.round((ms / META) * 100));
@@ -175,18 +190,18 @@
   }
 
   function renderMinis() {
-    document.getElementById('mini-ingresos').textContent = fmtUSD(monthIngresos());
-    document.getElementById('mini-gastos').textContent = fmtUSD(monthGastos());
+    document.getElementById('mini-ingresos').textContent = fmtUSD(monthIngresosReal());
+    document.getElementById('mini-gastos').textContent = fmtUSD(monthGastosReal());
     document.getElementById('mini-deudas').textContent = fmtPEN(deudasMes);
     var card = document.getElementById('mini-ingresos');
     if (card) {
       var sub = card.closest('.mini-card').querySelector('.mini-sub');
-      if (sub) sub.textContent = monthLabel() + (monthIsJuly() ? ' · auditado' : ' · combo IA');
+      if (sub) sub.textContent = monthLabel() + ' \u00B7 Combo + Low Ticket';
     }
     var gc = document.getElementById('mini-gastos');
     if (gc) {
       var sub2 = gc.closest('.mini-card').querySelector('.mini-sub');
-      if (sub2) sub2.textContent = monthIsJuly() ? 'Negocio + personal' : 'Estimado: pauta + herramientas';
+      if (sub2) sub2.textContent = monthIsJuly() ? 'Pauta + Herramientas + Retiros + Personal' : 'Pauta + Herramientas + Retiros';
     }
   }
 
