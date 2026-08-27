@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>STARK HUD — Resumen Financiero</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=26">
+  <link rel="stylesheet" href="css/dashboard.css?v=27">
 </head>
 <body>
 
@@ -168,8 +168,9 @@
             </div>
             <div class="table-scroll">
               <table class="tbl">
-                <thead><tr><th>Mes</th><th>Ingresos</th><th>Gasto pauta</th><th>Ganancia neta</th><th>ROAS</th></tr></thead>
+                <thead><tr><th>Mes</th><th>Ingresos Combo</th><th>Retiros Hotmart</th><th>Total</th><th>Gasto pauta</th><th>Ganancia neta</th><th>ROAS</th></tr></thead>
                 <tbody id="ingresos-tbody"></tbody>
+                <tfoot id="ingresos-tfoot"></tfoot>
               </table>
             </div>
             <div class="ing-detail" id="ingresos-detail"></div>
@@ -261,6 +262,12 @@
               <table class="tbl">
                 <thead><tr><th>Herramienta</th><th>Fecha de pago</th><th>Monto</th></tr></thead>
                 <tbody id="negocio-tbody"></tbody>
+                <tfoot>
+                  <tr style="border-top:2px solid var(--border);">
+                    <td colspan="2"><b>TOTAL GASTOS NEGOCIO</b></td>
+                    <td class="amt-exp" id="negocio-tfoot-total"><b>US$ 0.00</b></td>
+                  </tr>
+                </tfoot>
               </table>
             </div>
           </div>
@@ -351,13 +358,14 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=26"></script>
-  <script src="js/data2.js?v=26"></script>
-  <script src="js/expenses_data.js?v=26"></script>
-  <script src="js/combo_ia_data.js?v=26"></script>
-  <script src="js/debts_data.js?v=26"></script>
-  <script src="js/payments_data.js?v=26"></script>
-  <script src="js/business_data.js?v=26"></script>
-  <script src="js/dashboard.js?v=26"></script>
+  <script src="js/data.js?v=27"></script>
+  <script src="js/data2.js?v=27"></script>
+  <script src="js/expenses_data.js?v=27"></script>
+  <script src="js/combo_ia_data.js?v=27"></script>
+  <script src="js/debts_data.js?v=27"></script>
+  <script src="js/payments_data.js?v=27"></script>
+  <script src="js/business_data.js?v=27"></script>
+  <script src="js/hotmart_data.js?v=27"></script>
+  <script src="js/dashboard.js?v=27"></script>
 </body>
 </html>

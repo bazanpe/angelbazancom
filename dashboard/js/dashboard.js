@@ -18,6 +18,18 @@
     return window.COMBO_IA_DATA.months.filter(function (m) { return m.month.indexOf('Agosto') === -1; });
   }();
 
+  var hotmartData = window.HOTMART_DATA || null;
+  function hotmartFor(m) {
+    if (!hotmartData || !hotmartData.months || !m) return 0;
+    var v = hotmartData.months[m.month];
+    return v ? v : 0;
+  }
+  function hotmartTotal() {
+    var t = 0;
+    if (hotmartData && hotmartData.months) Object.keys(hotmartData.months).forEach(function (k) { t += hotmartData.months[k]; });
+    return t;
+  }
+
   var debts = window.DEBTS_DATA || null;
   var formalCredits = debts ? debts.formalCredits || [] : [];
   var expSum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
@@ -334,21 +346,38 @@
   function renderIngresos() {
     var tb = document.getElementById('ingresos-tbody');
     var detail = document.getElementById('ingresos-detail');
+    var tfoot = document.getElementById('ingresos-tfoot');
     if (!tb && !detail) return;
     var sel = document.getElementById('sel-month-ingresos');
     var filter = sel ? sel.value : 'all';
     var months = filter === 'all' ? comboMonths : comboMonths.filter(function (m) { return m.month.indexOf(filter) !== -1; });
     if (tb) {
       tb.innerHTML = months.map(function (m) {
+        var hm = hotmartFor(m);
+        var total = m.revenueUSD + hm;
         return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
           '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
+          '<td class="amt-inc" style="color:#6EA8FF;">' + fmtUSD(hm) + '</td>' +
+          '<td class="amt-inc" style="font-weight:900;">' + fmtUSD(total) + '</td>' +
           '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(m.adsUSD) + '</td>' +
           '<td style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(m.profitUSD) + '</td>' +
           '<td style="font-family:JetBrains Mono,monospace;">' + m.roas.toFixed(2) + 'x</td></tr>';
       }).join('');
     }
+    if (tfoot) {
+      var sCombo = 0, sHm = 0, sAds = 0, sProfit = 0;
+      months.forEach(function (m) { sCombo += m.revenueUSD; sHm += hotmartFor(m); sAds += (m.adsUSD || 0); sProfit += (m.profitUSD || 0); });
+      tfoot.innerHTML = '<tr style="border-top:2px solid var(--border);"><td><b>Total</b></td>' +
+        '<td class="amt-inc"><b>' + fmtUSD(sCombo) + '</b></td>' +
+        '<td class="amt-inc" style="color:#6EA8FF;"><b>' + fmtUSD(sHm) + '</b></td>' +
+        '<td class="amt-inc" style="font-weight:900;"><b>' + fmtUSD(sCombo + sHm) + '</b></td>' +
+        '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;"><b>−' + fmtUSD(sAds) + '</b></td>' +
+        '<td style="color:var(--green);font-family:JetBrains Mono,monospace;"><b>' + fmtUSD(sProfit) + '</b></td>' +
+        '<td></td></tr>';
+    }
     if (detail) {
       detail.innerHTML = months.map(function (m) {
+        var hm = hotmartFor(m);
         var ctry = (m.countries || []).map(function (c) {
           return '<tr><td class="cell-title">' + esc(c.country) + '</td>' +
             '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(c.ads) + '</td>' +
@@ -358,7 +387,9 @@
         return '<div class="ing-card">' +
           '<div class="ing-head"><div class="ing-title">' + esc(m.month) + '</div><div class="ing-roas">ROAS ' + m.roas.toFixed(2) + 'x</div></div>' +
           '<div class="ing-metrics">' +
-          '<div class="ing-metric"><span class="ing-label">Ingresos</span><span class="ing-value up">' + fmtUSD(m.revenueUSD) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Ingresos Combo</span><span class="ing-value up">' + fmtUSD(m.revenueUSD) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Low Ticket Hotmart</span><span class="ing-value up" style="color:#6EA8FF;">' + fmtUSD(hm) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Ingresos totales</span><span class="ing-value up">' + fmtUSD(m.revenueUSD + hm) + '</span></div>' +
           '<div class="ing-metric"><span class="ing-label">Gasto pauta</span><span class="ing-value down">−' + fmtUSD(m.adsUSD || 0) + '</span></div>' +
           '<div class="ing-metric"><span class="ing-label">Herramientas</span><span class="ing-value down">−' + fmtUSD(m.toolsUSD || 0) + '</span></div>' +
           '<div class="ing-metric"><span class="ing-label">Retiros</span><span class="ing-value down">−' + fmtUSD(m.withdrawalsUSD || 0) + '</span></div>' +
@@ -514,11 +545,12 @@
       var rows = '';
       var acum = 0, sumIng = 0, sumGas = 0, sumSal = 0;
       comboMonths.forEach(function (m) {
+        var hm = hotmartFor(m);
         var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
-        var s = m.revenueUSD - g;
-        sumIng += m.revenueUSD; sumGas += g; sumSal += s; acum += s;
+        var s = (m.revenueUSD + hm) - g;
+        sumIng += m.revenueUSD + hm; sumGas += g; sumSal += s; acum += s;
         rows += '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
-          '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
+          '<td class="amt-inc">' + fmtUSD(m.revenueUSD + hm) + '</td>' +
           '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(g) + '</td>' +
           '<td style="font-family:JetBrains Mono,monospace;font-weight:700;color:' + (s >= 0 ? 'var(--green)' : 'var(--red)') + ';">' + fmtUSD(s) + '</td>' +
           '<td style="font-family:JetBrains Mono,monospace;">' + fmtUSD(acum) + '</td></tr>';
@@ -554,21 +586,23 @@
     var kpi = document.getElementById('reporte-kpis');
     var detail = document.getElementById('reportes-detail');
     if (!tb) return;
-    var tIng = 0, tGas = 0, tSal = 0, tRoas = 0, best = null, bestC = null, bestCRev = 0;
+    var tIng = 0, tGas = 0, tSal = 0, tRoas = 0, tHm = 0, best = null, bestC = null, bestCRev = 0;
     comboMonths.forEach(function (m) {
+      var hm = hotmartFor(m);
       var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
-      var s = m.revenueUSD - g;
-      tIng += m.revenueUSD; tGas += g; tSal += s; tRoas += m.roas;
+      var s = (m.revenueUSD + hm) - g;
+      tIng += m.revenueUSD + hm; tGas += g; tSal += s; tRoas += m.roas; tHm += hm;
       if (!best || s > best.s) best = { m: m.month, s: s };
       (m.countries || []).forEach(function (c) { if (c.revenue > bestCRev) { bestCRev = c.revenue; bestC = c.country; } });
     });
     var promRoas = comboMonths.length ? tRoas / comboMonths.length : 0;
     tb.innerHTML = comboMonths.map(function (m) {
+      var hm = hotmartFor(m);
       var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
-      var s = m.revenueUSD - g;
+      var s = (m.revenueUSD + hm) - g;
       var ok = s >= 0;
       return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
-        '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
+        '<td class="amt-inc">' + fmtUSD(m.revenueUSD + hm) + '</td>' +
         '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(g) + '</td>' +
         '<td style="font-family:JetBrains Mono,monospace;font-weight:700;color:' + (ok ? 'var(--green)' : 'var(--red)') + ';">' + fmtUSD(s) + '</td>' +
         '<td style="font-family:JetBrains Mono,monospace;">' + m.roas.toFixed(2) + 'x</td>' +
@@ -577,6 +611,7 @@
     if (kpi) {
       kpi.innerHTML = [
         ['Ingresos totales', fmtUSD(tIng)],
+        ['Retiros Hotmart', fmtUSD(tHm)],
         ['Gastos totales', '−' + fmtUSD(tGas)],
         ['Saldo acumulado', fmtUSD(tSal)],
         ['ROAS promedio', promRoas.toFixed(2) + 'x'],
@@ -588,8 +623,9 @@
     }
     if (detail) {
       detail.innerHTML = comboMonths.map(function (m) {
+        var hm = hotmartFor(m);
         var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
-        var s = m.revenueUSD - g;
+        var s = (m.revenueUSD + hm) - g;
         var ok = s >= 0;
         var ctry = (m.countries || []).map(function (c) {
           return '<tr><td class="cell-title">' + esc(c.country) + '</td>' +
@@ -600,7 +636,8 @@
         return '<div class="ing-card">' +
           '<div class="ing-head"><div class="ing-title">' + esc(m.month) + '</div><span class="rk-badge ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Positivo' : 'Revisar') + '</span></div>' +
           '<div class="ing-metrics">' +
-          '<div class="ing-metric"><span class="ing-label">Ingresos</span><span class="ing-value up">' + fmtUSD(m.revenueUSD) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Ingresos</span><span class="ing-value up">' + fmtUSD(m.revenueUSD + hm) + '</span></div>' +
+          '<div class="ing-metric"><span class="ing-label">Low Ticket Hotmart</span><span class="ing-value up" style="color:#6EA8FF;">' + fmtUSD(hm) + '</span></div>' +
           '<div class="ing-metric"><span class="ing-label">Gasto pauta</span><span class="ing-value down">−' + fmtUSD(m.adsUSD || 0) + '</span></div>' +
           '<div class="ing-metric"><span class="ing-label">Herramientas</span><span class="ing-value down">−' + fmtUSD(m.toolsUSD || 0) + '</span></div>' +
           '<div class="ing-metric"><span class="ing-label">Retiros</span><span class="ing-value down">−' + fmtUSD(m.withdrawalsUSD || 0) + '</span></div>' +
@@ -934,6 +971,7 @@
   function renderNegocio() {
     var tb = document.getElementById('negocio-tbody');
     var tot = document.getElementById('negocio-total');
+    var tfoot = document.getElementById('negocio-tfoot-total');
     if (!tb) return;
     var tools = [];
     if (window.BUSINESS_DATA && window.BUSINESS_DATA.tools) tools = tools.concat(window.BUSINESS_DATA.tools);
@@ -946,6 +984,7 @@
       var dia = t.dia <= 31 ? ('0' + t.dia).slice(-2) + ' de cada mes' : esc(t.fecha);
       return '<tr><td class="cell-title">' + esc(t.name) + '</td><td class="dia-pago">' + dia + '</td><td class="amt-exp">' + fmtUSD2(t.usd) + '</td></tr>';
     }).join('');
+    if (tfoot) tfoot.innerHTML = '<b>' + fmtUSD2(total) + '</b>';
     if (tot) tot.textContent = tools.length + ' herramientas \u00B7 ordenadas por d\u00EDa de pago \u00B7 TOTAL: ' + fmtUSD2(total) + ' \u2248 S/ ' + (total * FX).toFixed(2);
   }
   function bindNegocioForm() {
