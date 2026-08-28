@@ -447,7 +447,7 @@
         var hm = hotmartFor(m);
         var total = m.revenueUSD + hm;
         return '<tr data-month="' + esc(m.month) + '" class="row-click">' +
-          '<td class="cell-title">' + esc(m.month) + ' <span class="usd-mini" title="Ver detalle del mes">ℹ️</span></td>' +
+          '<td class="cell-title">' + esc(m.month) + ' <svg class="ico ico-info" title="Ver detalle del mes"><use href="#i-info"/></svg></td>' +
           '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
           '<td class="amt-inc" style="color:#6EA8FF;">' + fmtUSD(hm) + '</td>' +
           '<td class="amt-inc" style="font-weight:900;">' + fmtUSD(total) + '</td>' +
@@ -779,6 +779,7 @@
     ingresos: 'Ingresos',
     gastos: 'Gastos',
     deudas: 'Deudas',
+    tarjetas: 'Tarjetas',
     negocio: 'Negocio',
     personal: 'Personal',
     metas: 'Metas',
@@ -796,6 +797,7 @@
     else if (target === 'ingresos') renderIngresos();
     else if (target === 'gastos') renderGastos();
     else if (target === 'deudas') renderDeudas();
+    else if (target === 'tarjetas') renderTarjetas();
     else if (target === 'negocio') renderNegocio();
     else if (target === 'personal') renderPersonal();
     else if (target === 'metas') renderMetas();
@@ -1112,6 +1114,61 @@
   }
   function loadNegocioExtra() { try { return JSON.parse(localStorage.getItem('stark_negocio_extra') || '[]'); } catch (e) { return []; } }
   function saveNegocioExtra(arr) { localStorage.setItem('stark_negocio_extra', JSON.stringify(arr)); }
+  function renderTarjetas() {
+    var tb = document.getElementById('cards-tbody');
+    var graph = document.getElementById('cards-graph');
+    if (!tb || !window.CARDS_DATA) return;
+    var hoy = new Date();
+    var tDay = hoy.getDate();
+    var mDays = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    var cards = window.CARDS_DATA.cards.map(function (c) {
+      var days = c.pago - tDay;
+      if (days < 0) days = c.pago + (mDays - tDay);
+      c.dias = days;
+      return c;
+    });
+    cards.sort(function (a, b) { return a.dias - b.dias; });
+    function lineFmt(c) {
+      return (c.currency === 'USD' ? 'US$ ' : 'S/ ') + c.linea.toLocaleString('en-US', { minimumFractionDigits: 2 });
+    }
+    tb.innerHTML = cards.map(function (c) {
+      var color = c.dias <= 2 ? 'var(--red)' : c.dias <= 7 ? 'var(--amber)' : 'var(--green)';
+      return '<tr>' +
+        '<td class="cell-title">' + esc(c.card) + '</td>' +
+        '<td>' + esc(c.holder) + '</td>' +
+        '<td>D\u00EDa ' + c.factura + '</td>' +
+        '<td><b>D\u00EDa ' + c.pago + '</b></td>' +
+        '<td class="amt-inc">' + lineFmt(c) + '</td>' +
+        '<td><span class="nb-days" style="color:' + color + ';">' + (c.dias === 0 ? 'HOY' : c.dias + 'd') + '</span></td>' +
+        '</tr>';
+    }).join('');
+    var prox = cards.filter(function (c) { return c.dias <= 3; });
+    setAlert('tarjetas-alert', !prox.length,
+      prox.length
+        ? '⚠️ <b>Pago de tarjeta pr\u00F3ximo:</b> ' + prox.map(function (c) { return '<b>' + esc(c.card) + '</b> (' + (c.dias === 0 ? '\u00A1HOY!' : c.dias + 'd') + ')'; }).join(' \u00B7 ') + '. No dejes pasar la fecha.'
+        : '✅ Ning\u00FAn pago de tarjeta en los pr\u00F3ximos 3 d\u00EDas.');
+    if (graph) {
+      graph.innerHTML = cards.map(function (c) {
+        var pct = Math.min(100, Math.max(3, Math.round((1 - c.dias / mDays) * 100)));
+        var color = c.dias <= 2 ? '#FF6B6B' : c.dias <= 7 ? '#FFB020' : '#55F58A';
+        var tip = c.card + ' \u00B7 factura d\u00EDa ' + c.factura + ' \u00B7 pago d\u00EDa ' + c.pago + ' \u00B7 faltan ' + c.dias + ' d\u00EDas \u00B7 ' + lineFmt(c);
+        return '<div class="nb-row" data-tip="' + esc(tip) + '">' +
+          '<div class="nb-head"><span><b>' + esc(c.card) + '</b> <span class="usd-mini">' + esc(c.holder) + ' \u00B7 ' + lineFmt(c) + '</span></span>' +
+          '<span class="nb-days" style="color:' + color + ';">' + (c.dias === 0 ? 'HOY' : c.dias + 'd') + '</span></div>' +
+          '<div class="cat-track"><div class="cat-fill" style="width:' + pct + '%;background:' + color + ';"></div></div>' +
+          '<div class="nb-sub">Factura d\u00EDa ' + c.factura + ' \u00B7 paga el d\u00EDa ' + c.pago + ' \u00B7 ' + (c.dias === 0 ? '\u00A1hoy mismo!' : 'faltan ' + c.dias + ' d\u00EDa' + (c.dias === 1 ? '' : 's')) + '</div>' +
+          '</div>';
+      }).join('');
+    }
+    return prox;
+  }
+  function checkCardAlerts() {
+    var prox = renderTarjetas();
+    if (!prox || !prox.length) return;
+    playChime();
+    showToast('Tarjeta por pagar', prox.map(function (c) { return c.card + ' (' + (c.dias === 0 ? 'HOY' : 'en ' + c.dias + 'd') + ')'; }).join(' \u00B7 '));
+  }
+
   function renderNegocio() {
     var tb = document.getElementById('negocio-tbody');
     var tot = document.getElementById('negocio-total');
@@ -1208,7 +1265,7 @@
     if (row) openMonthModal(row.getAttribute('data-month'));
   });
   try {
-    if (localStorage.getItem(SESSION_KEY) === '1') { unlock(); }
+    if (localStorage.getItem(SESSION_KEY) === '1') { unlock(); checkCardAlerts(); }
     else { lock(); }
   } catch (e) { lock(); }
 })();

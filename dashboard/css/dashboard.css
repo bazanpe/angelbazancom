@@ -737,6 +737,17 @@ select:focus { border-color: var(--green); }
 .modal-head h3 { font-size: 20px; font-weight: 800; color: var(--text-title); }
 .row-click { cursor: pointer; }
 .row-click:hover td { background: var(--panel-2); }
+.ico-info {
+  width: 16px;
+  height: 16px;
+  color: var(--green);
+  margin-left: 5px;
+  vertical-align: -2px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.ico-info:hover { transform: scale(1.25); }
+.cards-graph { display: flex; flex-direction: column; gap: 14px; }
 
 .debt-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .chart-donut { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
