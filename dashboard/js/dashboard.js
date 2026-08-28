@@ -131,6 +131,16 @@
     this.classList.toggle('off', isPass);
   });
   document.getElementById('lock-btn').addEventListener('click', lock);
+  var sideLock = document.querySelector('.sidebar .lock-chip');
+  if (sideLock) sideLock.addEventListener('click', lock);
+  var syncT = document.getElementById('sync-time');
+  if (syncT) {
+    var now = new Date();
+    var h = now.getHours(); var m = now.getMinutes();
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    var h12 = h % 12 || 12;
+    syncT.textContent = 'Hoy, ' + h12 + ':' + ('0' + m).slice(-2) + ' ' + ampm;
+  }
 
   // ============================================================
   // SONIDO + TOAST
@@ -174,22 +184,54 @@
   // RENDER: RESUMEN
   // ============================================================
   function renderHero() {
-    var profit = monthProfitReal();
-    var ok = profit >= 0;
     var hv = document.getElementById('hero-saldo');
-    hv.textContent = fmtUSD(profit);
-    hv.style.color = ok ? '' : 'var(--red)';
-    var lbl = document.querySelector('.hero-left .hero-label');
-    if (lbl) lbl.textContent = 'PROFIT REAL DEL MES \u00B7 ' + monthLabel().toUpperCase();
+    if (hv) { hv.textContent = fmtUSD(saldo); hv.style.color = ''; }
+    var lbl = document.querySelector('.hero-eyebrow');
+    if (lbl) lbl.textContent = 'SALDO NETO DEL MES \u00B7 ' + monthLabel().toUpperCase();
+    var profit = monthProfitReal();
+    var cur = selectedMonth();
+    var prev = null;
+    for (var i = 0; i < fullMonths.length; i++) if (fullMonths[i].month === cur.month && i > 0) prev = fullMonths[i - 1];
+    var prevProfit = prev ? (prev.revenueUSD + hotmartFor(prev) - (prev.adsUSD || 0) - (prev.toolsUSD || 0) - (prev.withdrawalsUSD || 0)) : 0;
+    var chg = prevProfit > 0 ? ((profit - prevProfit) / prevProfit) * 100 : 0;
     var growth = document.getElementById('hero-growth');
-    growth.innerHTML = 'INGRESOS ' + fmtUSD(monthIngresosReal()) + ' \u2212 GASTOS ' + fmtUSD(monthGastosReal()) + ' = ' + fmtUSD(profit);
-    growth.className = 'hero-growth ' + (ok ? 'up' : 'down');
+    if (growth) {
+      growth.innerHTML = 'Profit ' + monthLabel() + ': ' + fmtUSD(profit) + ' (' + fmtUSD(monthIngresosReal()) + ' \u2212 ' + fmtUSD(monthGastosReal()) + ') \u00B7 ' +
+        (chg >= 0 ? '\u2191' : '\u2193') + ' ' + Math.abs(chg).toFixed(1) + '% vs. ' + (prev ? prev.month.split(' ')[0] : 'mes anterior');
+      growth.className = 'hero-growth ' + (chg >= 0 ? 'up' : 'down');
+    }
+    var mpct = Math.min(100, Math.round((saldo / META) * 100));
+    var pctEl = document.getElementById('meta-pct');
+    if (pctEl) pctEl.textContent = mpct + '%';
+    var msub = document.getElementById('meta-sub');
+    if (msub) msub.textContent = fmtUSD(Math.max(0, saldo)) + ' de ' + fmtUSD(META) + ' alcanzado';
+    var ring = document.getElementById('meta-ring-fill');
+    if (ring) {
+      var dash = Math.max(0, Math.min(314, (mpct / 100) * 314));
+      ring.setAttribute('stroke-dashoffset', (314 - dash).toFixed(1));
+    }
   }
 
   function renderMinis() {
     document.getElementById('mini-ingresos').textContent = fmtUSD(monthIngresosReal());
     document.getElementById('mini-gastos').textContent = fmtUSD(monthGastosReal());
     document.getElementById('mini-deudas').textContent = fmtUSD(deudasMes / FX);
+    var cur = selectedMonth();
+    var prev = null;
+    for (var i = 0; i < fullMonths.length; i++) if (fullMonths[i].month === cur.month && i > 0) prev = fullMonths[i - 1];
+    var prevIng = prev ? prev.revenueUSD + hotmartFor(prev) : 0;
+    var prevGas = prev ? (prev.adsUSD || 0) + (prev.toolsUSD || 0) + (prev.withdrawalsUSD || 0) : 0;
+    function varHtml(curV, prevV) {
+      if (prevV <= 0) return '';
+      var c = ((curV - prevV) / prevV) * 100;
+      return (c >= 0 ? '\u2191 +' : '\u2193 ') + Math.abs(c).toFixed(1) + '% vs. ' + (prev ? prev.month.split(' ')[0] : '');
+    }
+    var vIng = varHtml(monthIngresosReal(), prevIng);
+    var vGas = varHtml(monthGastosReal(), prevGas);
+    var elVI = document.getElementById('mini-var-ingresos');
+    if (elVI) { elVI.textContent = vIng; elVI.className = 'mini-var ' + (vIng.indexOf('\u2193') === 0 ? 'down' : 'up'); }
+    var elVG = document.getElementById('mini-var-gastos');
+    if (elVG) { elVG.textContent = vGas; elVG.className = 'mini-var ' + (vGas.indexOf('\u2193') === 0 ? 'up' : 'down'); }
     var dc = document.getElementById('mini-deudas');
     if (dc) {
       var dsub = dc.closest('.mini-card').querySelector('.mini-sub');
@@ -222,17 +264,55 @@
     var hm = hotmartFor(m);
     var total = combo + hm;
     var rows = [
-      { label: 'Ventas Combo IA', v: combo, color: '#55F58A', src: 'PDFs de ventas' },
-      { label: 'Retiros Hotmart (low ticket)', v: hm, color: '#6EA8FF', src: 'CSV de transferencias' }
+      { label: 'Ventas Combo IA', v: combo, color: '#25E77A' },
+      { label: 'Retiros Hotmart (low ticket)', v: hm, color: '#27A9FF' }
     ];
-    var max = Math.max(1, combo, hm);
-    el.innerHTML = '<div class="cat-bars">' + rows.map(function (r) {
-      var pct = Math.round((r.v / max) * 100);
-      return '<div class="cat-row">' +
-        '<div class="cat-head"><span>' + esc(r.label) + '</span><span style="color:' + r.color + ';font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(r.v) + '</span></div>' +
-        '<div class="cat-track"><div class="cat-fill" style="width:' + Math.max(2, pct) + '%;background:' + r.color + ';"></div></div></div>';
-    }).join('') +
-      '<div class="desglose-total up"><span>Total ingresos</span><b>' + fmtUSD(total) + '</b></div>' +
+    var maxRow = Math.max(1, combo, hm);
+    var W = 560, H = 185, padT = 12, padB = 24, padL = 48, padR = 12;
+    var data = fullMonths.map(function (mm) {
+      return { label: mm.month.split(' ')[0], inc: mm.revenueUSD + hotmartFor(mm), exp: (mm.adsUSD || 0) + (mm.toolsUSD || 0) + (mm.withdrawalsUSD || 0) };
+    });
+    var maxV = 1;
+    data.forEach(function (d) { maxV = Math.max(maxV, d.inc, d.exp); });
+    var iw = W - padL - padR, ih = H - padT - padB;
+    function px(i) { return padL + (data.length > 1 ? iw * i / (data.length - 1) : iw / 2); }
+    function py(v) { return padT + ih - (v / maxV) * ih; }
+    function line(key) {
+      var d = '';
+      data.forEach(function (p, i) { d += (i ? ' L ' : 'M ') + px(i).toFixed(1) + ' ' + py(p[key]).toFixed(1); });
+      return d;
+    }
+    var incP = line('inc'), expP = line('exp');
+    var area = incP + ' L ' + px(data.length - 1).toFixed(1) + ' ' + (padT + ih) + ' L ' + px(0).toFixed(1) + ' ' + (padT + ih) + ' Z';
+    var grid = '';
+    for (var g = 0; g <= 3; g++) {
+      var v = maxV * (g / 3), gy = py(v);
+      grid += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W - padR) + '" y2="' + gy + '" stroke="rgba(39,169,255,0.07)"/>';
+      grid += '<text x="' + (padL - 6) + '" y="' + (gy + 3) + '" fill="#6E7F99" font-size="9" text-anchor="end" font-family="JetBrains Mono, monospace">' + fmtUSD(v) + '</text>';
+    }
+    var labels = data.map(function (d, i) {
+      return '<text x="' + px(i) + '" y="' + (H - 6) + '" fill="#6E7F99" font-size="9.5" text-anchor="middle">' + esc(d.label) + '</text>';
+    }).join('');
+    var dots = data.map(function (d, i) {
+      return '<circle cx="' + px(i) + '" cy="' + py(d.inc) + '" r="3.5" fill="#25E77A" data-tip="' + esc(d.label + ' \u00B7 Ingresos ' + fmtUSD(d.inc)) + '" style="filter:drop-shadow(0 0 4px rgba(37,231,122,0.7));"/>' +
+        '<circle cx="' + px(i) + '" cy="' + py(d.exp) + '" r="3" fill="#27A9FF" data-tip="' + esc(d.label + ' \u00B7 Gastos ' + fmtUSD(d.exp)) + '" style="filter:drop-shadow(0 0 4px rgba(39,169,255,0.7));"/>';
+    }).join('');
+    el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;">' +
+      '<defs><linearGradient id="incArea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#25E77A" stop-opacity="0.3"/><stop offset="100%" stop-color="#25E77A" stop-opacity="0"/></linearGradient></defs>' +
+      grid +
+      '<path d="' + area + '" fill="url(#incArea)"/>' +
+      '<path d="' + incP + '" fill="none" stroke="#25E77A" stroke-width="2.5" stroke-linecap="round" style="filter:drop-shadow(0 0 7px rgba(37,231,122,0.55));"/>' +
+      '<path d="' + expP + '" fill="none" stroke="#27A9FF" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 4" style="filter:drop-shadow(0 0 6px rgba(39,169,255,0.45));"/>' +
+      dots + labels +
+      '</svg>' +
+      '<div class="chart-legend"><span class="lg-dot" style="background:#25E77A"></span> Ingresos <span class="lg-dot" style="background:#27A9FF;margin-left:14px;"></span> Gastos</div>' +
+      '<div class="cat-bars">' + rows.map(function (r) {
+        var pct = Math.round((r.v / maxRow) * 100);
+        return '<div class="cat-row">' +
+          '<div class="cat-head"><span>' + esc(r.label) + '</span><span style="color:' + r.color + ';font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(r.v) + '</span></div>' +
+          '<div class="cat-track"><div class="cat-fill" style="width:' + Math.max(2, pct) + '%;background:' + r.color + ';"></div></div></div>';
+      }).join('') +
+      '<div class="desglose-total up"><span>Total ingresos del mes</span><b>' + fmtUSD(total) + '</b></div>' +
       '</div>';
   }
 
@@ -356,18 +436,26 @@
     var retiros = m ? (m.withdrawalsUSD || 0) : 0;
     var total = ads + tools + retiros;
     var rows = [
-      { label: 'Pauta (ads)', v: ads, color: '#FFB020' },
-      { label: 'Herramientas', v: tools, color: '#18B875' },
-      { label: 'Retiros', v: retiros, color: '#FF6B6B' }
+      { label: 'Pauta (ads)', v: ads, color: '#27A9FF' },
+      { label: 'Herramientas', v: tools, color: '#206BFF' },
+      { label: 'Retiros', v: retiros, color: '#F5A524' }
     ].filter(function (r) { return r.v > 0; });
     var max = Math.max(1, total);
-    el.innerHTML = '<div class="cat-bars">' + rows.map(function (r) {
-      var pct = Math.round((r.v / max) * 100);
-      return '<div class="cat-row">' +
-        '<div class="cat-head"><span>' + esc(r.label) + '</span><span style="color:' + r.color + ';font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(r.v) + '</span></div>' +
-        '<div class="cat-track"><div class="cat-fill" style="width:' + Math.max(2, pct) + '%;background:' + r.color + ';"></div></div></div>';
-    }).join('') +
-      '<div class="desglose-total down"><span>Total gastos</span><b>' + fmtUSD(total) + '</b></div>' +
+    var vbars = rows.map(function (r) {
+      var h = Math.max(6, Math.round((r.v / max) * 100));
+      return '<div class="vbar-wrap" data-tip="' + esc(r.label + ' \u00B7 ' + fmtUSD(r.v)) + '">' +
+        '<div class="vbar-val">' + fmtUSD(r.v) + '</div>' +
+        '<div class="vbar" style="height:' + h + '%;background:linear-gradient(180deg,' + r.color + ',rgba(39,169,255,0.2));box-shadow:0 0 16px ' + r.color + '55;"></div>' +
+        '<div class="vbar-label">' + esc(r.label) + '</div></div>';
+    }).join('');
+    el.innerHTML = '<div class="vbar-chart">' + vbars + '</div>' +
+      '<div class="cat-bars">' + rows.map(function (r) {
+        var pct = Math.round((r.v / max) * 100);
+        return '<div class="cat-row">' +
+          '<div class="cat-head"><span>' + esc(r.label) + '</span><span style="color:' + r.color + ';font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(r.v) + '</span></div>' +
+          '<div class="cat-track"><div class="cat-fill" style="width:' + Math.max(2, pct) + '%;background:' + r.color + ';"></div></div></div>';
+      }).join('') +
+      '<div class="desglose-total down"><span>Total gastos del mes</span><b>' + fmtUSD(total) + '</b></div>' +
       '</div>';
   }
 
@@ -418,7 +506,7 @@
     items.push({ cls: 'green', icon: '▲', title: 'Ingresos arriba del plan', sub: fmtUSD(ingresos) + ' en el mes · ROAS ' + (julio ? julio.roas.toFixed(2) + 'x' : '—') });
     items.push({ cls: 'red', icon: '!', title: 'Septiembre: mes crítico S/ 9,221 (≈$2,459)', sub: 'Las 4 cuotas de créditos + junta + préstamo papá caen juntas' });
     el.innerHTML = items.map(function (a) {
-      return '<div class="wa-item ' + a.cls + '"><span class="wa-icon">' + a.icon + '</span><div><div class="wa-title">' + a.title + '</div><div class="wa-sub">' + a.sub + '</div></div></div>';
+      return '<div class="wa-item ' + a.cls + '"><span class="wa-icon">' + a.icon + '</span><div><div class="wa-title">' + a.title + '</div><div class="wa-sub">' + a.sub + '</div></div><span class="wa-arrow">\u2192</span></div>';
     }).join('');
   }
 
@@ -1060,16 +1148,19 @@
   }
 
   document.getElementById('add-mov-btn').addEventListener('click', function () {
-    var desc = prompt('Descripción del movimiento:');
-    if (!desc) return;
-    var usd = parseFloat(prompt('Monto en USD (usa − para gasto):'));
-    if (isNaN(usd)) return;
-    var cat = prompt('Categoría (Ads, SaaS, Personal, Operación):') || 'Operación';
-    expItems.push({ source: 'Manual', date: '2026-07-27', desc: desc, cat: cat, type: usd >= 0 ? 'Negocio' : 'Personal', usd: Math.abs(usd), pen: Math.abs(usd) * FX, status: 'Mantener' });
-    gastos = expSum ? (expSum.totalBusinessUSD + expSum.totalPersonalUSD) : 0;
-    saldo = ingresos - gastos;
-    showToast('Movimiento agregado', desc + ' · ' + fmtUSD(Math.abs(usd)));
-    renderResumen();
+    openInfoModal('+ Agregar movimiento',
+      '<div class="ing-highlight">💡 Elige dónde quieres registrar tu movimiento. También puedes escribir una nota y la IA te ayuda.</div>' +
+      '<div class="modal-foot" style="justify-content:flex-start;gap:10px;flex-wrap:wrap;margin-top:6px;">' +
+      '<button class="btn-add" id="am-gasto">💸 Registrar gasto</button>' +
+      '<button class="btn-add" id="am-pago">📥 Registrar pago</button>' +
+      '<button class="btn-add" id="am-nota" style="background:linear-gradient(135deg,#11223A,#0C1B30);border:1px solid var(--border);box-shadow:none;color:var(--text-title);">📝 Escribir nota</button>' +
+      '</div>');
+    var b1 = document.getElementById('am-gasto');
+    if (b1) b1.addEventListener('click', function () { closeMonthModal(); switchTab('gastos'); });
+    var b2 = document.getElementById('am-pago');
+    if (b2) b2.addEventListener('click', function () { closeMonthModal(); switchTab('gastos'); });
+    var b3 = document.getElementById('am-nota');
+    if (b3) b3.addEventListener('click', function () { closeMonthModal(); switchTab('notas'); });
   });
 
   var GOOGLE_SHEET_CSV = '';

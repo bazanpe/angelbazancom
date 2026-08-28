@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Angel Bazan - Dashboard</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070A09'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='900' fill='%2355F58A' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/dashboard.css?v=57">
+  <link rel="stylesheet" href="css/dashboard.css?v=58">
 </head>
 <body>
 
@@ -30,6 +30,8 @@
       <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
       <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
       <symbol id="i-vault" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="3"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="8" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="16"/><line x1="7" y1="3" x2="7" y2="6"/><line x1="17" y1="3" x2="17" y2="6"/></symbol>
+      <symbol id="i-trend-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+      <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v3"/><path d="M22 7v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M15 12h6v3h-6a1.5 1.5 0 0 1 0-3z"/></symbol>
     </defs>
   </svg>
 
@@ -55,6 +57,10 @@
       </nav>
 
       <div class="sidebar-foot">
+        <div class="sync-card">
+          <div class="sync-row"><span class="sync-dot"></span><b>Datos actualizados</b></div>
+          <div class="sync-time" id="sync-time">Hoy</div>
+        </div>
         <div class="lock-chip">
           <span class="dot"></span>
           <span id="lock-status-text">Sesión privada activa</span>
@@ -90,26 +96,57 @@
 
           <section class="hero-card">
             <div class="hero-left">
-              <div class="hero-label">PROFIT REAL DEL MES</div>
-              <div class="hero-value" id="hero-saldo">S/ 0</div>
+              <div class="hero-eyebrow">SALDO NETO DEL MES</div>
+              <div class="hero-value" id="hero-saldo">US$ 0</div>
               <div class="hero-growth up" id="hero-growth">Disponible en cuentas</div>
-          </div>
+              <svg class="hero-curve" viewBox="0 0 560 130" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="hcg" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#25E77A"/><stop offset="100%" stop-color="#27A9FF"/>
+                  </linearGradient>
+                  <linearGradient id="hcf" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#25E77A" stop-opacity="0.22"/><stop offset="100%" stop-color="#25E77A" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,104 C70,92 120,78 170,84 C230,92 280,60 340,52 C400,44 470,30 560,16" fill="none" stroke="url(#hcg)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M0,104 C70,92 120,78 170,84 C230,92 280,60 340,52 C400,44 470,30 560,16 L560,130 L0,130 Z" fill="url(#hcf)"/>
+              </svg>
+            </div>
+            <div class="hero-meta">
+              <svg viewBox="0 0 120 120" width="152" height="152" id="meta-ring" aria-label="Progreso de meta">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#25E77A"/><stop offset="100%" stop-color="#27A9FF"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(39,169,255,0.14)" stroke-width="9"/>
+                <circle id="meta-ring-fill" cx="60" cy="60" r="50" fill="none" stroke="url(#ringGrad)" stroke-width="9" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="meta-ring-text">
+                <div class="meta-label">META MENSUAL</div>
+                <div class="meta-pct" id="meta-pct">0%</div>
+                <div class="meta-sub" id="meta-sub">de US$ 7,600</div>
+              </div>
+            </div>
           </section>
 
           <section class="mini-cards">
             <div class="mini-card green">
-              <div class="mini-head"><span class="mini-label">INGRESOS</span><span class="mini-icon" data-popup="ingresos" title="Ver desglose"><svg class="ico"><use href="#i-cash"/></svg></span></div>
+              <div class="mini-head"><span class="mini-label">INGRESOS</span><span class="mini-icon" data-popup="ingresos" title="Ver desglose"><svg class="ico"><use href="#i-trend-up"/></svg></span></div>
               <div class="mini-value" id="mini-ingresos">US$ 0</div>
-              <div class="mini-sub">Julio 2026 · Combo + Low Ticket</div>
+              <div class="mini-var" id="mini-var-ingresos"></div>
+              <div class="mini-sub">Combo + Low Ticket</div>
             </div>
             <div class="mini-card amber">
-              <div class="mini-head"><span class="mini-label">GASTOS</span><span class="mini-icon" data-popup="gastos" title="Ver desglose"><svg class="ico"><use href="#i-card"/></svg></span></div>
+              <div class="mini-head"><span class="mini-label">GASTOS</span><span class="mini-icon" data-popup="gastos" title="Ver desglose"><svg class="ico"><use href="#i-wallet"/></svg></span></div>
               <div class="mini-value" id="mini-gastos">US$ 0</div>
+              <div class="mini-var" id="mini-var-gastos"></div>
               <div class="mini-sub">Pauta + Herramientas + Retiros</div>
             </div>
             <div class="mini-card red">
-              <div class="mini-head"><span class="mini-label">DEUDAS DEL MES</span><span class="mini-icon" data-popup="deudas" title="Ver desglose"><svg class="ico"><use href="#i-shield"/></svg></span></div>
+              <div class="mini-head"><span class="mini-label">DEUDAS DEL MES</span><span class="mini-icon" data-popup="deudas" title="Ver desglose"><svg class="ico"><use href="#i-card"/></svg></span></div>
               <div class="mini-value" id="mini-deudas">US$ 0</div>
+              <div class="mini-var" id="mini-var-deudas">Septiembre crítico: aparta S/ 9,221</div>
               <div class="mini-sub">S/ 9,221 · créditos + junta + papá</div>
             </div>
           </section>
@@ -417,17 +454,17 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=57"></script>
-  <script src="js/data2.js?v=57"></script>
-  <script src="js/expenses_data.js?v=57"></script>
-  <script src="js/combo_ia_data.js?v=57"></script>
-  <script src="js/debts_data.js?v=57"></script>
-  <script src="js/payments_data.js?v=57"></script>
-  <script src="js/business_data.js?v=57"></script>
-  <script src="js/hotmart_data.js?v=57"></script>
-  <script src="js/cards_data.js?v=57"></script>
-  <script src="js/anchors_data.js?v=57"></script>
-  <script src="js/personal_data.js?v=57"></script>
-  <script src="js/dashboard.js?v=57"></script>
+  <script src="js/data.js?v=58"></script>
+  <script src="js/data2.js?v=58"></script>
+  <script src="js/expenses_data.js?v=58"></script>
+  <script src="js/combo_ia_data.js?v=58"></script>
+  <script src="js/debts_data.js?v=58"></script>
+  <script src="js/payments_data.js?v=58"></script>
+  <script src="js/business_data.js?v=58"></script>
+  <script src="js/hotmart_data.js?v=58"></script>
+  <script src="js/cards_data.js?v=58"></script>
+  <script src="js/anchors_data.js?v=58"></script>
+  <script src="js/personal_data.js?v=58"></script>
+  <script src="js/dashboard.js?v=58"></script>
 </body>
 </html>
