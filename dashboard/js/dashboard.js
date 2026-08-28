@@ -948,6 +948,10 @@
     else if (target === 'reportes') renderReportes();
     else if (target === 'ancla') renderAnchors();
     else if (target === 'notas') renderNotas();
+    var sb = document.getElementById('sidebar');
+    var sback = document.getElementById('side-backdrop');
+    if (sb) sb.classList.remove('open');
+    if (sback) sback.classList.remove('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1560,6 +1564,18 @@
     playChime();
     showToast('Tarjeta por pagar', prox.map(function (c) { return c.card + ' (' + (c.dias === 0 ? 'HOY' : 'en ' + c.dias + 'd') + ')'; }).join(' \u00B7 '));
   }
+  function checkDebtAlerts() {
+    var hoy = new Date(), tDay = hoy.getDate();
+    var mD = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    var due = [];
+    formalCredits.forEach(function (c) {
+      var d = c.dueDateDay - tDay; if (d < 0) d = c.dueDateDay + (mD - tDay);
+      if (d <= 2) due.push({ d: d, c: c });
+    });
+    if (!due.length) return;
+    playChime();
+    showToast('Deuda por pagar', due.map(function (x) { return x.c.name.split('(')[0].trim() + ' (' + (x.d === 0 ? 'HOY' : 'en ' + x.d + 'd') + ')'; }).join(' \u00B7 '));
+  }
 
   function renderNegocio() {
     var tb = document.getElementById('negocio-tbody');
@@ -1648,6 +1664,26 @@
   bindPagosForm();
   bindNegocioForm();
   bindNotasForm();
+  var mbtn = document.getElementById('menu-btn');
+  var sback = document.getElementById('side-backdrop');
+  function toggleSidebar(open) {
+    var sb = document.getElementById('sidebar');
+    if (sb) sb.classList.toggle('open', !!open);
+    if (sback) sback.classList.toggle('show', !!open);
+  }
+  if (mbtn) mbtn.addEventListener('click', function () { toggleSidebar(!document.getElementById('sidebar').classList.contains('open')); });
+  if (sback) sback.addEventListener('click', function () { toggleSidebar(false); });
+  var ndb = document.getElementById('notify-debt-btn');
+  if (ndb) ndb.addEventListener('click', function () {
+    playChime();
+    var hoy = new Date(), tDay = hoy.getDate();
+    var mD = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    var list = formalCredits.map(function (c) {
+      var d = c.dueDateDay - tDay; if (d < 0) d = c.dueDateDay + (mD - tDay);
+      return c.name.split('(')[0].trim() + ' ' + (d === 0 ? '¡HOY!' : 'día ' + c.dueDateDay + ' (en ' + d + 'd)');
+    });
+    showToast('Deudas del mes', list.join(' \u00B7 '));
+  });
   var mmc = document.getElementById('month-modal-close');
   if (mmc) mmc.addEventListener('click', closeMonthModal);
   var mm = document.getElementById('month-modal');
@@ -1666,7 +1702,7 @@
     if (row) openMonthModal(row.getAttribute('data-month'));
   });
   try {
-    if (localStorage.getItem(SESSION_KEY) === '1') { unlock(); checkCardAlerts(); }
+    if (localStorage.getItem(SESSION_KEY) === '1') { unlock(); checkCardAlerts(); checkDebtAlerts(); }
     else { lock(); }
   } catch (e) { lock(); }
 })();

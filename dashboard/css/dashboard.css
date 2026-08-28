@@ -671,7 +671,18 @@ select:focus { border-color: var(--green); }
   .mid-grid, .bottom-grid { grid-template-columns: 1fr; }
 }
 
+.menu-btn { display: none; }
+.side-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 99;
+}
+.side-backdrop.show { display: block; }
+
 @media (max-width: 900px) {
+  .menu-btn { display: flex; }
   .sidebar {
     position: fixed;
     left: 0;
