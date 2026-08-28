@@ -771,6 +771,43 @@
     setAlert('reportes-alert', tSal >= 0, '📊 <b>Trimestre:</b> ingresos ' + fmtUSD(tIng) + ' · gastos −' + fmtUSD(tGas) + ' · saldo <b>' + fmtUSD(tSal) + '</b>. Mejor mes: <b>' + esc(best ? best.m : '—') + '</b> · Mejor país: <b>' + esc(bestC || '—') + '</b>.');
   }
 
+  function renderAnchors() {
+    var list = document.getElementById('ancla-list');
+    var hero = document.getElementById('ancla-hero');
+    var plan = document.getElementById('ancla-plan');
+    if (!list || !window.ANCHORS_DATA) return;
+    var D = window.ANCHORS_DATA;
+    var hoy = new Date();
+    var pago = new Date(hoy.getFullYear(), 8, 2);
+    var days = Math.ceil((pago - hoy) / 86400000);
+    if (days < 0) days = 0;
+    setAlert('ancla-alert', days > 10,
+      days <= 10
+        ? '⏳ <b>Primer pago de septiembre en ' + days + ' d\u00EDa' + (days === 1 ? '' : 's') + ':</b> ' + D.september.alert
+        : '✅ ' + D.september.alert);
+    if (hero) {
+      hero.innerHTML = '<div class="ancla-sep">' +
+        '<div class="ancla-sep-head"><span>🚨 MES CR\u00CDTICO: SEPTIEMBRE 2026</span><span class="nb-days" style="color:var(--red);">' + (days <= 10 ? (days === 0 ? 'HOY' : 'en ' + days + 'd') : '') + '</span></div>' +
+        '<div class="ancla-sep-text">' + D.september.alert + '</div>' +
+        '<div class="ancla-sep-action">✅ <b>Acci\u00F3n:</b> ' + D.september.action + '</div>' +
+        '</div>';
+    }
+    list.innerHTML = D.anchors.map(function (a) {
+      var color = a.color === 'red' ? '#FF6B6B' : a.color === 'amber' ? '#FFB020' : '#55F58A';
+      return '<div class="ancla-card">' +
+        '<div class="ancla-top"><span class="ancla-num">' + a.n + '</span><span class="ancla-tag" style="color:' + color + ';border-color:' + color + ';">' + a.tag + '</span></div>' +
+        '<div class="ancla-title">' + esc(a.title) + '</div>' +
+        '<div class="ancla-desc">' + esc(a.desc) + '</div>' +
+        '<div class="ancla-action" style="border-left-color:' + color + ';">✅ ' + esc(a.action) + '</div>' +
+        '</div>';
+    }).join('');
+    if (plan) {
+      plan.innerHTML = D.actionPlan.map(function (p) {
+        return '<label class="ancla-item"><input type="checkbox"><span><b>' + esc(p.task) + '</b> <em class="usd-mini">' + esc(p.when) + '</em></span></label>';
+      }).join('');
+    }
+  }
+
   // ============================================================
   // NAVEGACIÓN
   // ============================================================
@@ -783,7 +820,8 @@
     negocio: 'Negocio',
     personal: 'Personal',
     metas: 'Metas',
-    reportes: 'Reportes'
+    reportes: 'Reportes',
+    ancla: 'Puntos ancla'
   };
 
   function switchTab(target) {
@@ -802,6 +840,7 @@
     else if (target === 'personal') renderPersonal();
     else if (target === 'metas') renderMetas();
     else if (target === 'reportes') renderReportes();
+    else if (target === 'ancla') renderAnchors();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
