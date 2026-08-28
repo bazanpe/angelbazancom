@@ -34,7 +34,7 @@
       { card: 'Reporte SBS (Cierre Junio)', balancePEN: 9727, note: 'InFinance + Scotiabank', status: 'Normal' }
     ],
     weeklyCommitments: [
-      { name: 'Junta con Sandra', weeklyFeePEN: 500, paidQuotas: 12, totalQuotas: 20, remainingQuotas: 8, range: '30/08 → 18/10/2026', pendingBalancePEN: 4000, status: 'Activo' },
+      { name: 'Junta con Sandra (novia)', weeklyFeePEN: 500, note: 'S/ 500/semana = S/ 2,000/mes · sin fecha de fin, se usa para pagar otras deudas', status: 'Activo · S/ 2,000/mes' },
       { name: 'Comida Sandra', weeklyFeePEN: 250, status: 'Detenido (S/ 0 desde mediados de agosto)' },
       { name: 'Colaboración Marcos', weeklyFeePEN: 300, status: 'Detenido (S/ 0 desde mediados de agosto)' }
     ],

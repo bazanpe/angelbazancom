@@ -336,7 +336,7 @@
         '<td>D\u00EDa ' + c.dueDateDay + '</td>' +
         '<td class="amt-exp">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + '</span></td></tr>';
     }).join('');
-    rows += '<tr><td class="cell-title">Junta semanal (Sandra)</td><td>Cada semana</td><td class="amt-exp">S/ ' + (junta * 4).toLocaleString() + '</td></tr>';
+    rows += '<tr><td class="cell-title">Junta con Sandra (novia)</td><td>S/ 500/semana</td><td class="amt-exp">S/ 2,000/mes <span class="usd-mini">para otras deudas</span></td></tr>';
     openInfoModal('💳 Deudas del mes \u00B7 ' + monthLabel(),
       '<div class="ing-metrics">' +
       '<div class="ing-metric"><span class="ing-label">Cr\u00E9ditos formales</span><span class="ing-value down">' + fmtUSD(cred / FX) + '</span></div>' +
