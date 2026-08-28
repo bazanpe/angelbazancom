@@ -189,7 +189,12 @@
   function renderMinis() {
     document.getElementById('mini-ingresos').textContent = fmtUSD(monthIngresosReal());
     document.getElementById('mini-gastos').textContent = fmtUSD(monthGastosReal());
-    document.getElementById('mini-deudas').textContent = fmtPEN(deudasMes);
+    document.getElementById('mini-deudas').textContent = fmtUSD(deudasMes / FX);
+    var dc = document.getElementById('mini-deudas');
+    if (dc) {
+      var dsub = dc.closest('.mini-card').querySelector('.mini-sub');
+      if (dsub) dsub.textContent = 'S/ ' + deudasMes.toLocaleString() + ' \u00B7 cr\u00E9ditos + junta + pap\u00E1';
+    }
     var card = document.getElementById('mini-ingresos');
     if (card) {
       var sub = card.closest('.mini-card').querySelector('.mini-sub');
@@ -287,6 +292,59 @@
   function closeMonthModal() {
     var modal = document.getElementById('month-modal');
     if (modal) modal.style.display = 'none';
+  }
+  function openInfoModal(title, html) {
+    var body = document.getElementById('month-modal-body');
+    var modal = document.getElementById('month-modal');
+    if (!body || !modal) return;
+    body.innerHTML = '<div class="modal-head"><h3>' + title + '</h3></div>' + html;
+    modal.style.display = 'flex';
+  }
+  function openIngresosPopup() {
+    var m = selectedMonth();
+    var combo = m ? m.revenueUSD : 0;
+    var hm = hotmartFor(m);
+    openInfoModal('📈 Ingresos del mes \u00B7 ' + monthLabel(),
+      '<div class="ing-metrics">' +
+      '<div class="ing-metric"><span class="ing-label">Ventas Combo IA</span><span class="ing-value up">' + fmtUSD(combo) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Low Ticket Hotmart</span><span class="ing-value up" style="color:#6EA8FF;">' + fmtUSD(hm) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Ingresos totales</span><span class="ing-value up">' + fmtUSD(combo + hm) + '</span></div>' +
+      '</div>' +
+      '<div class="ing-highlight">⭐ Mejor mes: <b>' + (comboMonths.length ? comboMonths.reduce(function (a, b) { return a.revenueUSD > b.revenueUSD ? a : b; }).month : '—') + '</b> \u00B7 Low Ticket promedio: US$ 1,306/mes.</div>');
+  }
+  function openGastosPopup() {
+    var m = selectedMonth();
+    var ads = m ? (m.adsUSD || 0) : 0;
+    var tools = m ? (m.toolsUSD || 0) : 0;
+    var ret = m ? (m.withdrawalsUSD || 0) : 0;
+    var total = ads + tools + ret;
+    openInfoModal('💸 Gastos del mes \u00B7 ' + monthLabel(),
+      '<div class="ing-metrics">' +
+      '<div class="ing-metric"><span class="ing-label">Pauta (ads)</span><span class="ing-value down">−' + fmtUSD(ads) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Herramientas</span><span class="ing-value down">−' + fmtUSD(tools) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Retiros</span><span class="ing-value down">−' + fmtUSD(ret) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Total gastos</span><span class="ing-value down">−' + fmtUSD(total) + '</span></div>' +
+      '</div>' +
+      '<div class="ing-highlight">💡 Fugas detectadas: <b>+$134/mes</b> (Google One +$80, Skool \u00D76 +$30, IA duplicada +$23.60, OpenAI \u00D72 en enero).</div>');
+  }
+  function openDeudasPopup() {
+    var junta = (debts && debts.weeklyCommitments && debts.weeklyCommitments[0]) ? debts.weeklyCommitments[0].weeklyFeePEN : 500;
+    var cred = formalCredits.reduce(function (s, c) { return s + c.monthlyFeePEN; }, 0);
+    var suma = cred + junta * 4;
+    var rows = formalCredits.map(function (c) {
+      return '<tr><td class="cell-title">' + esc(c.name) + (c.interestOnly ? ' <span class="usd-mini" style="color:var(--red);">URGENTE</span>' : '') + '</td>' +
+        '<td>D\u00EDa ' + c.dueDateDay + '</td>' +
+        '<td class="amt-exp">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + '</span></td></tr>';
+    }).join('');
+    rows += '<tr><td class="cell-title">Junta semanal (Sandra)</td><td>Cada semana</td><td class="amt-exp">S/ ' + (junta * 4).toLocaleString() + '</td></tr>';
+    openInfoModal('💳 Deudas del mes \u00B7 ' + monthLabel(),
+      '<div class="ing-metrics">' +
+      '<div class="ing-metric"><span class="ing-label">Cr\u00E9ditos formales</span><span class="ing-value down">' + fmtUSD(cred / FX) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Junta semanal</span><span class="ing-value down">' + fmtUSD(junta * 4 / FX) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Total del mes</span><span class="ing-value down">≈ ' + fmtUSD(suma / FX) + '</span></div>' +
+      '</div>' +
+      '<div class="ing-highlight">💰 <b>S/ ' + suma.toLocaleString() + ' (\u2248 ' + fmtUSD(suma / FX) + ')</b> este mes. Septiembre es cr\u00EDtico: aparta S/ 9,221 hoy.</div>' +
+      '<table class="tbl tbl-sm"><thead><tr><th>Compromiso</th><th>Vence</th><th>Monto</th></tr></thead><tbody>' + rows + '</tbody></table>');
   }
 
   function renderGastosDesglose() {
@@ -1268,6 +1326,33 @@
     return '<div class="ia-main">' + out.join(' ') + '</div>' +
       '<div class="ia-ctx">📊 Contexto del dashboard hoy: Profit real ' + monthLabel() + ': ' + fmtUSD(profit) + ' (ingresos ' + fmtUSD(monthIngresosReal()) + ' \u2212 gastos ' + fmtUSD(monthGastosReal()) + ') \u00B7 Deudas del mes: ' + fmtPEN(deudasMes) + (proxT ? ' \u00B7 Tarjeta ' + proxT.c.card + ' en ' + proxT.d + 'd' : '') + (proxC ? ' \u00B7 Cuota ' + proxC.c.name.split('(')[0].trim() + ' en ' + proxC.d + 'd' : '') + ' \u00B7 Meta al ' + metaPct + '%.</div>';
   }
+  function noteExtract(text) {
+    var q = (text || '').toLowerCase();
+    var has = function () { for (var i = 0; i < arguments.length; i++) if (q.indexOf(arguments[i]) !== -1) return true; return false; };
+    var mNum = q.match(/(\d+[.,]?\d*)/);
+    var amount = mNum ? parseFloat(mNum[1].replace(',', '.')) : null;
+    var daily = has('diario', 'diaria', 'por dia', 'al dia', 'al d\u00EDa', 'cada dia', 'cada d\u00EDa');
+    var weekly = has('semana', 'semanal', 'a la semana');
+    var mult = daily ? 30 : weekly ? 4.33 : 1;
+    var perMonth = amount !== null ? amount * mult : null;
+    var compUSD = deudasMes / FX;
+    var profit = monthProfitReal();
+    if (has('pagar', 'credito', 'creditos', 'cr\u00E9dito', 'cr\u00E9ditos', 'deuda', 'deudas', 'cuota', 'cuotas', 'pendiente', 'pendientes')) {
+      if (perMonth) return perMonth >= compUSD
+        ? '💡 US$ ' + perMonth.toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes cubre tu compromiso de ' + fmtUSD(compUSD) + ' y deja margen.'
+        : '💡 US$ ' + perMonth.toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes no cubre el compromiso de ' + fmtUSD(compUSD) + '.';
+      return '💡 Compromiso del mes: ' + fmtUSD(compUSD) + ' — prioriza pr\u00E9stamo pap\u00E1 y tarjetas.';
+    }
+    if (has('ahorro', 'ahorrar', 'guardar', 'meta', 'objetivo')) {
+      if (perMonth) return '💡 Ahorrar US$ ' + perMonth.toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes ' + (perMonth <= profit ? 's\u00ED es alcanzable con tu profit de ' + fmtUSD(profit) + '.' : 'supera tu profit de ' + fmtUSD(profit) + ' — revisa fugas y ROAS.');
+      return '💡 Meta US$ ' + META.toLocaleString('en-US') + ' al ' + metaPct + '%: faltan ' + fmtUSD(Math.max(0, META - saldo)) + '.';
+    }
+    if (has('gasto', 'gastos', 'fuga', 'fugas', 'suscrip')) return '💡 Fugas +$134/mes: cancela los duplicados de suscripciones.';
+    if (has('ingreso', 'venta', 'hotmart', 'combo', 'factura')) return '💡 Empuja el Low Ticket a \u2265 US$ 1,700/mes para cubrir las herramientas.';
+    if (has('tarjeta', 'tarjetas', 'scotiabank', 'interbank', 'bbva', 'oh!')) return '💡 Liquida primero las tarjetas (revolving ~100% TEA).';
+    if (has('septiembre', 'critico', 'cr\u00EDtico', 'alerta')) return '💡 Septiembre cr\u00EDtico: aparta S/ 9,221 hoy.';
+    return '💡 Revisi\u00F3n semanal: ROAS, pauta y pr\u00F3ximos pagos.';
+  }
   function renderNotas() {
     var list = document.getElementById('notas-list');
     var tot = document.getElementById('notas-total');
@@ -1278,7 +1363,9 @@
       list.innerHTML = notas.map(function (n, i) {
         return '<div class="nota-item">' +
           '<div class="nota-head"><span class="nota-text">' + esc(n.text) + '</span><button class="nota-del" data-i="' + i + '" title="Eliminar">×</button></div>' +
-          '<div class="nota-meta">' + esc(n.fecha) + '</div></div>';
+          '<div class="nota-meta">' + esc(n.fecha) + '</div>' +
+          (n.extract ? '<div class="nota-extract">' + n.extract + '</div>' : '') +
+          '</div>';
       }).join('');
       list.querySelectorAll('.nota-del').forEach(function (b) {
         b.addEventListener('click', function () {
@@ -1300,7 +1387,7 @@
       var text = document.getElementById('nt-text').value.trim();
       if (!text) { showToast('Notas', 'Escribe algo antes de guardar.'); return; }
       var arr = loadNotas();
-      arr.push({ text: text, fecha: new Date().toLocaleString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) });
+      arr.push({ text: text, fecha: new Date().toLocaleString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }), extract: noteExtract(text) });
       saveNotas(arr);
       document.getElementById('nt-text').value = '';
       showToast('Nota guardada', 'Se guardó en tu dispositivo.');
@@ -1464,6 +1551,14 @@
   if (mmc) mmc.addEventListener('click', closeMonthModal);
   var mm = document.getElementById('month-modal');
   if (mm) mm.addEventListener('click', function (e) { if (e.target === mm) closeMonthModal(); });
+  document.querySelectorAll('.mini-icon').forEach(function (ic) {
+    ic.addEventListener('click', function () {
+      var t = ic.getAttribute('data-popup');
+      if (t === 'ingresos') openIngresosPopup();
+      else if (t === 'gastos') openGastosPopup();
+      else if (t === 'deudas') openDeudasPopup();
+    });
+  });
   var itb = document.getElementById('ingresos-tbody');
   if (itb) itb.addEventListener('click', function (e) {
     var row = e.target && e.target.closest ? e.target.closest('tr[data-month]') : null;
