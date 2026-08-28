@@ -1161,6 +1161,95 @@
     a.download = filename;
     document.body.appendChild(a); a.click(); document.body.removeChild(a);
   }
+  function exportTodo() {
+    var rows = [];
+    function sec(t) { rows.push([t]); rows.push([]); }
+    function sep() { rows.push([]); }
+    // RESUMEN
+    sec('=== RESUMEN FINANCIERO ===');
+    rows.push(['Mes', 'Ingresos (USD)', 'Gastos (USD)', 'Profit (USD)', 'Deudas del mes (PEN)']);
+    var tI = 0, tG = 0, tP = 0;
+    fullMonths.forEach(function (m) {
+      var h = hotmartFor(m);
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+      var ing = m.revenueUSD + h;
+      tI += ing; tG += g; tP += ing - g;
+      rows.push([m.month, Math.round(ing), Math.round(g), Math.round(ing - g), '']);
+    });
+    rows.push(['TOTAL', Math.round(tI), Math.round(tG), Math.round(tP), deudasMes]);
+    sep();
+    // INGRESOS
+    sec('=== INGRESOS ===');
+    rows.push(['Mes', 'Ventas Combo IA', 'Retiros Hotmart', 'Ingresos totales', 'Gasto pauta', 'Herramientas', 'Retiros', 'Ganancia neta', 'ROAS']);
+    fullMonths.forEach(function (m) {
+      var h = hotmartFor(m);
+      rows.push([m.month, m.revenueUSD, h, m.revenueUSD + h, m.adsUSD || 0, m.toolsUSD || 0, m.withdrawalsUSD || 0, m.profitUSD || 0, m.roas]);
+    });
+    sep();
+    // GASTOS
+    sec('=== GASTOS ===');
+    rows.push(['Fecha', 'Fuente', 'Descripci\u00F3n', 'Categor\u00EDa', 'Tipo', 'USD', 'PEN', 'Estado']);
+    var gUSD = 0, gPEN = 0;
+    expItems.forEach(function (it) { gUSD += it.usd; gPEN += it.pen; rows.push([it.date, it.source, it.desc, it.cat, it.type, it.usd.toFixed(2), it.pen.toFixed(2), it.status]); });
+    rows.push(['TOTAL', '', '', '', '', gUSD.toFixed(2), gPEN.toFixed(2), '']);
+    sep();
+    // DEUDAS
+    sec('=== DEUDAS ===');
+    rows.push(['Cr\u00E9dito', 'Cuota mensual (S/)', 'Vencimiento', 'Cuotas', 'Periodo', 'Saldo pendiente (S/)', 'Pagos registrados']);
+    var pendTotal = 0;
+    formalCredits.forEach(function (c) { pendTotal += c.pendingBalancePEN; rows.push([c.name, c.monthlyFeePEN, 'D\u00EDa ' + c.dueDateDay, c.remainingQuota, c.range, c.pendingBalancePEN, payCount(c.name)]); });
+    rows.push(['TOTAL', '', '', '', '', pendTotal, '']);
+    sep();
+    sec('=== DEUDAS INFORMALES / FAMILIARES ===');
+    rows.push(['Acreedor', 'Monto (S/)', 'Nota', 'Prioridad']);
+    if (debts && debts.informalDebts) debts.informalDebts.forEach(function (d) { rows.push([d.creditor, d.amountPEN, d.note || '', d.priority || '']); });
+    sep();
+    // TARJETAS
+    sec('=== TARJETAS ===');
+    rows.push(['Tarjeta', 'Titular', 'Facturaci\u00F3n', 'Fecha de pago', 'L\u00EDnea']);
+    if (window.CARDS_DATA) window.CARDS_DATA.cards.forEach(function (c) { rows.push([c.card, c.holder, 'D\u00EDa ' + c.factura, 'D\u00EDa ' + c.pago, (c.currency === 'USD' ? '$' : 'S/ ') + c.linea.toFixed(2)]); });
+    sep();
+    // NEGOCIO
+    sec('=== NEGOCIO - HERRAMIENTAS ===');
+    rows.push(['Herramienta', 'D\u00EDa de pago', 'Monto (USD)']);
+    var toolsN = [];
+    if (window.BUSINESS_DATA && window.BUSINESS_DATA.tools) toolsN = toolsN.concat(window.BUSINESS_DATA.tools);
+    loadNegocioExtra().forEach(function (t) { toolsN.push(t); });
+    var nTotal = 0;
+    toolsN.forEach(function (t) { nTotal += t.usd; var d = parseInt(t.fecha, 10); rows.push([t.name, d <= 31 ? d + ' de cada mes' : t.fecha, t.usd]); });
+    rows.push(['TOTAL', '', nTotal.toFixed(2)]);
+    sep();
+    // PERSONAL
+    sec('=== PERSONAL - AHORROS ===');
+    rows.push(['Mes', 'Banco', 'Saldo inicial (S/)', 'Entradas (S/)', 'Salidas (S/)', 'Saldo final (S/)']);
+    if (window.PERSONAL_DATA) window.PERSONAL_DATA.accounts.forEach(function (acc) {
+      Object.keys(acc.months).forEach(function (mo) {
+        var m = acc.months[mo];
+        rows.push([mo, acc.bank, m.ant, m.entradas, m.salidas, m.fin]);
+      });
+    });
+    sep();
+    // REPORTES
+    sec('=== REPORTES ===');
+    rows.push(['Mes', 'Ingresos (USD)', 'Gastos (USD)', 'Saldo (USD)', 'ROAS', 'Estado']);
+    var rI = 0, rG = 0, rS = 0;
+    fullMonths.forEach(function (m) {
+      var h = hotmartFor(m);
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+      var s = (m.revenueUSD + h) - g;
+      rI += m.revenueUSD + h; rG += g; rS += s;
+      rows.push([m.month, Math.round(m.revenueUSD + h), Math.round(g), Math.round(s), m.roas, s >= 0 ? 'Positivo' : 'Revisar']);
+    });
+    rows.push(['TOTAL', Math.round(rI), Math.round(rG), Math.round(rS), '', '']);
+    sep();
+    // MOVIMIENTOS
+    sec('=== MOVIMIENTOS ===');
+    rows.push(['Movimiento', 'Categor\u00EDa', 'Fecha', 'Monto USD', 'Tipo']);
+    buildMovementsList();
+    movAll.forEach(function (r) { rows.push([r.name, r.cat, r.date, r.usd, r.type]); });
+    downloadCsv('stark_resumen_completo.csv', rows);
+    showToast('Exportado', 'Resumen completo descargado (todas las secciones).');
+  }
   function exportActive() {
     var target = 'resumen';
     document.querySelectorAll('.view').forEach(function (v) { if (v.style.display === 'block') target = v.id.replace('view-', ''); });
@@ -1189,6 +1278,8 @@
       fullMonths.forEach(function (m) { var h = hotmartFor(m); var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0); var s = (m.revenueUSD + h) - g; rI += m.revenueUSD + h; rG += g; rS += s; rows.push([m.month, (m.revenueUSD + h), g, s, m.roas, s >= 0 ? 'Positivo' : 'Revisar']); });
       rows.push(['TOTAL', rI, rG, rS, '', '']);
       downloadCsv('stark_reportes.csv', rows);
+    } else if (target === 'resumen') {
+      exportTodo();
     } else {
       rows = [['Movimiento', 'Categor\u00EDa', 'Fecha', 'Monto USD', 'Tipo']];
       buildMovementsList();
