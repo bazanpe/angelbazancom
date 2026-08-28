@@ -36,6 +36,12 @@
     { month: 'Marzo 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' },
     { month: 'Abril 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' }
   ];
+  extraMonths.forEach(function (m) {
+    var b = window.BANK_DATA && window.BANK_DATA.months ? window.BANK_DATA.months[m.month] : null;
+    m.gastosBank = b || null;
+    m.gastosUSD = b ? (b.scotiabankUSD || 0) + ((b.bcpPEN || 0) / FX) : 0;
+    if (b) m.highlights = 'Ingresos low ticket v\u00EDa retiros Hotmart. Gastos: tarjeta Scotiabank US$ ' + Math.round(b.scotiabankUSD || 0) + ' + BCP S/ ' + Math.round(b.bcpPEN || 0).toLocaleString('en-US') + '.';
+  });
   var fullMonths = extraMonths.concat(comboMonths);
 
   var debts = window.DEBTS_DATA || null;
@@ -73,7 +79,7 @@
   function monthGastosReal() {
     var m = selectedMonth();
     if (!m) return 0;
-    var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+    var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
     if (m.month.indexOf('Julio') !== -1 && expSum) g += (expSum.totalPersonalUSD || 0);
     return g;
   }
@@ -186,15 +192,6 @@
     var growth = document.getElementById('hero-growth');
     growth.innerHTML = 'INGRESOS ' + fmtUSD(monthIngresosReal()) + ' \u2212 GASTOS ' + fmtUSD(monthGastosReal()) + ' = ' + fmtUSD(profit);
     growth.className = 'hero-growth ' + (ok ? 'up' : 'down');
-
-    var ms = monthSaldo();
-    var mpct = Math.min(100, Math.round((ms / META) * 100));
-    var pctEl = document.getElementById('meta-pct');
-    pctEl.textContent = mpct + '%';
-    document.getElementById('meta-sub').textContent = fmtUSD(Math.max(0, ms)) + ' de ' + fmtUSD(META) + ' alcanzados';
-    var ring = document.getElementById('meta-ring-fill');
-    var dash = Math.max(0, Math.min(314, (mpct / 100) * 314));
-    ring.setAttribute('stroke-dashoffset', (314 - dash).toFixed(1));
   }
 
   function renderMinis() {
@@ -569,7 +566,7 @@
       var acum = 0, sumIng = 0, sumGas = 0, sumSal = 0;
       fullMonths.forEach(function (m) {
         var hm = hotmartFor(m);
-        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
         var s = (m.revenueUSD + hm) - g;
         sumIng += m.revenueUSD + hm; sumGas += g; sumSal += s; acum += s;
         rows += '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
@@ -612,7 +609,7 @@
     var tIng = 0, tGas = 0, tSal = 0, tRoas = 0, tHm = 0, best = null, bestC = null, bestCRev = 0;
     fullMonths.forEach(function (m) {
       var hm = hotmartFor(m);
-      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
       var s = (m.revenueUSD + hm) - g;
       tIng += m.revenueUSD + hm; tGas += g; tSal += s; tRoas += m.roas; tHm += hm;
       if (!best || s > best.s) best = { m: m.month, s: s };
@@ -621,7 +618,7 @@
     var promRoas = fullMonths.length ? tRoas / fullMonths.length : 0;
     tb.innerHTML = fullMonths.map(function (m) {
       var hm = hotmartFor(m);
-      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
       var s = (m.revenueUSD + hm) - g;
       var ok = s >= 0;
       return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
@@ -647,7 +644,7 @@
     if (detail) {
       detail.innerHTML = fullMonths.map(function (m) {
         var hm = hotmartFor(m);
-        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
         var s = (m.revenueUSD + hm) - g;
         var ok = s >= 0;
         var ctry = (m.countries || []).map(function (c) {
@@ -943,7 +940,7 @@
       downloadCsv('stark_ingresos.csv', rows);
     } else if (target === 'reportes') {
       rows = [['Mes', 'Ingresos', 'Gastos', 'Saldo', 'ROAS']];
-      comboMonths.forEach(function (m) { var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0); rows.push([m.month, m.revenueUSD, g, m.revenueUSD - g, m.roas]); });
+      comboMonths.forEach(function (m) { var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0); rows.push([m.month, m.revenueUSD, g, m.revenueUSD - g, m.roas]); });
       downloadCsv('stark_reportes.csv', rows);
     } else {
       rows = [['Movimiento', 'Categor\u00EDa', 'Fecha', 'Monto USD', 'Tipo']];
@@ -1010,11 +1007,24 @@
     var tb = document.getElementById('negocio-tbody');
     var tot = document.getElementById('negocio-total');
     var tfoot = document.getElementById('negocio-tfoot-total');
+    var alertBox = document.getElementById('negocio-alert');
+    var graph = document.getElementById('negocio-graph');
     if (!tb) return;
     var tools = [];
     if (window.BUSINESS_DATA && window.BUSINESS_DATA.tools) tools = tools.concat(window.BUSINESS_DATA.tools);
     loadNegocioExtra().forEach(function (t) { tools.push(t); });
-    tools.forEach(function (t) { t.dia = parseInt(t.fecha, 10); if (isNaN(t.dia)) t.dia = 99; });
+    var hoy = new Date();
+    var tDay = hoy.getDate();
+    var monthLen = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    tools.forEach(function (t) {
+      t.dia = parseInt(t.fecha, 10);
+      if (isNaN(t.dia)) t.dia = 99;
+      if (t.dia <= 31) {
+        var daysLeft = t.dia - tDay;
+        if (daysLeft < 0) daysLeft = t.dia + (monthLen - tDay);
+        t.dias = daysLeft;
+      } else { t.dias = 999; }
+    });
     tools.sort(function (a, b) { return a.dia - b.dia || String(a.name).localeCompare(String(b.name)); });
     var total = 0;
     tb.innerHTML = tools.map(function (t) {
@@ -1024,6 +1034,29 @@
     }).join('');
     if (tfoot) tfoot.innerHTML = '<b>' + fmtUSD2(total) + '</b>';
     if (tot) tot.textContent = tools.length + ' herramientas \u00B7 ordenadas por d\u00EDa de pago \u00B7 TOTAL: ' + fmtUSD2(total) + ' \u2248 S/ ' + (total * FX).toFixed(2);
+
+    var prontos = tools.filter(function (t) { return t.dia <= 31 && t.dias <= 3; }).sort(function (a, b) { return a.dias - b.dias; });
+    if (alertBox) {
+      if (prontos.length) {
+        alertBox.className = 'negocio-alert warn';
+        alertBox.innerHTML = '\u26A0\uFE0F <b>Pago pr\u00F3ximo:</b> ' + prontos.map(function (p) { return esc(p.name) + ' (' + (p.dias === 0 ? '\u00A1HOY!' : p.dias + 'd') + ')'; }).join(' \u00B7 ');
+      } else {
+        alertBox.className = 'negocio-alert ok';
+        alertBox.innerHTML = '\u2705 Ninguna herramienta pr\u00F3xima a pagar (pr\u00F3ximos 3 d\u00EDas).';
+      }
+    }
+    if (graph) {
+      var list = tools.filter(function (t) { return t.dia <= 31; }).slice().sort(function (a, b) { return a.dias - b.dias; });
+      graph.innerHTML = list.map(function (t) {
+        var pct = Math.min(100, Math.max(3, Math.round((1 - t.dias / monthLen) * 100)));
+        var color = t.dias <= 2 ? '#FF6B6B' : t.dias <= 7 ? '#FFB020' : '#55F58A';
+        var tip = t.name + ' \u00B7 paga el ' + t.dia + ' de cada mes \u00B7 faltan ' + t.dias + ' d\u00EDas \u00B7 ' + fmtUSD2(t.usd);
+        return '<div class="nb-row" data-tip="' + esc(tip) + '">' +
+          '<div class="nb-head"><span>' + esc(t.name) + '</span><span style="color:' + color + ';font-weight:800;font-family:JetBrains Mono,monospace;">' + (t.dias === 0 ? 'HOY' : t.dias + 'd') + '</span></div>' +
+          '<div class="cat-track"><div class="cat-fill" style="width:' + pct + '%;background:' + color + ';"></div></div>' +
+          '</div>';
+      }).join('');
+    }
   }
   function bindNegocioForm() {
     var btn = document.getElementById('nf-add');

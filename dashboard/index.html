@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>STARK HUD — Resumen Financiero</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=29">
+  <link rel="stylesheet" href="css/dashboard.css?v=30">
 </head>
 <body>
 
@@ -87,18 +87,7 @@
               <div class="hero-label">PROFIT REAL DEL MES</div>
               <div class="hero-value" id="hero-saldo">S/ 0</div>
               <div class="hero-growth up" id="hero-growth">Disponible en cuentas</div>
-            </div>
-            <div class="hero-meta" id="hero-meta">
-              <svg viewBox="0 0 120 120" width="128" height="128" id="meta-ring" aria-label="Progreso de meta">
-                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
-                <circle id="meta-ring-fill" cx="60" cy="60" r="50" fill="none" stroke="#55F58A" stroke-width="10" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)"/>
-              </svg>
-              <div class="meta-ring-text">
-                <div class="meta-label">META MENSUAL</div>
-                <div class="meta-pct" id="meta-pct">0%</div>
-                <div class="meta-sub" id="meta-sub">de US$ 7,600</div>
-              </div>
-            </div>
+          </div>
           </section>
 
           <section class="mini-cards">
@@ -120,6 +109,10 @@
           </section>
 
           <section class="mid-grid">
+            <div class="panel actions-panel">
+              <div class="panel-head"><h3>Esta semana</h3><span class="legend-sub">Acciones de decisión</span></div>
+              <div class="week-actions" id="week-actions"></div>
+            </div>
             <div class="panel">
               <div class="panel-head"><h3>Flujo mensual</h3><span class="legend"><span class="lg-dot inc"></span> Ingresos <span class="lg-dot exp"></span> Gastos</span></div>
               <div class="chart-body" id="chart-flow"></div>
@@ -127,10 +120,6 @@
             <div class="panel">
               <div class="panel-head"><h3>Gastos por categoría</h3><span class="legend-sub">Julio 2026</span></div>
               <div class="chart-body" id="chart-cat"></div>
-            </div>
-            <div class="panel actions-panel">
-              <div class="panel-head"><h3>Esta semana</h3><span class="legend-sub">Acciones de decisión</span></div>
-              <div class="week-actions" id="week-actions"></div>
             </div>
           </section>
 
@@ -256,6 +245,7 @@
 
         <!-- ============ NEGOCIO ============ -->
         <div id="view-negocio" class="view" style="display:none;">
+          <div class="negocio-alert ok" id="negocio-alert"></div>
           <div class="panel" style="margin-bottom:16px;">
             <div class="panel-head"><h3>GASTOS NEGOCIO (2026) · Herramientas</h3><span class="legend-sub" id="negocio-total"></span></div>
             <div class="table-scroll">
@@ -270,6 +260,10 @@
                 </tfoot>
               </table>
             </div>
+          </div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Próximos pagos</h3><span class="legend-sub">Qué tan cerca está la fecha de pago de cada herramienta</span></div>
+            <div class="negocio-graph" id="negocio-graph"></div>
           </div>
           <div class="panel">
             <div class="panel-head"><h3>Agregar herramienta o dato</h3><span class="legend-sub">Se guarda en tu dispositivo · útil para fechas de pago o renovaciones</span></div>
@@ -358,14 +352,15 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=29"></script>
-  <script src="js/data2.js?v=29"></script>
-  <script src="js/expenses_data.js?v=29"></script>
-  <script src="js/combo_ia_data.js?v=29"></script>
-  <script src="js/debts_data.js?v=29"></script>
-  <script src="js/payments_data.js?v=29"></script>
-  <script src="js/business_data.js?v=29"></script>
-  <script src="js/hotmart_data.js?v=29"></script>
-  <script src="js/dashboard.js?v=29"></script>
+  <script src="js/data.js?v=30"></script>
+  <script src="js/data2.js?v=30"></script>
+  <script src="js/expenses_data.js?v=30"></script>
+  <script src="js/combo_ia_data.js?v=30"></script>
+  <script src="js/debts_data.js?v=30"></script>
+  <script src="js/payments_data.js?v=30"></script>
+  <script src="js/business_data.js?v=30"></script>
+  <script src="js/hotmart_data.js?v=30"></script>
+  <script src="js/bank_data.js?v=30"></script>
+  <script src="js/dashboard.js?v=30"></script>
 </body>
 </html>
