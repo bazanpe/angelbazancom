@@ -539,7 +539,7 @@
           return '<tr>' +
             '<td class="cell-title">' + esc(c.name) + ' <span class="usd-mini" style="color:var(--red);font-weight:800;">' + esc(c.status) + '</span></td>' +
             '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
-            '<td>Mensual</td>' +
+            '<td>D\u00EDa ' + c.dueDateDay + '</td>' +
             '<td><b style="color:var(--red);">Solo intereses</b></td>' +
             '<td>' + esc(c.range) + '</td>' +
             '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;font-weight:800;">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td>' +
@@ -551,10 +551,12 @@
         }
         var paid = payCount(c.name);
         var totalQ = c.totalQuotas || c.remainingQuota;
-        var pend = Math.min(c.remainingQuota, totalQ);
-        var current = c.currentQuota || Math.max(1, totalQ - pend + 1);
+        var dataPaid = Math.max(0, totalQ - c.remainingQuota);
+        paid = dataPaid + payCount(c.name);
+        var pend = Math.max(0, totalQ - paid);
+        var current = c.currentQuota || Math.min(totalQ, paid + 1);
         var shown = Math.min(paid, totalQ);
-        var pct = Math.min(100, Math.max(2, Math.round(((totalQ - pend) / totalQ) * 100)));
+        var pct = Math.min(100, Math.max(2, Math.round((paid / totalQ) * 100)));
         return '<tr>' +
           '<td class="cell-title">' + esc(c.name) + '</td>' +
           '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
@@ -616,11 +618,12 @@
     if (!donut || !formalCredits.length) return;
     var paid = 0, pending = 0;
     var per = formalCredits.filter(function (c) { return !c.interestOnly; }).map(function (c) {
-      var p = Math.min(payCount(c.name), c.remainingQuota);
       var total = c.totalQuotas || c.remainingQuota;
-      var pend = Math.min(c.remainingQuota, total);
+      var dataPaid = Math.max(0, total - c.remainingQuota);
+      var p = Math.min(dataPaid + payCount(c.name), total);
+      var pend = Math.max(0, total - p);
       paid += p; pending += pend;
-      return { name: c.name, total: total, cur: c.currentQuota || Math.max(1, total - pend + 1), pend: pend, saldo: c.pendingBalancePEN };
+      return { name: c.name, total: total, cur: c.currentQuota || Math.min(total, p + 1), pend: pend, saldo: c.pendingBalancePEN };
     });
     var totalQ = paid + pending;
     var donutHtml = '';
@@ -834,7 +837,8 @@
     personal: 'Personal',
     metas: 'Metas',
     reportes: 'Reportes',
-    ancla: 'Puntos ancla'
+    ancla: 'Puntos ancla',
+    notas: 'Notas'
   };
 
   function switchTab(target) {
@@ -854,6 +858,7 @@
     else if (target === 'metas') renderMetas();
     else if (target === 'reportes') renderReportes();
     else if (target === 'ancla') renderAnchors();
+    else if (target === 'notas') renderNotas();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -1164,6 +1169,50 @@
       renderPagos();
     });
   }
+  function loadNotas() { try { return JSON.parse(localStorage.getItem('stark_notas') || '[]'); } catch (e) { return []; } }
+  function saveNotas(arr) { localStorage.setItem('stark_notas', JSON.stringify(arr)); }
+  function renderNotas() {
+    var list = document.getElementById('notas-list');
+    var tot = document.getElementById('notas-total');
+    if (!list) return;
+    var notas = loadNotas();
+    notas.sort(function (a, b) { return String(b.fecha).localeCompare(String(a.fecha)); });
+    if (notas.length) {
+      list.innerHTML = notas.map(function (n, i) {
+        return '<div class="nota-item">' +
+          '<div class="nota-head"><span class="nota-text">' + esc(n.text) + '</span><button class="nota-del" data-i="' + i + '" title="Eliminar">×</button></div>' +
+          '<div class="nota-meta">' + esc(n.fecha) + '</div></div>';
+      }).join('');
+      list.querySelectorAll('.nota-del').forEach(function (b) {
+        b.addEventListener('click', function () {
+          var arr = loadNotas();
+          arr.splice(parseInt(b.getAttribute('data-i'), 10), 1);
+          saveNotas(arr);
+          renderNotas();
+        });
+      });
+    } else {
+      list.innerHTML = '<div class="nota-empty">📝 Aún no tienes notas. Escribe una arriba y se guardará sola.</div>';
+    }
+    if (tot) tot.textContent = notas.length + ' nota' + (notas.length === 1 ? '' : 's');
+  }
+  function bindNotasForm() {
+    var btn = document.getElementById('nt-add');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var text = document.getElementById('nt-text').value.trim();
+      if (!text) { showToast('Notas', 'Escribe algo antes de guardar.'); return; }
+      var arr = loadNotas();
+      arr.push({ text: text, fecha: new Date().toLocaleString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) });
+      saveNotas(arr);
+      document.getElementById('nt-text').value = '';
+      showToast('Nota guardada', 'Se guardó en tu dispositivo.');
+      renderNotas();
+    });
+    var inp = document.getElementById('nt-text');
+    if (inp) inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') btn.click(); });
+  }
+
   function loadNegocioExtra() { try { return JSON.parse(localStorage.getItem('stark_negocio_extra') || '[]'); } catch (e) { return []; } }
   function saveNegocioExtra(arr) { localStorage.setItem('stark_negocio_extra', JSON.stringify(arr)); }
   function renderTarjetas() {
@@ -1307,6 +1356,7 @@
   bindExtras();
   bindPagosForm();
   bindNegocioForm();
+  bindNotasForm();
   var mmc = document.getElementById('month-modal-close');
   if (mmc) mmc.addEventListener('click', closeMonthModal);
   var mm = document.getElementById('month-modal');

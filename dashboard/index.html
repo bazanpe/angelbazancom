@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Angel Bazan - Dashboard</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070A09'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='900' fill='%2355F58A' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/dashboard.css?v=39">
+  <link rel="stylesheet" href="css/dashboard.css?v=40">
 </head>
 <body>
 
@@ -43,6 +43,7 @@
 
       <nav class="sidebar-nav">
         <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen</a>
+        <a class="nav-item" data-target="notas"><span class="nav-icon"><svg class="ico"><use href="#i-send"/></svg></span> Notas</a>
         <a class="nav-item" data-target="ancla"><span class="nav-icon"><svg class="ico"><use href="#i-info"/></svg></span> Puntos ancla</a>
         <a class="nav-item" data-target="ingresos"><span class="nav-icon"><svg class="ico"><use href="#i-cash"/></svg></span> Ingresos</a>
         <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
@@ -330,6 +331,21 @@
           <div class="reportes-detail" id="reportes-detail"></div>
         </div>
 
+        <!-- ============ NOTAS ============ -->
+        <div id="view-notas" class="view" style="display:none;">
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Agregar nota</h3><span class="legend-sub">Se guarda automáticamente en tu dispositivo · tipo tasker</span></div>
+            <div class="day-form">
+              <input type="text" id="nt-text" placeholder="Escribe tu nota o tarea...">
+              <button class="btn-add" id="nt-add">+ Guardar nota</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Mis notas</h3><span class="legend-sub" id="notas-total"></span></div>
+            <div class="notas-list" id="notas-list"></div>
+          </div>
+        </div>
+
         <!-- ============ PUNTOS ANCLA ============ -->
         <div id="view-ancla" class="view" style="display:none;">
           <div class="sec-alert ok" id="ancla-alert"></div>
@@ -405,17 +421,17 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=39"></script>
-  <script src="js/data2.js?v=39"></script>
-  <script src="js/expenses_data.js?v=39"></script>
-  <script src="js/combo_ia_data.js?v=39"></script>
-  <script src="js/debts_data.js?v=39"></script>
-  <script src="js/payments_data.js?v=39"></script>
-  <script src="js/business_data.js?v=39"></script>
-  <script src="js/hotmart_data.js?v=39"></script>
-  <script src="js/cards_data.js?v=39"></script>
-  <script src="js/anchors_data.js?v=39"></script>
-  <script src="js/personal_data.js?v=39"></script>
-  <script src="js/dashboard.js?v=39"></script>
+  <script src="js/data.js?v=40"></script>
+  <script src="js/data2.js?v=40"></script>
+  <script src="js/expenses_data.js?v=40"></script>
+  <script src="js/combo_ia_data.js?v=40"></script>
+  <script src="js/debts_data.js?v=40"></script>
+  <script src="js/payments_data.js?v=40"></script>
+  <script src="js/business_data.js?v=40"></script>
+  <script src="js/hotmart_data.js?v=40"></script>
+  <script src="js/cards_data.js?v=40"></script>
+  <script src="js/anchors_data.js?v=40"></script>
+  <script src="js/personal_data.js?v=40"></script>
+  <script src="js/dashboard.js?v=40"></script>
 </body>
 </html>
