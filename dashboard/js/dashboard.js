@@ -1625,7 +1625,10 @@
     tb.innerHTML = tools.map(function (t) {
       total += t.usd;
       var dia = t.dia <= 31 ? ('0' + t.dia).slice(-2) + ' de cada mes' : esc(t.fecha);
-      return '<tr><td class="cell-title">' + esc(t.name) + '</td><td class="dia-pago">' + dia + '</td><td class="amt-exp">' + fmtUSD2(t.usd) + '</td></tr>';
+      var dcolor = t.dias <= 2 ? 'var(--red)' : t.dias <= 7 ? 'var(--amber)' : 'var(--green)';
+      return '<tr><td class="cell-title">' + esc(t.name) + '</td><td class="dia-pago">' + dia + '</td>' +
+        '<td><span class="nb-days" style="color:' + dcolor + ';">' + (t.dias === 0 ? 'HOY' : t.dias + 'd') + '</span></td>' +
+        '<td class="amt-exp">' + fmtUSD2(t.usd) + '</td></tr>';
     }).join('');
     if (tfoot) tfoot.innerHTML = '<b>' + fmtUSD2(total) + '</b>';
     if (tot) tot.textContent = tools.length + ' herramientas \u00B7 ordenadas por d\u00EDa de pago \u00B7 TOTAL: ' + fmtUSD2(total) + ' \u2248 S/ ' + (total * FX).toFixed(2);
