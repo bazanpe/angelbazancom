@@ -184,11 +184,11 @@
   // RENDER: RESUMEN
   // ============================================================
   function renderHero() {
-    var hv = document.getElementById('hero-saldo');
-    if (hv) { hv.textContent = fmtUSD(saldo); hv.style.color = ''; }
-    var lbl = document.querySelector('.hero-eyebrow');
-    if (lbl) lbl.textContent = 'SALDO NETO DEL MES \u00B7 ' + monthLabel().toUpperCase();
     var profit = monthProfitReal();
+    var hv = document.getElementById('hero-saldo');
+    if (hv) { hv.textContent = fmtUSD(profit); hv.style.color = profit >= 0 ? '' : 'var(--red)'; }
+    var lbl = document.querySelector('.hero-eyebrow');
+    if (lbl) lbl.textContent = 'PROFIT REAL DEL MES \u00B7 ' + monthLabel().toUpperCase();
     var cur = selectedMonth();
     var prev = null;
     for (var i = 0; i < fullMonths.length; i++) if (fullMonths[i].month === cur.month && i > 0) prev = fullMonths[i - 1];
@@ -196,7 +196,7 @@
     var chg = prevProfit > 0 ? ((profit - prevProfit) / prevProfit) * 100 : 0;
     var growth = document.getElementById('hero-growth');
     if (growth) {
-      growth.innerHTML = 'Profit ' + monthLabel() + ': ' + fmtUSD(profit) + ' (' + fmtUSD(monthIngresosReal()) + ' \u2212 ' + fmtUSD(monthGastosReal()) + ') \u00B7 ' +
+      growth.innerHTML = 'Ingresos ' + fmtUSD(monthIngresosReal()) + ' \u2212 Gastos ' + fmtUSD(monthGastosReal()) + ' \u00B7 ' +
         (chg >= 0 ? '\u2191' : '\u2193') + ' ' + Math.abs(chg).toFixed(1) + '% vs. ' + (prev ? prev.month.split(' ')[0] : 'mes anterior');
       growth.className = 'hero-growth ' + (chg >= 0 ? 'up' : 'down');
     }
