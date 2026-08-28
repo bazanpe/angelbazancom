@@ -260,7 +260,28 @@
       '<div class="ing-metric"><span class="ing-label">ROAS</span><span class="ing-value up">' + m.roas.toFixed(2) + 'x</span></div>' +
       '</div>' +
       (m.highlights ? '<div class="ing-highlight">💡 <b>Destacado:</b> ' + esc(m.highlights) + '</div>' : '') +
-      '<table class="tbl tbl-sm"><thead><tr><th>País</th><th>Pauta</th><th>Ingresos</th><th>Ganancia</th></tr></thead><tbody>' + ctry + '</tbody></table>';
+      '<table class="tbl tbl-sm"><thead><tr><th>País</th><th>Pauta</th><th>Ingresos</th><th>Ganancia</th></tr></thead><tbody>' + ctry + '</tbody></table>' +
+      '<div class="modal-foot"><button class="btn-add" id="month-modal-dl">⬇️ Descargar este mes</button></div>';
+    var dl = document.getElementById('month-modal-dl');
+    if (dl) dl.addEventListener('click', function () {
+      var rows = [
+        ['Concepto', 'Valor (USD)'],
+        ['Ventas Combo IA', m.revenueUSD],
+        ['Retiros Hotmart (low ticket)', hm],
+        ['Ingresos totales', m.revenueUSD + hm],
+        ['Gasto pauta', m.adsUSD || 0],
+        ['Herramientas', m.toolsUSD || 0],
+        ['Retiros', m.withdrawalsUSD || 0],
+        ['Ganancia neta', m.profitUSD || 0],
+        ['ROAS', m.roas]
+      ];
+      if ((m.countries || []).length) {
+        rows.push(['', ''], ['Pa\u00EDs', 'Pauta', 'Ingresos', 'Ganancia']);
+        m.countries.forEach(function (c) { rows.push([c.country, c.ads, c.revenue, c.profit]); });
+      }
+      downloadCsv('stark_mes_' + m.month.replace(/ /g, '_') + '.csv', rows);
+      showToast('Exportado', 'Mes ' + m.month + ' descargado.');
+    });
     modal.style.display = 'flex';
   }
   function closeMonthModal() {
@@ -1172,29 +1193,80 @@
   function loadNotas() { try { return JSON.parse(localStorage.getItem('stark_notas') || '[]'); } catch (e) { return []; } }
   function saveNotas(arr) { localStorage.setItem('stark_notas', JSON.stringify(arr)); }
   function analyzeNote(text) {
-    var base = agentAnswer(text || '');
+    var q = (text || '').toLowerCase();
+    var has = function () { for (var i = 0; i < arguments.length; i++) if (q.indexOf(arguments[i]) !== -1) return true; return false; };
+    var mNum = q.match(/(\d+[.,]?\d*)/);
+    var amount = mNum ? parseFloat(mNum[1].replace(',', '.')) : null;
+    var daily = has('diario', 'diaria', 'por dia', 'al dia', 'al d\u00EDa', 'cada dia', 'cada d\u00EDa');
+    var weekly = has('semana', 'semanal', 'a la semana');
+    var mult = daily ? 30 : weekly ? 4.33 : 1;
+    var perMonth = amount !== null ? amount * mult : null;
+    var compUSD = deudasMes / FX;
+    var profit = monthProfitReal();
     var hoy = new Date(), tDay = hoy.getDate();
     var mDays = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
     var proxT = null;
     if (window.CARDS_DATA) window.CARDS_DATA.cards.forEach(function (c) {
-      var d = c.pago - tDay;
-      if (d < 0) d = c.pago + (mDays - tDay);
+      var d = c.pago - tDay; if (d < 0) d = c.pago + (mDays - tDay);
       if (!proxT || d < proxT.d) proxT = { d: d, c: c };
     });
     var proxC = null;
     formalCredits.forEach(function (c) {
-      var d = c.dueDateDay - tDay;
-      if (d < 0) d = c.dueDateDay + (mDays - tDay);
+      var d = c.dueDateDay - tDay; if (d < 0) d = c.dueDateDay + (mDays - tDay);
       if (!proxC || d < proxC.d) proxC = { d: d, c: c };
     });
-    var ctx = [];
-    ctx.push('Profit real ' + monthLabel() + ': ' + fmtUSD(monthProfitReal()) + ' (ingresos ' + fmtUSD(monthIngresosReal()) + ' \u2212 gastos ' + fmtUSD(monthGastosReal()) + ')');
-    ctx.push('Deudas del mes: ' + fmtPEN(deudasMes));
-    if (proxT) ctx.push('pr\u00F3ximo pago de tarjeta: ' + proxT.c.card + ' en ' + proxT.d + 'd');
-    if (proxC) ctx.push('pr\u00F3xima cuota: ' + proxC.c.name.split('(')[0].trim() + ' (S/ ' + proxC.c.monthlyFeePEN.toLocaleString() + ') en ' + proxC.d + 'd');
-    ctx.push('meta US$ ' + META.toLocaleString('en-US') + ' al ' + metaPct + '%');
-    return '<div class="ia-main">' + base + '</div>' +
-      '<div class="ia-ctx">📊 Contexto del dashboard hoy: ' + ctx.join(' \u00B7 ') + '.</div>';
+    var out = [];
+    var action = '';
+    if (has('ahorro', 'ahorrar', 'guardar', 'meta', 'objetivo')) {
+      out.push('Entiendo que quieres enfocarte en <b>ahorrar</b>' + (amount ? ' como m\u00EDnimo <b>US$ ' + amount.toLocaleString('en-US') + (daily ? ' diarios' : weekly ? ' semanales' : ' mensuales') + '</b>' : '') + '.');
+      if (perMonth) {
+        out.push('Eso equivale a <b>US$ ' + perMonth.toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes</b>.');
+        var faltante = Math.max(0, META - saldo);
+        out.push('Tu meta es US$ ' + META.toLocaleString('en-US') + ' (vas al ' + metaPct + '%, faltan US$ ' + faltante.toLocaleString('en-US') + ').');
+        out.push(perMonth <= profit
+          ? 'Con tu profit real de ' + monthLabel() + ' (' + fmtUSD(profit) + ') <b>es alcanzable</b> — cabe dentro de tu flujo actual.'
+          : 'Con tu profit actual de ' + fmtUSD(profit) + ' te faltar\u00EDan <b>US$ ' + (perMonth - profit).toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes</b>. Cierra fugas (+$134/mes), sube el ROAS a \u22652x y separa ese ahorro el d\u00EDa 1.');
+      }
+      action = 'Automatiza el ahorro el d\u00EDa 1 (20% de cada ingreso) y recorta las fugas de suscripciones.';
+    }
+    if (has('pagar', 'credito', 'creditos', 'cr\u00E9dito', 'cr\u00E9ditos', 'deuda', 'deudas', 'cuota', 'cuotas', 'pendiente', 'pendientes', 'compromiso')) {
+      out.push('Sobre tus <b>pagos pendientes</b>: comprometes <b>S/ ' + deudasMes.toLocaleString() + ' (\u2248 ' + fmtUSD(compUSD) + ')</b> este mes entre cr\u00E9ditos, junta y pr\u00E9stamo pap\u00E1.');
+      if (perMonth) {
+        out.push(perMonth >= compUSD
+          ? 'Con tu ritmo de <b>US$ ' + perMonth.toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes</b> cubres el compromiso y te sobran <b>US$ ' + (perMonth - compUSD).toLocaleString('en-US', { maximumFractionDigits: 0 }) + '</b> para amortizar deuda.'
+          : 'Ese ritmo (<b>US$ ' + perMonth.toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes</b>) no alcanza el compromiso de ' + fmtUSD(compUSD) + '/mes — te faltan <b>US$ ' + (compUSD - perMonth).toLocaleString('en-US', { maximumFractionDigits: 0 }) + '/mes</b>.');
+      }
+      var ven = [];
+      if (proxC) ven.push(proxC.c.name.split('(')[0].trim() + ' el d\u00EDa ' + proxC.c.dueDateDay + ' (S/ ' + proxC.c.monthlyFeePEN.toLocaleString() + ')');
+      if (proxT) ven.push(proxT.c.card + ' el d\u00EDa ' + proxT.c.pago);
+      if (ven.length) out.push('Pr\u00F3ximos vencimientos: <b>' + ven.join(' y ') + '</b>.');
+      action = 'Prioriza el pr\u00E9stamo de pap\u00E1 (S/ 5,000) y las tarjetas antes que las cuotas; aparta S/ 9,221 para septiembre.';
+    }
+    if (has('gasto', 'gastos', 'fuga', 'fugas', 'gastar', 'suscrip')) {
+      out.push('Sobre tus <b>gastos</b>: las fugas detectadas suman <b>+$134/mes</b> (Google One +$80, 6 cobros Skool +$30, IA duplicada +$23.60 y OpenAI \u00D72 en enero).');
+      if (!action) action = 'Cancela los duplicados esta semana: recuperas ~$134/mes para deuda o ahorro.';
+    }
+    if (has('ingreso', 'venta', 'hotmart', 'combo', 'factura', 'cliente')) {
+      var avgCombo = comboMonths.length ? comboMonths.reduce(function (s, m) { return s + m.revenueUSD; }, 0) / comboMonths.length : 0;
+      out.push('Tus <b>ingresos</b>: el Combo IA promedi\u00F3 US$ ' + fmtUSD(avgCombo) + '/mes y el Low Ticket Hotmart US$ 1,306/mes. Mejor mes: ' + (comboMonths.length ? comboMonths.reduce(function (a, b) { return a.revenueUSD > b.revenueUSD ? a : b; }).month : '—') + '.');
+      if (!action) action = 'Empuja el Low Ticket a \u2265 US$ 1,700/mes para que cubra las herramientas.';
+    }
+    if (has('tarjeta', 'tarjetas', 'scotiabank', 'interbank', 'bbva', 'oh!')) {
+      out.push('Sobre tus <b>tarjetas</b>: el revolving cuesta ~100% TEA — liquida Scotiabank Angel (S/ 1,550) y Papa Michel (S/ 2,400) antes que las cuotas de cr\u00E9dito.');
+      if (!action) action = 'Paga primero las tarjetas y usa el calendario de pagos para no atrasarte.';
+    }
+    if (has('septiembre', 'critico', 'cr\u00EDtico', 'alerta')) {
+      out.push('⚠️ <b>Septiembre es tu mes cr\u00EDtico:</b> S/ 9,221 en una sola tanda (cuotas d\u00EDas 2, 11 y 19 + junta + pr\u00E9stamo pap\u00E1).');
+      if (!action) action = 'Aparta S/ 9,221 hoy mismo en una cuenta separada.';
+    }
+    if (!out.length) {
+      out.push('📌 Entiendo tu nota: <b>' + esc(text) + '</b>.');
+      out.push('Contexto para que decidas: tu profit real de ' + monthLabel() + ' es <b>' + fmtUSD(profit) + '</b>, el compromiso del mes es <b>' + fmtUSD(compUSD) + '</b> y vas al <b>' + metaPct + '%</b> de tu meta.');
+    }
+    if (!action) action = 'Haz tu revisi\u00F3n semanal del lunes: ROAS, pauta y pr\u00F3ximos pagos.';
+    out.push('✅ <b>Acci\u00F3n sugerida:</b> ' + action + '.');
+    return '<div class="ia-main">' + out.join(' ') + '</div>' +
+      '<div class="ia-ctx">📊 Contexto del dashboard hoy: Profit real ' + monthLabel() + ': ' + fmtUSD(profit) + ' (ingresos ' + fmtUSD(monthIngresosReal()) + ' \u2212 gastos ' + fmtUSD(monthGastosReal()) + ') \u00B7 Deudas del mes: ' + fmtPEN(deudasMes) + (proxT ? ' \u00B7 Tarjeta ' + proxT.c.card + ' en ' + proxT.d + 'd' : '') + (proxC ? ' \u00B7 Cuota ' + proxC.c.name.split('(')[0].trim() + ' en ' + proxC.d + 'd' : '') + ' \u00B7 Meta al ' + metaPct + '%.</div>';
   }
   function renderNotas() {
     var list = document.getElementById('notas-list');

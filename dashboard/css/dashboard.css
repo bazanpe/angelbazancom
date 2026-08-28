@@ -735,6 +735,7 @@ select:focus { border-color: var(--green); }
 .modal-close:hover { color: var(--text-title); }
 .modal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
 .modal-head h3 { font-size: 20px; font-weight: 800; color: var(--text-title); }
+.modal-foot { display: flex; justify-content: flex-end; margin-top: 16px; }
 .row-click { cursor: pointer; }
 .row-click:hover td { background: var(--panel-2); }
 .ico-info {
