@@ -224,6 +224,43 @@
       '</div>';
   }
 
+  function openMonthModal(mo) {
+    var body = document.getElementById('month-modal-body');
+    var modal = document.getElementById('month-modal');
+    if (!body || !modal) return;
+    var m = null;
+    for (var i = 0; i < fullMonths.length; i++) if (fullMonths[i].month === mo) { m = fullMonths[i]; break; }
+    if (!m) return;
+    var hm = hotmartFor(m);
+    var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+    var s = (m.revenueUSD + hm) - g;
+    var ok = s >= 0;
+    var ctry = (m.countries || []).map(function (c) {
+      return '<tr><td class="cell-title">' + esc(c.country) + '</td>' +
+        '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;">−' + fmtUSD(c.ads) + '</td>' +
+        '<td class="amt-inc">' + fmtUSD(c.revenue) + '</td>' +
+        '<td style="color:var(--green);font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(c.profit) + '</td></tr>';
+    }).join('');
+    body.innerHTML = '<div class="modal-head"><h3>' + esc(mo) + '</h3><span class="rk-badge ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Positivo' : 'Revisar') + '</span></div>' +
+      '<div class="ing-metrics">' +
+      '<div class="ing-metric"><span class="ing-label">Ventas Combo IA</span><span class="ing-value up">' + fmtUSD(m.revenueUSD) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Low Ticket Hotmart</span><span class="ing-value up" style="color:#6EA8FF;">' + fmtUSD(hm) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Ingresos totales</span><span class="ing-value up">' + fmtUSD(m.revenueUSD + hm) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Gasto pauta</span><span class="ing-value down">−' + fmtUSD(m.adsUSD || 0) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Herramientas</span><span class="ing-value down">−' + fmtUSD(m.toolsUSD || 0) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Retiros</span><span class="ing-value down">−' + fmtUSD(m.withdrawalsUSD || 0) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Ganancia neta</span><span class="ing-value up">' + fmtUSD(m.profitUSD) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">ROAS</span><span class="ing-value up">' + m.roas.toFixed(2) + 'x</span></div>' +
+      '</div>' +
+      (m.highlights ? '<div class="ing-highlight">💡 <b>Destacado:</b> ' + esc(m.highlights) + '</div>' : '') +
+      '<table class="tbl tbl-sm"><thead><tr><th>País</th><th>Pauta</th><th>Ingresos</th><th>Ganancia</th></tr></thead><tbody>' + ctry + '</tbody></table>';
+    modal.style.display = 'flex';
+  }
+  function closeMonthModal() {
+    var modal = document.getElementById('month-modal');
+    if (modal) modal.style.display = 'none';
+  }
+
   function renderGastosDesglose() {
     var el = document.getElementById('chart-cat');
     if (!el) return;
@@ -283,7 +320,7 @@
     var falta = Math.round((META - saldo));
     items.push({ cls: 'green', icon: '●', title: 'Meta de ahorro: faltan US$ ' + Math.max(0, falta).toLocaleString('en-US'), sub: 'Estás al ' + metaPct + '% de tu meta mensual' });
     items.push({ cls: 'green', icon: '▲', title: 'Ingresos arriba del plan', sub: fmtUSD(ingresos) + ' en el mes · ROAS ' + (julio ? julio.roas.toFixed(2) + 'x' : '—') });
-    items.push({ cls: 'red', icon: '!', title: 'Septiembre: mes crítico S/ 8,971 (≈$2,392)', sub: 'Las 4 cuotas de créditos + junta caen juntas' });
+    items.push({ cls: 'red', icon: '!', title: 'Septiembre: mes crítico S/ 9,221 (≈$2,459)', sub: 'Las 4 cuotas de créditos + junta + préstamo papá caen juntas' });
     el.innerHTML = items.map(function (a) {
       return '<div class="wa-item ' + a.cls + '"><span class="wa-icon">' + a.icon + '</span><div><div class="wa-title">' + a.title + '</div><div class="wa-sub">' + a.sub + '</div></div></div>';
     }).join('');
@@ -357,7 +394,6 @@
     renderGastosDesglose();
     renderWeekActions();
     renderMovements();
-    renderAssets();
   }
 
   // ============================================================
@@ -375,7 +411,8 @@
       tb.innerHTML = months.map(function (m) {
         var hm = hotmartFor(m);
         var total = m.revenueUSD + hm;
-        return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
+        return '<tr data-month="' + esc(m.month) + '" class="row-click">' +
+          '<td class="cell-title">' + esc(m.month) + ' <span class="usd-mini" title="Ver detalle del mes">ℹ️</span></td>' +
           '<td class="amt-inc">' + fmtUSD(m.revenueUSD) + '</td>' +
           '<td class="amt-inc" style="color:#6EA8FF;">' + fmtUSD(hm) + '</td>' +
           '<td class="amt-inc" style="font-weight:900;">' + fmtUSD(total) + '</td>' +
@@ -451,6 +488,20 @@
       var totalPend = 0;
       formalCredits.forEach(function (c) { totalPend += c.pendingBalancePEN; });
       tb.innerHTML = formalCredits.map(function (c) {
+        if (c.interestOnly) {
+          return '<tr>' +
+            '<td class="cell-title">' + esc(c.name) + ' <span class="usd-mini" style="color:var(--red);font-weight:800;">' + esc(c.status) + '</span></td>' +
+            '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
+            '<td>Mensual</td>' +
+            '<td><b style="color:var(--red);">Solo intereses</b></td>' +
+            '<td>' + esc(c.range) + '</td>' +
+            '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;font-weight:800;">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td>' +
+            '<td><div class="pay-quota-big" style="color:var(--red);">URGENTE</div>' +
+            '<div class="pay-progress"><div class="pay-bar" style="width:100%;background:linear-gradient(90deg,#FF6B6B,#FF6B6B);"></div></div>' +
+            '<div class="pay-meta">S/ 250/mes \u00B7 solo intereses \u00B7 sin capital</div>' +
+            '<button class="pay-btn" data-name="' + esc(c.name) + '" data-amount="' + c.monthlyFeePEN + '">\u2714 Registrar pago</button></td>' +
+            '</tr>';
+        }
         var paid = payCount(c.name);
         var totalQ = c.totalQuotas || c.remainingQuota;
         var pend = Math.min(c.remainingQuota, totalQ);
@@ -484,7 +535,7 @@
       if (tot) tot.textContent = 'Compromiso S/ ' + deudasMes.toLocaleString() + ' \u2248 ' + usdEquiv(deudasMes) + ' USD \u00B7 Saldo formal S/ ' + totalPend.toLocaleString();
     }
     if (banner) {
-      banner.innerHTML = '<span style="font-size:18px;">\uD83D\uDEA8</span><div><b>ALERTA SEPTIEMBRE 2026:</b> caen juntas las 4 cuotas de cr\u00E9ditos (d\u00EDas 2, 11 y 19) por <b>S/ 6,971</b> + <b>S/ 2,000</b> de junta = <b>S/ 8,971</b> <span class="usd-mini">(\u2248 $2,392 USD)</span>.</div>';
+      banner.innerHTML = '<span style="font-size:18px;">\uD83D\uDEA8</span><div><b>ALERTA SEPTIEMBRE 2026:</b> caen juntas las 4 cuotas de cr\u00E9ditos (d\u00EDas 2, 11 y 19) por <b>S/ 6,971</b> + <b>S/ 2,000</b> de junta + <b>S/ 250</b> pr\u00E9stamo pap\u00E1 = <b>S/ 9,221</b> <span class="usd-mini">(\u2248 $2,459 USD)</span>.</div>';
     }
     var ptb = document.getElementById('payments-tbody');
     var ptot = document.getElementById('payments-total');
@@ -504,7 +555,7 @@
     var bars = document.getElementById('debt-bars');
     if (!donut || !formalCredits.length) return;
     var paid = 0, pending = 0;
-    var per = formalCredits.map(function (c) {
+    var per = formalCredits.filter(function (c) { return !c.interestOnly; }).map(function (c) {
       var p = Math.min(payCount(c.name), c.remainingQuota);
       var total = c.totalQuotas || c.remainingQuota;
       var pend = Math.min(c.remainingQuota, total);
@@ -821,7 +872,7 @@
     }
     if (has('deuda')) {
       if (has('pendiente', 'total')) return 'Deudas pendientes estimadas: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '. Créditos formales: S/ 66,169.';
-      if (has('mes', 'mensual')) return 'Tus deudas del mes suman ' + fmtPEN(deudasMes) + ': S/ 6,971 créditos + S/ 2,000 junta.';
+      if (has('mes', 'mensual')) return 'Tus deudas del mes suman ' + fmtPEN(deudasMes) + ': S/ 6,971 créditos + S/ 2,000 junta + S/ 250 préstamo papá.';
       return 'Deudas del mes: ' + fmtPEN(deudasMes) + '. Pendientes: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '.';
     }
     if (has('gasto', 'salida', 'fuga')) {
@@ -830,7 +881,7 @@
     }
     if (has('ingreso', 'venta', 'factur')) return 'Ingresos del mes: ' + fmtUSD(ingresos) + '. Mejor mes del trimestre: ' + (comboMonths.length ? comboMonths.reduce(function (a, b) { return a.revenueUSD > b.revenueUSD ? a : b; }).month : '—');
     if (has('saldo', 'superavit', 'sobra')) return 'Tu saldo neto del mes es ' + fmtUSD(saldo) + '. Disponible líquido: ' + fmtPEN(disponible) + '.';
-    if (has('septiembre', 'alerta', 'critico')) return 'Septiembre es crítico: S/ 8,971 (≈$2,392 USD) entre créditos y junta.';
+    if (has('septiembre', 'alerta', 'critico')) return 'Septiembre es crítico: S/ 9,221 (≈$2,459 USD) entre créditos, junta y préstamo papá.';
     if (has('disponible', 'activo', 'efectivo')) return 'Activos líquidos disponibles: ' + fmtPEN(disponible) + '.';
     if (has('meta', 'objetivo')) return 'Tu meta mensual es US$ ' + META.toLocaleString('en-US') + ' y llevas ' + metaPct + '% (' + fmtUSD(saldo) + ').';
       if (has('registrar pago', 'registra pago', 'anota pago', 'pago de', 'pague', 'paguE', 'abone', 'abonE')) {
@@ -1085,6 +1136,15 @@
   bindExtras();
   bindPagosForm();
   bindNegocioForm();
+  var mmc = document.getElementById('month-modal-close');
+  if (mmc) mmc.addEventListener('click', closeMonthModal);
+  var mm = document.getElementById('month-modal');
+  if (mm) mm.addEventListener('click', function (e) { if (e.target === mm) closeMonthModal(); });
+  var itb = document.getElementById('ingresos-tbody');
+  if (itb) itb.addEventListener('click', function (e) {
+    var row = e.target && e.target.closest ? e.target.closest('tr[data-month]') : null;
+    if (row) openMonthModal(row.getAttribute('data-month'));
+  });
   try {
     if (localStorage.getItem(SESSION_KEY) === '1') { unlock(); }
     else { lock(); }

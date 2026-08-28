@@ -7,7 +7,7 @@
       totalDebtEstimatedMaxPEN: 185000,
       monthlyFixedCommitmentPEN: 6971,
       weeklyJuntaCommitmentPEN: 2000,
-      totalMonthlyCommitmentCurrentPEN: 8971,
+      totalMonthlyCommitmentCurrentPEN: 9221,
       septemberAlertText: '🚨 Septiembre 2026 es el mes crítico: Coinciden las 4 cuotas de créditos formales (días 2, 11 y 19) por S/ 6,971 + S/ 2,000 de junta (Total S/ 8,971).',
       liquidAssetsPEN: 4000,
       cardGuaranteesPEN: 1205
@@ -16,7 +16,8 @@
       { name: 'Compartamos (S/ 30,000)', monthlyFeePEN: 2889, dueDateDay: 2, remainingQuota: 12, totalQuotas: 12, range: '2 sep 2026 → ago 2027', pendingBalancePEN: 34668, status: 'Crítico Sep' },
       { name: 'Santander Arly (S/ 25,000)', monthlyFeePEN: 2722, dueDateDay: 11, remainingQuota: 5, totalQuotas: 12, currentQuota: 8, range: 'sep 2026 → ene 2027', pendingBalancePEN: 13610, status: 'Cuota 8 de 12 · 11 sept' },
       { name: 'Santander Michel (S/ 5,000)', monthlyFeePEN: 575, dueDateDay: 19, remainingQuota: 12, totalQuotas: 12, range: 'ago 2026 → jul 2027', pendingBalancePEN: 6898, status: 'Activo' },
-      { name: 'Alfin Arly (S/ 7,954)', monthlyFeePEN: 785, dueDateDay: 19, remainingQuota: 14, totalQuotas: 14, range: 'ago 2026 → sep 2027', pendingBalancePEN: 10993, status: 'Activo' }
+      { name: 'Alfin Arly (S/ 7,954)', monthlyFeePEN: 785, dueDateDay: 19, remainingQuota: 14, totalQuotas: 14, range: 'ago 2026 → sep 2027', pendingBalancePEN: 10993, status: 'Activo' },
+      { name: 'Préstamo Papá Amigo (S/ 5,000)', monthlyFeePEN: 250, dueDateDay: 1, remainingQuota: 0, totalQuotas: 0, interestOnly: true, range: 'Mensual · solo intereses', pendingBalancePEN: 5000, status: 'URGENTE — Liquidar' }
     ],
     informalDebts: [
       { creditor: 'TC Sandra', amountPEN: 60000, note: 'Nota: Hoja registra Tarjeta BCP S/35k + BBVA S/35k + Qore S/10k = S/80,000', priority: 'Alta - Acordar plazos' },

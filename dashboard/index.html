@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>STARK HUD — Resumen Financiero</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=33">
+  <link rel="stylesheet" href="css/dashboard.css?v=34">
 </head>
 <body>
 
@@ -123,19 +123,6 @@
             </div>
           </section>
 
-          <section class="assets-strip">
-            <div class="panel assets-panel">
-              <div class="assets-label">ACTIVOS DISPONIBLES</div>
-              <div class="assets-value" id="assets-value">S/ 0</div>
-              <div class="assets-sub">Disponible en cuentas</div>
-            </div>
-            <div class="panel assets-panel">
-              <div class="assets-label">AHORRO META SCOTIABANK</div>
-              <div class="assets-value" id="assets-warda" style="color:var(--amber);">S/ 0</div>
-              <div class="assets-sub">Ahorro e inversión</div>
-            </div>
-          </section>
-
           <section class="panel mov-panel">
             <div class="panel-head"><h3>Movimientos</h3><span class="legend-sub" id="mov-count"></span></div>
             <div class="table-scroll-mov" id="mov-table"></div>
@@ -169,6 +156,15 @@
         <!-- ============ GASTOS ============ -->
         <div id="view-gastos" class="view" style="display:none;">
           <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
+            <div class="day-form">
+              <input type="date" id="pf-fecha" value="2026-07-27">
+              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
+              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
+              <button class="btn-add" id="pf-add">Registrar pago</button>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:16px;">
             <div class="panel-head"><h3>Gastos por día</h3><span class="legend-sub">Registra tus gastos día a día</span></div>
             <div class="day-form">
               <input type="date" id="gf-fecha" value="2026-07-27">
@@ -196,15 +192,6 @@
                 <thead><tr><th>Fecha</th><th>Fuente</th><th>Descripción</th><th>Categoría</th><th>Tipo</th><th>USD</th><th>PEN</th><th>Estado</th></tr></thead>
                 <tbody id="exp-table-body"></tbody>
               </table>
-            </div>
-          </div>
-          <div class="panel" style="margin-top:16px;">
-            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
-            <div class="day-form">
-              <input type="date" id="pf-fecha" value="2026-07-27">
-              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
-              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
-              <button class="btn-add" id="pf-add">Registrar pago</button>
             </div>
           </div>
           <div class="panel" style="margin-top:16px;">
@@ -341,6 +328,13 @@
 
   <div class="toast-wrap" id="toast-wrap"></div>
 
+  <div class="modal" id="month-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" id="month-modal-close" aria-label="Cerrar">×</button>
+      <div id="month-modal-body"></div>
+    </div>
+  </div>
+
   <div class="gate" id="gate">
     <div class="gate-card" id="gate-card">
       <div class="gate-lock"><svg class="ico"><use href="#i-lock"/></svg></div>
@@ -361,15 +355,15 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=33"></script>
-  <script src="js/data2.js?v=33"></script>
-  <script src="js/expenses_data.js?v=33"></script>
-  <script src="js/combo_ia_data.js?v=33"></script>
-  <script src="js/debts_data.js?v=33"></script>
-  <script src="js/payments_data.js?v=33"></script>
-  <script src="js/business_data.js?v=33"></script>
-  <script src="js/hotmart_data.js?v=33"></script>
-  <script src="js/personal_data.js?v=33"></script>
-  <script src="js/dashboard.js?v=33"></script>
+  <script src="js/data.js?v=34"></script>
+  <script src="js/data2.js?v=34"></script>
+  <script src="js/expenses_data.js?v=34"></script>
+  <script src="js/combo_ia_data.js?v=34"></script>
+  <script src="js/debts_data.js?v=34"></script>
+  <script src="js/payments_data.js?v=34"></script>
+  <script src="js/business_data.js?v=34"></script>
+  <script src="js/hotmart_data.js?v=34"></script>
+  <script src="js/personal_data.js?v=34"></script>
+  <script src="js/dashboard.js?v=34"></script>
 </body>
 </html>
