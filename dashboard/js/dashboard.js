@@ -584,6 +584,19 @@
     if (banner) {
       banner.innerHTML = '<span style="font-size:18px;">\uD83D\uDEA8</span><div><b>ALERTA SEPTIEMBRE 2026:</b> caen juntas las 4 cuotas de cr\u00E9ditos (d\u00EDas 2, 11 y 19) por <b>S/ 6,971</b> + <b>S/ 2,000</b> de junta + <b>S/ 250</b> pr\u00E9stamo pap\u00E1 = <b>S/ 9,221</b> <span class="usd-mini">(\u2248 $2,459 USD)</span>.</div>';
     }
+    var itb = document.getElementById('debt-informal-tbody');
+    var itot = document.getElementById('debt-informal-total');
+    if (itb && debts) {
+      var iTotal = 0;
+      itb.innerHTML = (debts.informalDebts || []).map(function (d) {
+        iTotal += d.amountPEN;
+        return '<tr><td class="cell-title">' + esc(d.creditor) + '</td>' +
+          '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + d.amountPEN.toLocaleString() + '</td>' +
+          '<td>' + esc(d.note || '') + '</td>' +
+          '<td><span class="usd-mini" style="color:var(--amber);font-weight:700;">' + esc(d.priority) + '</span></td></tr>';
+      }).join('');
+      if (itot) itot.textContent = 'Total informal: S/ ' + iTotal.toLocaleString() + ' \u2248 ' + usdEquiv(iTotal) + ' USD';
+    }
     var ptb = document.getElementById('payments-tbody');
     var ptot = document.getElementById('payments-total');
     if (window.PAYMENTS_HISTORY && ptb) {
@@ -962,7 +975,7 @@
       return 'En resumen: ingresos ' + fmtUSD(ingresos) + ', gastos ' + fmtUSD(gastos) + ' y saldo neto de ' + fmtUSD(saldo) + '. Deudas del mes ' + fmtPEN(deudasMes) + ' y ' + fmtPEN(disponible) + ' disponibles.';
     }
     if (has('deuda')) {
-      if (has('pendiente', 'total')) return 'Deudas pendientes estimadas: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '. Créditos formales: S/ 66,169.';
+      if (has('pendiente', 'total')) return 'Deudas pendientes estimadas: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '. Créditos formales: S/ 71,169 + préstamo familiar S/ 56,860 + informales.';
       if (has('mes', 'mensual')) return 'Tus deudas del mes suman ' + fmtPEN(deudasMes) + ': S/ 6,971 créditos + S/ 2,000 junta + S/ 250 préstamo papá.';
       return 'Deudas del mes: ' + fmtPEN(deudasMes) + '. Pendientes: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '.';
     }

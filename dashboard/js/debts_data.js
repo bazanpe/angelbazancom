@@ -3,12 +3,12 @@
 
   window.DEBTS_DATA = {
     summary: {
-      totalDebtEstimatedMinPEN: 165000,
-      totalDebtEstimatedMaxPEN: 185000,
+      totalDebtEstimatedMinPEN: 212860,
+      totalDebtEstimatedMaxPEN: 232860,
       monthlyFixedCommitmentPEN: 6971,
       weeklyJuntaCommitmentPEN: 2000,
       totalMonthlyCommitmentCurrentPEN: 9221,
-      septemberAlertText: '🚨 Septiembre 2026 es el mes crítico: Coinciden las 4 cuotas de créditos formales (días 2, 11 y 19) por S/ 6,971 + S/ 2,000 de junta (Total S/ 8,971).',
+      septemberAlertText: '🚨 Septiembre 2026 es el mes crítico: Coinciden las 4 cuotas de créditos formales (días 2, 11 y 19) por S/ 6,971 + S/ 2,000 de junta + S/ 250 préstamo papá (Total S/ 9,221).',
       liquidAssetsPEN: 4000,
       cardGuaranteesPEN: 1205
     },
@@ -21,6 +21,7 @@
     ],
     informalDebts: [
       { creditor: 'TC Sandra', amountPEN: 60000, note: 'Nota: Hoja registra Tarjeta BCP S/35k + BBVA S/35k + Qore S/10k = S/80,000', priority: 'Alta - Acordar plazos' },
+      { creditor: 'Préstamo familiares (Julio 2026)', amountPEN: 56860, note: 'Depositado en Scotiabank Ahorros en julio para pagar deudas pendientes (TC OH! S/ 9,000+ y otros). Acordar plan de pago.', priority: 'Alta - Acordar plazos' },
       { creditor: 'Mamá Eva', amountPEN: 20000, note: 'Préstamo familiar sin cuota fija', priority: 'Media - Familiar' },
       { creditor: 'Jessica', amountPEN: 15000, note: 'Préstamo personal sin cuota fija', priority: 'Media - Negociar' }
     ],
@@ -29,6 +30,7 @@
       { card: 'TC Scotiabank Michel', balancePEN: 2400, balanceUSD: 700, status: 'Normal' },
       { card: 'TC Interbank Ángel', balancePEN: 700, guaranteePEN: 655, status: 'Garantizada' },
       { card: 'TC BBVA Ángel', balancePEN: 550, guaranteePEN: 550, status: 'Garantizada' },
+      { card: 'TC OH!', balancePEN: 0, note: 'Pagada en julio con el préstamo familiar (más de S/ 9,000)', status: 'Pagada en Julio' },
       { card: 'Reporte SBS (Cierre Junio)', balancePEN: 9727, note: 'InFinance + Scotiabank', status: 'Normal' }
     ],
     weeklyCommitments: [
