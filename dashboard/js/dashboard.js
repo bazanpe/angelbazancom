@@ -340,7 +340,7 @@
     openInfoModal('💳 Deudas del mes \u00B7 ' + monthLabel(),
       '<div class="ing-metrics">' +
       '<div class="ing-metric"><span class="ing-label">Cr\u00E9ditos formales</span><span class="ing-value down">' + fmtUSD(cred / FX) + '</span></div>' +
-      '<div class="ing-metric"><span class="ing-label">Junta semanal</span><span class="ing-value down">' + fmtUSD(junta * 4 / FX) + '</span></div>' +
+      '<div class="ing-metric"><span class="ing-label">Junta mensual</span><span class="ing-value down">' + fmtUSD(junta * 4 / FX) + '</span></div>' +
       '<div class="ing-metric"><span class="ing-label">Total del mes</span><span class="ing-value down">≈ ' + fmtUSD(suma / FX) + '</span></div>' +
       '</div>' +
       '<div class="ing-highlight">💰 <b>S/ ' + suma.toLocaleString() + ' (\u2248 ' + fmtUSD(suma / FX) + ')</b> este mes. Septiembre es cr\u00EDtico: aparta S/ 9,221 hoy.</div>' +
