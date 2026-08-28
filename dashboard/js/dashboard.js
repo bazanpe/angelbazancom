@@ -210,66 +210,54 @@
     }
   }
 
-  function renderFlowChart() {
+  function renderResumenIngresos() {
     var el = document.getElementById('chart-flow');
-    if (!el || !comboMonths.length) return;
-    var W = 560, H = 220, padT = 24, padB = 30, padL = 46, padR = 12;
-    var innerW = W - padL - padR, innerH = H - padT - padB;
-    var data = comboMonths.map(function (m) {
-      return { label: m.month.split(' ')[0], inc: m.revenueUSD, exp: (m.adsUSD || 0) + (m.toolsUSD || 0) };
-    });
-    var max = 1;
-    data.forEach(function (d) { max = Math.max(max, d.inc, d.exp); });
-    var stepX = innerW / Math.max(1, data.length - 1);
-    function pt(v) { return padT + innerH - (v / max) * innerH; }
-    function line(key, color) {
-      var d = '';
-      data.forEach(function (p, i) { d += (i ? ' L ' : 'M ') + (padL + stepX * i).toFixed(1) + ' ' + pt(p[key]).toFixed(1); });
-      return '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />';
-    }
-    var grid = '';
-    for (var g = 0; g <= 4; g++) {
-      var v = max * (g / 4), gy = pt(v);
-      grid += '<line x1="' + padL + '" y1="' + gy + '" x2="' + (W - padR) + '" y2="' + gy + '" stroke="rgba(255,255,255,0.05)"/>';
-      grid += '<text x="' + (padL - 6) + '" y="' + (gy + 3) + '" fill="#7A8580" font-size="9" text-anchor="end" font-family="JetBrains Mono, monospace">' + fmtUSD(v) + '</text>';
-    }
-    var labels = data.map(function (d, i) {
-      return '<text x="' + (padL + stepX * i) + '" y="' + (H - 8) + '" fill="#7A8580" font-size="10" text-anchor="middle">' + esc(d.label) + '</text>';
-    }).join('');
-    var dots = data.map(function (d, i) {
-      return '<circle cx="' + (padL + stepX * i) + '" cy="' + pt(d.inc) + '" r="3.5" fill="#55F58A" data-tip="' + esc(d.label + ' · Ingresos ' + fmtUSD(d.inc)) + '"/>' +
-        '<circle cx="' + (padL + stepX * i) + '" cy="' + pt(d.exp) + '" r="3.5" fill="#FFB020" data-tip="' + esc(d.label + ' · Gastos ' + fmtUSD(d.exp)) + '"/>';
-    }).join('');
-    el.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;">' + grid + line('exp', '#FFB020') + line('inc', '#55F58A') + dots + labels + '</svg>';
+    if (!el) return;
+    var m = selectedMonth();
+    var combo = m ? m.revenueUSD : 0;
+    var hm = hotmartFor(m);
+    var total = combo + hm;
+    var rows = [
+      { label: 'Ventas Combo IA', v: combo, color: '#55F58A', src: 'PDFs de ventas' },
+      { label: 'Retiros Hotmart (low ticket)', v: hm, color: '#6EA8FF', src: 'CSV de transferencias' }
+    ];
+    var max = Math.max(1, combo, hm);
+    el.innerHTML = '<div class="cat-bars">' + rows.map(function (r) {
+      var pct = Math.round((r.v / max) * 100);
+      return '<div class="cat-row">' +
+        '<div class="cat-head"><span>' + esc(r.label) + '</span><span style="color:' + r.color + ';font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(r.v) + '</span></div>' +
+        '<div class="cat-track"><div class="cat-fill" style="width:' + Math.max(2, pct) + '%;background:' + r.color + ';"></div></div></div>';
+    }).join('') +
+      '<div class="desglose-total up"><span>Total ingresos</span><b>' + fmtUSD(total) + '</b></div>' +
+      '</div>';
   }
 
-  function renderCategoryBars() {
+  function renderGastosDesglose() {
     var el = document.getElementById('chart-cat');
     if (!el) return;
-    var catMap = { 'Ads': 0, 'SaaS': 0, 'Personal': 0, 'Operación': 0 };
-    var adsKeys = ['MARKETING', 'FACEBOOK', 'ADS'];
-    var saasKeys = ['IA', 'SAAS', 'CLOUD', 'EMAIL', 'EDUCACI', 'COMUNIDAD', 'INFRA', 'GOOGLE', 'OPENAI', 'CHATGPT', 'CLAUDE', 'SKOOL'];
-    var persKeys = ['ALIMENT', 'DELIVERY', 'ENTRETEN', 'COMPRAS', 'RETAIL', 'TRANSPORT', 'VIAJES', 'CINE'];
-    expItems.forEach(function (it) {
-      var u = (it.desc + ' ' + it.cat).toUpperCase();
-      if (adsKeys.some(function (k) { return u.indexOf(k) !== -1; })) catMap['Ads'] += it.usd;
-      else if (saasKeys.some(function (k) { return u.indexOf(k) !== -1; })) catMap['SaaS'] += it.usd;
-      else if (persKeys.some(function (k) { return u.indexOf(k) !== -1; })) catMap['Personal'] += it.usd;
-      else catMap['Operación'] += it.usd;
-    });
-    var colors = { 'Ads': '#FFB020', 'SaaS': '#18B875', 'Personal': '#4FD1FF', 'Operación': '#8A9490' };
-    var keys = Object.keys(catMap).sort(function (a, b) { return catMap[b] - catMap[a]; });
-    var max = Math.max(1, keys.reduce(function (a, k) { return Math.max(a, catMap[k]); }, 0));
-    var html = '<div class="cat-bars">';
-    keys.forEach(function (k) {
-      var pct = Math.round((catMap[k] / max) * 100);
-      html += '<div class="cat-row">' +
-        '<div class="cat-head"><span>' + k + '</span><span style="color:' + colors[k] + ';font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(catMap[k]) + '</span></div>' +
-        '<div class="cat-track"><div class="cat-fill" style="width:' + pct + '%;background:' + colors[k] + ';"></div></div>' +
-        '</div>';
-    });
-    html += '</div>';
-    el.innerHTML = html;
+    var m = selectedMonth();
+    var ads = m ? (m.adsUSD || 0) : 0;
+    var tools = m ? (m.toolsUSD || 0) : 0;
+    var retiros = m ? (m.withdrawalsUSD || 0) : 0;
+    var personal = (m && m.month.indexOf('Julio') !== -1 && expSum) ? (expSum.totalPersonalUSD || 0) : 0;
+    var bank = m ? (m.gastosUSD || 0) : 0;
+    var total = ads + tools + retiros + personal + bank;
+    var rows = [
+      { label: 'Pauta (ads)', v: ads, color: '#FFB020' },
+      { label: 'Herramientas', v: tools, color: '#18B875' },
+      { label: 'Retiros', v: retiros, color: '#FF6B6B' },
+      { label: 'Gastos personales', v: personal, color: '#4FD1FF' },
+      { label: 'Gastos bancarios (BCP + TC)', v: bank, color: '#C084FC' }
+    ].filter(function (r) { return r.v > 0; });
+    var max = Math.max(1, total);
+    el.innerHTML = '<div class="cat-bars">' + rows.map(function (r) {
+      var pct = Math.round((r.v / max) * 100);
+      return '<div class="cat-row">' +
+        '<div class="cat-head"><span>' + esc(r.label) + '</span><span style="color:' + r.color + ';font-family:JetBrains Mono,monospace;font-weight:700;">' + fmtUSD(r.v) + '</span></div>' +
+        '<div class="cat-track"><div class="cat-fill" style="width:' + Math.max(2, pct) + '%;background:' + r.color + ';"></div></div></div>';
+    }).join('') +
+      '<div class="desglose-total down"><span>Total gastos</span><b>' + fmtUSD(total) + '</b></div>' +
+      '</div>';
   }
 
   function renderWeekActions() {
@@ -353,8 +341,8 @@
   function renderResumen() {
     renderHero();
     renderMinis();
-    renderFlowChart();
-    renderCategoryBars();
+    renderResumenIngresos();
+    renderGastosDesglose();
     renderWeekActions();
     renderMovements();
     renderAssets();
