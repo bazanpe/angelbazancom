@@ -296,7 +296,7 @@
   function buildMovementsList() {
     movAll = [];
     comboMonths.forEach(function (m) {
-      movAll.push({ name: 'Combo IA — Hotmart', cat: 'Ingresos', date: m.month, usd: m.revenueUSD, type: 'inc' });
+      movAll.push({ name: 'Ventas Combo IA', cat: 'Ingresos', date: m.month, usd: m.revenueUSD, type: 'inc' });
     });
     expItems.forEach(function (it) {
       movAll.push({ name: it.desc, cat: it.cat, date: it.date, usd: it.usd, type: 'exp' });
