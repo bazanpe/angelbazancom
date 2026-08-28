@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>STARK HUD — Resumen Financiero</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=34">
+  <link rel="stylesheet" href="css/dashboard.css?v=35">
 </head>
 <body>
 
@@ -81,6 +81,7 @@
 
         <!-- ============ RESUMEN ============ -->
         <div id="view-resumen" class="view active">
+          <div class="sec-alert ok" id="resumen-alert"></div>
 
           <section class="hero-card">
             <div class="hero-left">
@@ -132,6 +133,7 @@
 
         <!-- ============ INGRESOS ============ -->
         <div id="view-ingresos" class="view" style="display:none;">
+          <div class="sec-alert ok" id="ingresos-alert"></div>
           <div class="panel">
             <div class="panel-head">
               <h3>Ingresos por mes</h3>
@@ -155,6 +157,7 @@
 
         <!-- ============ GASTOS ============ -->
         <div id="view-gastos" class="view" style="display:none;">
+          <div class="sec-alert ok" id="gastos-alert"></div>
           <div class="panel" style="margin-bottom:16px;">
             <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
             <div class="day-form">
@@ -228,6 +231,7 @@
 
         <!-- ============ PERSONAL ============ -->
         <div id="view-personal" class="view" style="display:none;">
+          <div class="sec-alert ok" id="personal-alert"></div>
           <div class="panel">
             <div class="panel-head"><h3>Ahorros personales (BCP + Scotiabank Soles)</h3><span class="legend-sub" id="personal-total"></span></div>
             <div class="table-scroll">
@@ -243,6 +247,15 @@
         <div id="view-negocio" class="view" style="display:none;">
           <div class="negocio-alert ok" id="negocio-alert"></div>
           <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Agregar herramienta o dato</h3><span class="legend-sub">Se guarda en tu dispositivo · útil para fechas de pago o renovaciones</span></div>
+            <div class="day-form">
+              <input type="text" id="nf-nombre" placeholder="Nombre (ej: Canva Pro)">
+              <input type="date" id="nf-fecha" value="2026-06-01">
+              <input type="number" id="nf-usd" placeholder="Monto USD" step="0.01">
+              <button class="btn-add" id="nf-add">+ Agregar</button>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:16px;">
             <div class="panel-head"><h3>GASTOS NEGOCIO (2026) · Herramientas</h3><span class="legend-sub" id="negocio-total"></span></div>
             <div class="table-scroll">
               <table class="tbl">
@@ -257,29 +270,22 @@
               </table>
             </div>
           </div>
-          <div class="panel" style="margin-bottom:16px;">
+          <div class="panel">
             <div class="panel-head"><h3>Próximos pagos</h3><span class="legend-sub">Qué tan cerca está la fecha de pago de cada herramienta</span></div>
             <div class="negocio-graph" id="negocio-graph"></div>
-          </div>
-          <div class="panel">
-            <div class="panel-head"><h3>Agregar herramienta o dato</h3><span class="legend-sub">Se guarda en tu dispositivo · útil para fechas de pago o renovaciones</span></div>
-            <div class="day-form">
-              <input type="text" id="nf-nombre" placeholder="Nombre (ej: Canva Pro)">
-              <input type="date" id="nf-fecha" value="2026-06-01">
-              <input type="number" id="nf-usd" placeholder="Monto USD" step="0.01">
-              <button class="btn-add" id="nf-add">+ Agregar</button>
-            </div>
           </div>
         </div>
 
         <!-- ============ METAS ============ -->
         <div id="view-metas" class="view" style="display:none;">
+          <div class="sec-alert ok" id="metas-alert"></div>
           <div class="meta-cards" id="metas-grid"></div>
           <div class="metas-detail" id="metas-detail"></div>
         </div>
 
         <!-- ============ REPORTES ============ -->
         <div id="view-reportes" class="view" style="display:none;">
+          <div class="sec-alert ok" id="reportes-alert"></div>
           <div class="panel">
             <div class="panel-head"><h3>Reporte mensual consolidado</h3><span class="legend-sub">Evolución del trimestre</span></div>
             <div class="table-scroll">
@@ -355,15 +361,15 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=34"></script>
-  <script src="js/data2.js?v=34"></script>
-  <script src="js/expenses_data.js?v=34"></script>
-  <script src="js/combo_ia_data.js?v=34"></script>
-  <script src="js/debts_data.js?v=34"></script>
-  <script src="js/payments_data.js?v=34"></script>
-  <script src="js/business_data.js?v=34"></script>
-  <script src="js/hotmart_data.js?v=34"></script>
-  <script src="js/personal_data.js?v=34"></script>
-  <script src="js/dashboard.js?v=34"></script>
+  <script src="js/data.js?v=35"></script>
+  <script src="js/data2.js?v=35"></script>
+  <script src="js/expenses_data.js?v=35"></script>
+  <script src="js/combo_ia_data.js?v=35"></script>
+  <script src="js/debts_data.js?v=35"></script>
+  <script src="js/payments_data.js?v=35"></script>
+  <script src="js/business_data.js?v=35"></script>
+  <script src="js/hotmart_data.js?v=35"></script>
+  <script src="js/personal_data.js?v=35"></script>
+  <script src="js/dashboard.js?v=35"></script>
 </body>
 </html>
