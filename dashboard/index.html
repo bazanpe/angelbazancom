@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>STARK HUD — Resumen Financiero</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=35">
+  <title>Angel Bazan - Dashboard</title>
+  <link rel="stylesheet" href="css/dashboard.css?v=36">
 </head>
 <body>
 
@@ -32,10 +32,10 @@
   <div class="app-shell app-blur">
     <aside class="sidebar" id="sidebar">
       <div class="brand">
-        <div class="brand-mark">S</div>
+        <div class="brand-mark">A</div>
         <div>
-          <div class="brand-name">STARK HUD</div>
-          <div class="brand-sub">Control financiero</div>
+          <div class="brand-name">ANGEL BAZAN</div>
+          <div class="brand-sub">Dashboard</div>
         </div>
       </div>
 
@@ -159,15 +159,6 @@
         <div id="view-gastos" class="view" style="display:none;">
           <div class="sec-alert ok" id="gastos-alert"></div>
           <div class="panel" style="margin-bottom:16px;">
-            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
-            <div class="day-form">
-              <input type="date" id="pf-fecha" value="2026-07-27">
-              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
-              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
-              <button class="btn-add" id="pf-add">Registrar pago</button>
-            </div>
-          </div>
-          <div class="panel" style="margin-bottom:16px;">
             <div class="panel-head"><h3>Gastos por día</h3><span class="legend-sub">Registra tus gastos día a día</span></div>
             <div class="day-form">
               <input type="date" id="gf-fecha" value="2026-07-27">
@@ -186,6 +177,15 @@
               <select id="gf-tipo"><option>Negocio</option><option>Personal</option></select>
               <input type="number" id="gf-usd" placeholder="Monto USD" step="0.01">
               <button class="btn-add" id="gf-add">Registrar gasto</button>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
+            <div class="day-form">
+              <input type="date" id="pf-fecha" value="2026-07-27">
+              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
+              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
+              <button class="btn-add" id="pf-add">Registrar pago</button>
             </div>
           </div>
           <div class="panel">
@@ -322,6 +322,8 @@
       <div class="agent-chips">
         <button class="agent-chip" data-q="¿Cómo voy hoy?">¿Cómo voy hoy?</button>
         <button class="agent-chip" data-q="¿Cuánto debo?">¿Cuánto debo?</button>
+        <button class="agent-chip" data-q="registrar pago">📥 Registrar pago</button>
+        <button class="agent-chip" data-q="registrar gasto">💸 Registrar gasto</button>
         <button class="agent-chip" data-q="¿Gastos del mes?">¿Gastos del mes?</button>
         <button class="agent-chip" data-q="¿Puntos de fuga?">¿Puntos de fuga?</button>
       </div>
@@ -344,7 +346,7 @@
   <div class="gate" id="gate">
     <div class="gate-card" id="gate-card">
       <div class="gate-lock"><svg class="ico"><use href="#i-lock"/></svg></div>
-      <h2>Panel Stark HUD Protegido</h2>
+      <h2>Angel Bazan - Dashboard</h2>
       <p class="sub">Ingresa tu usuario y contraseña para desbloquear la sesión.</p>
       <div class="gate-input">
         <input type="email" id="gate-email" placeholder="Usuario (correo)" autocomplete="username" inputmode="email">
@@ -361,15 +363,15 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=35"></script>
-  <script src="js/data2.js?v=35"></script>
-  <script src="js/expenses_data.js?v=35"></script>
-  <script src="js/combo_ia_data.js?v=35"></script>
-  <script src="js/debts_data.js?v=35"></script>
-  <script src="js/payments_data.js?v=35"></script>
-  <script src="js/business_data.js?v=35"></script>
-  <script src="js/hotmart_data.js?v=35"></script>
-  <script src="js/personal_data.js?v=35"></script>
-  <script src="js/dashboard.js?v=35"></script>
+  <script src="js/data.js?v=36"></script>
+  <script src="js/data2.js?v=36"></script>
+  <script src="js/expenses_data.js?v=36"></script>
+  <script src="js/combo_ia_data.js?v=36"></script>
+  <script src="js/debts_data.js?v=36"></script>
+  <script src="js/payments_data.js?v=36"></script>
+  <script src="js/business_data.js?v=36"></script>
+  <script src="js/hotmart_data.js?v=36"></script>
+  <script src="js/personal_data.js?v=36"></script>
+  <script src="js/dashboard.js?v=36"></script>
 </body>
 </html>

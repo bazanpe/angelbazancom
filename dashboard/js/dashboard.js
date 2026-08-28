@@ -441,7 +441,7 @@
     if (!tb && !detail) return;
     var sel = document.getElementById('sel-month-ingresos');
     var filter = sel ? sel.value : 'all';
-    var months = filter === 'all' ? fullMonths : fullMonths.filter(function (m) { return m.month.indexOf(filter) !== -1; });
+    var months = (filter === 'all' ? fullMonths.slice() : fullMonths.filter(function (m) { return m.month.indexOf(filter) !== -1; })).reverse();
     if (tb) {
       tb.innerHTML = months.map(function (m) {
         var hm = hotmartFor(m);
