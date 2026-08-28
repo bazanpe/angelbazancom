@@ -484,32 +484,42 @@
   }
 
   function renderQuickCards() {
-    var elI = document.getElementById('quick-ingresos');
-    var elG = document.getElementById('quick-gastos');
-    var elD = document.getElementById('quick-deudas');
-    var elDs = document.getElementById('quick-deudas-sub');
-    var elN = document.getElementById('quick-negocio');
-    var elNs = document.getElementById('quick-negocio-sub');
-    if (elI) elI.textContent = fmtUSD(monthIngresosReal());
-    if (elG) elG.textContent = fmtUSD(monthGastosReal());
-    if (elD) elD.textContent = fmtUSD(deudasMes / FX);
-    if (elDs) elDs.textContent = 'S/ ' + deudasMes.toLocaleString() + ' \u00B7 cr\u00E9ditos + junta + pap\u00E1';
-    if (elN || elNs) {
-      var tools = [];
-      if (window.BUSINESS_DATA && window.BUSINESS_DATA.tools) tools = tools.concat(window.BUSINESS_DATA.tools);
-      loadNegocioExtra().forEach(function (t) { tools.push(t); });
-      var total = tools.reduce(function (s, t) { return s + t.usd; }, 0);
-      var hoy = new Date(), tDay = hoy.getDate();
-      var mDays = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
-      var next = null;
-      tools.forEach(function (t) {
-        var d = parseInt(t.fecha, 10);
-        if (isNaN(d)) return;
-        var left = d - tDay; if (left < 0) left = d + (mDays - tDay);
-        if (!next || left < next.left) next = { left: left, name: t.name };
-      });
-      if (elN) elN.textContent = fmtUSD2(total);
-      if (elNs) elNs.textContent = tools.length + ' herramientas \u00B7 pr\u00F3ximo: ' + (next ? next.name + ' (' + (next.left === 0 ? 'HOY' : next.left + 'd') + ')' : '—');
+    var elP = document.getElementById('quick-pago');
+    var elPs = document.getElementById('quick-pago-sub');
+    var elB = document.getElementById('quick-brecha');
+    var elBs = document.getElementById('quick-brecha-sub');
+    var elS = document.getElementById('quick-sept');
+    var elSs = document.getElementById('quick-sept-sub');
+    var hoy = new Date(), tDay = hoy.getDate();
+    var mDays = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    var prox = null;
+    formalCredits.forEach(function (c) {
+      var d = c.dueDateDay - tDay; if (d < 0) d = c.dueDateDay + (mDays - tDay);
+      if (!prox || d < prox.d) prox = { d: d, name: c.name.split('(')[0].trim(), amt: c.monthlyFeePEN };
+    });
+    if (window.CARDS_DATA) window.CARDS_DATA.cards.forEach(function (c) {
+      var d = c.pago - tDay; if (d < 0) d = c.pago + (mDays - tDay);
+      if (!prox || d < prox.d) prox = { d: d, name: c.card, amt: null };
+    });
+    if (elP && prox) {
+      elP.textContent = prox.d === 0 ? 'HOY' : prox.d + 'd';
+      elP.style.color = prox.d <= 2 ? 'var(--red)' : prox.d <= 7 ? 'var(--amber)' : '';
+      if (elPs) elPs.textContent = prox.name + (prox.amt ? ' \u00B7 S/ ' + prox.amt.toLocaleString() : ' \u00B7 tarjeta');
+    }
+    var profit = monthProfitReal();
+    var need = deudasMes / FX;
+    var gap = need - profit;
+    if (elB) {
+      elB.textContent = (gap > 0 ? '+' : '') + fmtUSD(Math.round(gap));
+      elB.style.color = gap > 0 ? 'var(--red)' : 'var(--green)';
+      if (elBs) elBs.textContent = (gap > 0 ? 'te faltan para cubrir deudas' : 'vas sobrado') + ' \u00B7 profit ' + fmtUSD(Math.round(profit));
+    }
+    var sep = new Date(hoy.getFullYear(), 8, 2);
+    var daysSep = Math.ceil((sep - hoy) / 86400000);
+    if (daysSep < 0) daysSep = 0;
+    if (elS) {
+      elS.style.color = daysSep <= 10 ? 'var(--red)' : 'var(--amber)';
+      if (elSs) elSs.textContent = daysSep === 0 ? '\u00A1HOY! aparta el dinero YA' : (daysSep <= 10 ? 'primer pago en ' + daysSep + 'd \u00B7 aparta YA' : 'aparta el dinero del mes crítico');
     }
   }
 
@@ -1753,10 +1763,10 @@
   document.querySelectorAll('.quick-card').forEach(function (qc) {
     qc.addEventListener('click', function () {
       var t = qc.getAttribute('data-quick');
-      if (t === 'ingresos') openIngresosPopup();
-      else if (t === 'gastos') openGastosPopup();
-      else if (t === 'deudas') openDeudasPopup();
-      else if (t === 'negocio') switchTab('negocio');
+      if (t === 'pago') switchTab('deudas');
+      else if (t === 'brecha') switchTab('ancla');
+      else if (t === 'septiembre') switchTab('ancla');
+      else if (t === 'fugas') switchTab('gastos');
     });
   });
   var itb = document.getElementById('ingresos-tbody');
