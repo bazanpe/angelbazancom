@@ -483,13 +483,43 @@
     if (w) w.textContent = fmtPEN(warda);
   }
 
+  function renderQuickCards() {
+    var elI = document.getElementById('quick-ingresos');
+    var elG = document.getElementById('quick-gastos');
+    var elD = document.getElementById('quick-deudas');
+    var elDs = document.getElementById('quick-deudas-sub');
+    var elN = document.getElementById('quick-negocio');
+    var elNs = document.getElementById('quick-negocio-sub');
+    if (elI) elI.textContent = fmtUSD(monthIngresosReal());
+    if (elG) elG.textContent = fmtUSD(monthGastosReal());
+    if (elD) elD.textContent = fmtUSD(deudasMes / FX);
+    if (elDs) elDs.textContent = 'S/ ' + deudasMes.toLocaleString() + ' \u00B7 cr\u00E9ditos + junta + pap\u00E1';
+    if (elN || elNs) {
+      var tools = [];
+      if (window.BUSINESS_DATA && window.BUSINESS_DATA.tools) tools = tools.concat(window.BUSINESS_DATA.tools);
+      loadNegocioExtra().forEach(function (t) { tools.push(t); });
+      var total = tools.reduce(function (s, t) { return s + t.usd; }, 0);
+      var hoy = new Date(), tDay = hoy.getDate();
+      var mDays = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+      var next = null;
+      tools.forEach(function (t) {
+        var d = parseInt(t.fecha, 10);
+        if (isNaN(d)) return;
+        var left = d - tDay; if (left < 0) left = d + (mDays - tDay);
+        if (!next || left < next.left) next = { left: left, name: t.name };
+      });
+      if (elN) elN.textContent = fmtUSD2(total);
+      if (elNs) elNs.textContent = tools.length + ' herramientas \u00B7 pr\u00F3ximo: ' + (next ? next.name + ' (' + (next.left === 0 ? 'HOY' : next.left + 'd') + ')' : '—');
+    }
+  }
+
   function renderResumen() {
     renderHero();
     renderMinis();
     renderResumenIngresos();
     renderGastosDesglose();
     renderWeekActions();
-    renderMovements();
+    renderQuickCards();
     var profit = monthProfitReal();
     var ok = profit >= 0;
     var alertHtml = (ok
@@ -949,7 +979,7 @@
     deudas: 'Deudas',
     tarjetas: 'Tarjetas',
     negocio: 'Negocio',
-    personal: 'Personal',
+    personal: 'Ahorros',
     ancla: 'Puntos ancla',
     notas: 'Notas'
   };
@@ -1718,6 +1748,15 @@
       if (t === 'ingresos') openIngresosPopup();
       else if (t === 'gastos') openGastosPopup();
       else if (t === 'deudas') openDeudasPopup();
+    });
+  });
+  document.querySelectorAll('.quick-card').forEach(function (qc) {
+    qc.addEventListener('click', function () {
+      var t = qc.getAttribute('data-quick');
+      if (t === 'ingresos') openIngresosPopup();
+      else if (t === 'gastos') openGastosPopup();
+      else if (t === 'deudas') openDeudasPopup();
+      else if (t === 'negocio') switchTab('negocio');
     });
   });
   var itb = document.getElementById('ingresos-tbody');

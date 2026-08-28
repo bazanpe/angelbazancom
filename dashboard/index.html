@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Angel Bazan - Dashboard</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070A09'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='900' fill='%2355F58A' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/dashboard.css?v=52">
+  <link rel="stylesheet" href="css/dashboard.css?v=53">
 </head>
 <body>
 
@@ -29,6 +29,7 @@
       <symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
       <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
       <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+      <symbol id="i-vault" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="3"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="8" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="16"/><line x1="7" y1="3" x2="7" y2="6"/><line x1="17" y1="3" x2="17" y2="6"/></symbol>
     </defs>
   </svg>
 
@@ -50,7 +51,7 @@
         <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
         <a class="nav-item" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
         <a class="nav-item" data-target="negocio"><span class="nav-icon"><svg class="ico"><use href="#i-sync"/></svg></span> Negocio</a>
-        <a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-download"/></svg></span> Personal</a>
+        <a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-vault"/></svg></span> Ahorros</a>
       </nav>
 
       <div class="sidebar-foot">
@@ -128,9 +129,27 @@
             </div>
           </section>
 
-          <section class="panel mov-panel">
-            <div class="panel-head"><h3>Movimientos</h3><span class="legend-sub" id="mov-count"></span></div>
-            <div class="table-scroll-mov" id="mov-table"></div>
+          <section class="quick-grid">
+            <div class="quick-card" data-quick="ingresos" title="Ver desglose">
+              <span class="quick-label">INGRESOS</span>
+              <span class="quick-value" id="quick-ingresos">US$ 0</span>
+              <span class="quick-sub">Combo + Low Ticket</span>
+            </div>
+            <div class="quick-card" data-quick="gastos" title="Ver desglose">
+              <span class="quick-label">GASTOS</span>
+              <span class="quick-value" id="quick-gastos">US$ 0</span>
+              <span class="quick-sub">Pauta + Herramientas + Retiros</span>
+            </div>
+            <div class="quick-card" data-quick="deudas" title="Ver desglose">
+              <span class="quick-label">DEUDAS DEL MES</span>
+              <span class="quick-value" id="quick-deudas">US$ 0</span>
+              <span class="quick-sub" id="quick-deudas-sub">S/ 9,221 · créditos + junta + papá</span>
+            </div>
+            <div class="quick-card" data-quick="negocio" title="Ir a Negocio">
+              <span class="quick-label">NEGOCIO</span>
+              <span class="quick-value" id="quick-negocio">US$ 0</span>
+              <span class="quick-sub" id="quick-negocio-sub">Herramientas del mes</span>
+            </div>
           </section>
 
         </div>
@@ -398,17 +417,17 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=52"></script>
-  <script src="js/data2.js?v=52"></script>
-  <script src="js/expenses_data.js?v=52"></script>
-  <script src="js/combo_ia_data.js?v=52"></script>
-  <script src="js/debts_data.js?v=52"></script>
-  <script src="js/payments_data.js?v=52"></script>
-  <script src="js/business_data.js?v=52"></script>
-  <script src="js/hotmart_data.js?v=52"></script>
-  <script src="js/cards_data.js?v=52"></script>
-  <script src="js/anchors_data.js?v=52"></script>
-  <script src="js/personal_data.js?v=52"></script>
-  <script src="js/dashboard.js?v=52"></script>
+  <script src="js/data.js?v=53"></script>
+  <script src="js/data2.js?v=53"></script>
+  <script src="js/expenses_data.js?v=53"></script>
+  <script src="js/combo_ia_data.js?v=53"></script>
+  <script src="js/debts_data.js?v=53"></script>
+  <script src="js/payments_data.js?v=53"></script>
+  <script src="js/business_data.js?v=53"></script>
+  <script src="js/hotmart_data.js?v=53"></script>
+  <script src="js/cards_data.js?v=53"></script>
+  <script src="js/anchors_data.js?v=53"></script>
+  <script src="js/personal_data.js?v=53"></script>
+  <script src="js/dashboard.js?v=53"></script>
 </body>
 </html>
