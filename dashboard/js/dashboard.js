@@ -1171,6 +1171,31 @@
   }
   function loadNotas() { try { return JSON.parse(localStorage.getItem('stark_notas') || '[]'); } catch (e) { return []; } }
   function saveNotas(arr) { localStorage.setItem('stark_notas', JSON.stringify(arr)); }
+  function analyzeNote(text) {
+    var base = agentAnswer(text || '');
+    var hoy = new Date(), tDay = hoy.getDate();
+    var mDays = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0).getDate();
+    var proxT = null;
+    if (window.CARDS_DATA) window.CARDS_DATA.cards.forEach(function (c) {
+      var d = c.pago - tDay;
+      if (d < 0) d = c.pago + (mDays - tDay);
+      if (!proxT || d < proxT.d) proxT = { d: d, c: c };
+    });
+    var proxC = null;
+    formalCredits.forEach(function (c) {
+      var d = c.dueDateDay - tDay;
+      if (d < 0) d = c.dueDateDay + (mDays - tDay);
+      if (!proxC || d < proxC.d) proxC = { d: d, c: c };
+    });
+    var ctx = [];
+    ctx.push('Profit real ' + monthLabel() + ': ' + fmtUSD(monthProfitReal()) + ' (ingresos ' + fmtUSD(monthIngresosReal()) + ' \u2212 gastos ' + fmtUSD(monthGastosReal()) + ')');
+    ctx.push('Deudas del mes: ' + fmtPEN(deudasMes));
+    if (proxT) ctx.push('pr\u00F3ximo pago de tarjeta: ' + proxT.c.card + ' en ' + proxT.d + 'd');
+    if (proxC) ctx.push('pr\u00F3xima cuota: ' + proxC.c.name.split('(')[0].trim() + ' (S/ ' + proxC.c.monthlyFeePEN.toLocaleString() + ') en ' + proxC.d + 'd');
+    ctx.push('meta US$ ' + META.toLocaleString('en-US') + ' al ' + metaPct + '%');
+    return '<div class="ia-main">' + base + '</div>' +
+      '<div class="ia-ctx">📊 Contexto del dashboard hoy: ' + ctx.join(' \u00B7 ') + '.</div>';
+  }
   function renderNotas() {
     var list = document.getElementById('notas-list');
     var tot = document.getElementById('notas-total');
@@ -1207,6 +1232,12 @@
       saveNotas(arr);
       document.getElementById('nt-text').value = '';
       showToast('Nota guardada', 'Se guardó en tu dispositivo.');
+      var ia = document.getElementById('notas-ia');
+      if (ia) {
+        ia.className = 'nota-ia';
+        ia.innerHTML = '🤖 <b>Análisis IA de tu nota:</b><br>' + analyzeNote(text);
+        ia.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
       renderNotas();
     });
     var inp = document.getElementById('nt-text');
