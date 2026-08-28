@@ -1,31 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
 :root {
-  --bg: #0A1A33;
-  --panel: #10233F;
-  --panel-2: #162B4E;
-  --panel-3: #1C3458;
-  --border: rgba(39, 169, 255, 0.2);
-  --border-soft: rgba(39, 169, 255, 0.12);
+  --bg: #06111D;
+  --panel: #0C1B30;
+  --panel-2: #11223A;
+  --panel-3: #172A47;
+  --border: rgba(39, 169, 255, 0.16);
+  --border-soft: rgba(39, 169, 255, 0.09);
   --green: #25E77A;
   --green-2: #1ED168;
-  --green-dim: rgba(37, 231, 122, 0.12);
+  --green-dim: rgba(37, 231, 122, 0.1);
   --amber: #F5A524;
-  --amber-dim: rgba(245, 165, 36, 0.12);
+  --amber-dim: rgba(245, 165, 36, 0.1);
   --red: #FF6B7A;
-  --red-dim: rgba(255, 107, 122, 0.12);
+  --red-dim: rgba(255, 107, 122, 0.1);
   --cyan: #27A9FF;
   --blue: #206BFF;
   --blue-2: #27A9FF;
-  --blue-dim: rgba(32, 107, 255, 0.16);
+  --blue-dim: rgba(32, 107, 255, 0.12);
   --text-title: #F4F8FF;
-  --text: #D2DEF0;
-  --text-count: #8CA0BD;
+  --text: #C9D6E8;
+  --text-count: #6E7F99;
   --font: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-  --shadow: 0 12px 32px rgba(2, 8, 18, 0.45), 0 0 0 1px rgba(39, 169, 255, 0.06);
-  --glow: 0 0 26px rgba(37, 231, 122, 0.14);
-  --glow-blue: 0 0 26px rgba(32, 107, 255, 0.2);
+  --shadow: 0 12px 32px rgba(2, 8, 18, 0.55), 0 0 0 1px rgba(39, 169, 255, 0.05);
+  --glow: 0 0 26px rgba(37, 231, 122, 0.13);
+  --glow-blue: 0 0 26px rgba(32, 107, 255, 0.18);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,8 +36,8 @@ body {
   font-family: var(--font);
   background-color: var(--bg);
   background-image:
-    linear-gradient(rgba(32, 107, 255, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(32, 107, 255, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(32, 107, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 107, 255, 0.045) 1px, transparent 1px);
   background-size: 44px 44px;
   color: var(--text);
   font-size: 15.5px;
@@ -51,7 +51,7 @@ body {
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: #1C3458; border-radius: 6px; }
+::-webkit-scrollbar-thumb { background: #1B2F52; border-radius: 6px; }
 ::-webkit-scrollbar-thumb:hover { background: #27406B; }
 
 .app-shell { display: flex; min-height: 100vh; opacity: 0; transition: opacity 0.5s ease; }
