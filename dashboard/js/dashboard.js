@@ -30,6 +30,14 @@
     return t;
   }
 
+  var extraMonths = [
+    { month: 'Enero 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' },
+    { month: 'Febrero 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' },
+    { month: 'Marzo 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' },
+    { month: 'Abril 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' }
+  ];
+  var fullMonths = extraMonths.concat(comboMonths);
+
   var debts = window.DEBTS_DATA || null;
   var formalCredits = debts ? debts.formalCredits || [] : [];
   var expSum = window.EXPENSES_DATA ? window.EXPENSES_DATA.summary : null;
@@ -48,7 +56,7 @@
   if (extras0 && extras0.length) extras0.forEach(function (e) { gastos += e.usd; });
   var saldo = ingresos - gastos;
 
-  var MONTHS = comboMonths.slice();
+  var MONTHS = fullMonths.slice();
   var state = { mIdx: MONTHS.length - 1 };
   function selectedMonth() { return MONTHS[state.mIdx] || null; }
   function monthIngresos() { var m = selectedMonth(); return m ? m.revenueUSD : 0; }
@@ -365,7 +373,7 @@
     if (!tb && !detail) return;
     var sel = document.getElementById('sel-month-ingresos');
     var filter = sel ? sel.value : 'all';
-    var months = filter === 'all' ? comboMonths : comboMonths.filter(function (m) { return m.month.indexOf(filter) !== -1; });
+    var months = filter === 'all' ? fullMonths : fullMonths.filter(function (m) { return m.month.indexOf(filter) !== -1; });
     if (tb) {
       tb.innerHTML = months.map(function (m) {
         var hm = hotmartFor(m);
@@ -559,7 +567,7 @@
       var falta = Math.max(0, META - saldo);
       var rows = '';
       var acum = 0, sumIng = 0, sumGas = 0, sumSal = 0;
-      comboMonths.forEach(function (m) {
+      fullMonths.forEach(function (m) {
         var hm = hotmartFor(m);
         var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
         var s = (m.revenueUSD + hm) - g;
@@ -570,7 +578,7 @@
           '<td style="font-family:JetBrains Mono,monospace;font-weight:700;color:' + (s >= 0 ? 'var(--green)' : 'var(--red)') + ';">' + fmtUSD(s) + '</td>' +
           '<td style="font-family:JetBrains Mono,monospace;">' + fmtUSD(acum) + '</td></tr>';
       });
-      var ritmo = comboMonths.length ? sumSal / comboMonths.length : 0;
+      var ritmo = fullMonths.length ? sumSal / fullMonths.length : 0;
       var meses = ritmo > 0 ? Math.ceil(falta / ritmo) : 99;
       var falta6 = Math.round(falta / 6);
       det.innerHTML = '<div class="meta-hero">' +
@@ -602,7 +610,7 @@
     var detail = document.getElementById('reportes-detail');
     if (!tb) return;
     var tIng = 0, tGas = 0, tSal = 0, tRoas = 0, tHm = 0, best = null, bestC = null, bestCRev = 0;
-    comboMonths.forEach(function (m) {
+    fullMonths.forEach(function (m) {
       var hm = hotmartFor(m);
       var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
       var s = (m.revenueUSD + hm) - g;
@@ -610,8 +618,8 @@
       if (!best || s > best.s) best = { m: m.month, s: s };
       (m.countries || []).forEach(function (c) { if (c.revenue > bestCRev) { bestCRev = c.revenue; bestC = c.country; } });
     });
-    var promRoas = comboMonths.length ? tRoas / comboMonths.length : 0;
-    tb.innerHTML = comboMonths.map(function (m) {
+    var promRoas = fullMonths.length ? tRoas / fullMonths.length : 0;
+    tb.innerHTML = fullMonths.map(function (m) {
       var hm = hotmartFor(m);
       var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
       var s = (m.revenueUSD + hm) - g;
@@ -637,7 +645,7 @@
       }).join('');
     }
     if (detail) {
-      detail.innerHTML = comboMonths.map(function (m) {
+      detail.innerHTML = fullMonths.map(function (m) {
         var hm = hotmartFor(m);
         var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
         var s = (m.revenueUSD + hm) - g;
@@ -796,6 +804,21 @@
   function agentAnswer(q) {
     var t = q.toLowerCase();
     function has() { for (var i = 0; i < arguments.length; i++) if (t.indexOf(arguments[i]) !== -1) return true; return false; }
+    if (has('registrar gasto', 'registra gasto', 'anota gasto', 'agregar gasto', 'nuevo gasto', 'apuntar gasto')) {
+      var amG = t.match(/(\d+[.,]?\d*)/);
+      var amtG = amG ? parseFloat(amG[1].replace(',', '.')) : NaN;
+      var descG = q.replace(/registrar gasto|registra gasto|anota gasto|agregar gasto|nuevo gasto|apuntar gasto|por|\$|usd|soles/gi, '').replace(/\d+[.,]?\d*/g, '').trim();
+      if (isNaN(amtG) || !descG) {
+        return 'Para registrar un gasto dime: "registrar gasto [descripci\u00F3n] por [monto] USD". Ej: "registrar gasto Canva por 15 USD".';
+      }
+      var itemG = { source: 'Agente IA', date: new Date().toISOString().slice(0, 10), desc: descG, cat: 'Otros', type: 'Negocio', usd: amtG, pen: amtG * FX, status: 'Mantener' };
+      expItems.push(itemG);
+      gastos += amtG;
+      var extrasG = loadExtras(); extrasG.push(itemG); saveExtras(extrasG);
+      renderGastos();
+      renderResumen();
+      return '\u2705 Gasto registrado: "' + descG + '" por ' + fmtUSD(amtG) + '. Lo agregu\u00E9 en Gastos y en tu Resumen.';
+    }
     if (has('como voy', 'resumen', 'rapido')) {
       return 'En resumen: ingresos ' + fmtUSD(ingresos) + ', gastos ' + fmtUSD(gastos) + ' y saldo neto de ' + fmtUSD(saldo) + '. Deudas del mes ' + fmtPEN(deudasMes) + ' y ' + fmtPEN(disponible) + ' disponibles.';
     }
