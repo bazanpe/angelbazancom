@@ -61,7 +61,10 @@ body {
 .sidebar {
   width: 232px;
   flex-shrink: 0;
-  background: var(--panel);
+  background-color: #06111D;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Crect width='44' height='44' fill='%2306111D'/%3E%3Cpath d='M0 .5h44M.5 0v44' stroke='rgba(32,107,255,0.045)' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 44px 44px;
+  background-repeat: repeat;
   border-right: 1px solid var(--border);
   padding: 22px 14px;
   display: flex;
