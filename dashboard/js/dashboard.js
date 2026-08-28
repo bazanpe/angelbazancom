@@ -613,12 +613,21 @@
     if (tb) {
       var totalPend = 0;
       formalCredits.forEach(function (c) { totalPend += c.pendingBalancePEN; });
+      var tDayN = new Date().getDate();
+      var mDaysN = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+      function daysTo(day) { var d = day - tDayN; if (d < 0) d = day + (mDaysN - tDayN); return d; }
+      function daysCell(day) {
+        var d = daysTo(day);
+        var color = d <= 2 ? 'var(--red)' : d <= 7 ? 'var(--amber)' : 'var(--green)';
+        return '<td><span class="nb-days" style="color:' + color + ';">' + (d === 0 ? 'HOY' : d + 'd') + '</span></td>';
+      }
       tb.innerHTML = formalCredits.map(function (c) {
         if (c.interestOnly) {
           return '<tr>' +
             '<td class="cell-title">' + esc(c.name) + ' <span class="usd-mini" style="color:var(--red);font-weight:800;">' + esc(c.status) + '</span></td>' +
             '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
             '<td>D\u00EDa ' + c.dueDateDay + '</td>' +
+            daysCell(c.dueDateDay) +
             '<td><b style="color:var(--red);">Solo intereses</b></td>' +
             '<td>' + esc(c.range) + '</td>' +
             '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;font-weight:800;">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td>' +
@@ -640,6 +649,7 @@
           '<td class="cell-title">' + esc(c.name) + '</td>' +
           '<td style="color:var(--red);font-family:JetBrains Mono,monospace;font-weight:700;">S/ ' + c.monthlyFeePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.monthlyFeePEN) + ' USD</span></td>' +
           '<td>D\u00EDa ' + c.dueDateDay + '</td>' +
+          daysCell(c.dueDateDay) +
           '<td><b>' + current + '</b> de ' + totalQ + '</td>' +
           '<td>' + esc(c.range) + '</td>' +
           '<td style="color:var(--amber);font-family:JetBrains Mono,monospace;font-weight:800;">S/ ' + c.pendingBalancePEN.toLocaleString() + ' <span class="usd-mini">\u2248 ' + usdEquiv(c.pendingBalancePEN) + ' USD</span></td>' +
