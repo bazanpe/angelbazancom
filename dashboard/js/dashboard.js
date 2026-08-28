@@ -36,12 +36,6 @@
     { month: 'Marzo 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' },
     { month: 'Abril 2026', revenueUSD: 0, adsUSD: 0, toolsUSD: 0, withdrawalsUSD: 0, profitUSD: 0, roas: 0, countries: [], highlights: 'Ingresos low ticket v\u00EDa retiros Hotmart.' }
   ];
-  extraMonths.forEach(function (m) {
-    var b = window.BANK_DATA && window.BANK_DATA.months ? window.BANK_DATA.months[m.month] : null;
-    m.gastosBank = b || null;
-    m.gastosUSD = b ? (b.scotiabankUSD || 0) + ((b.bcpPEN || 0) / FX) : 0;
-    if (b) m.highlights = 'Ingresos low ticket v\u00EDa retiros Hotmart. Gastos: tarjeta Scotiabank US$ ' + Math.round(b.scotiabankUSD || 0) + ' + BCP S/ ' + Math.round(b.bcpPEN || 0).toLocaleString('en-US') + '.';
-  });
   var fullMonths = extraMonths.concat(comboMonths);
 
   var debts = window.DEBTS_DATA || null;
@@ -79,9 +73,7 @@
   function monthGastosReal() {
     var m = selectedMonth();
     if (!m) return 0;
-    var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
-    if (m.month.indexOf('Julio') !== -1 && expSum) g += (expSum.totalPersonalUSD || 0);
-    return g;
+    return (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
   }
   function monthProfitReal() { return monthIngresosReal() - monthGastosReal(); }
   var deudasMes = debts ? debts.summary.totalMonthlyCommitmentCurrentPEN : 8971;
@@ -239,15 +231,11 @@
     var ads = m ? (m.adsUSD || 0) : 0;
     var tools = m ? (m.toolsUSD || 0) : 0;
     var retiros = m ? (m.withdrawalsUSD || 0) : 0;
-    var personal = (m && m.month.indexOf('Julio') !== -1 && expSum) ? (expSum.totalPersonalUSD || 0) : 0;
-    var bank = m ? (m.gastosUSD || 0) : 0;
-    var total = ads + tools + retiros + personal + bank;
+    var total = ads + tools + retiros;
     var rows = [
       { label: 'Pauta (ads)', v: ads, color: '#FFB020' },
       { label: 'Herramientas', v: tools, color: '#18B875' },
-      { label: 'Retiros', v: retiros, color: '#FF6B6B' },
-      { label: 'Gastos personales', v: personal, color: '#4FD1FF' },
-      { label: 'Gastos bancarios (BCP + TC)', v: bank, color: '#C084FC' }
+      { label: 'Retiros', v: retiros, color: '#FF6B6B' }
     ].filter(function (r) { return r.v > 0; });
     var max = Math.max(1, total);
     el.innerHTML = '<div class="cat-bars">' + rows.map(function (r) {
@@ -258,6 +246,30 @@
     }).join('') +
       '<div class="desglose-total down"><span>Total gastos</span><b>' + fmtUSD(total) + '</b></div>' +
       '</div>';
+  }
+
+  function renderPersonal() {
+    var tb = document.getElementById('personal-tbody');
+    var tot = document.getElementById('personal-total');
+    if (!tb || !window.PERSONAL_DATA) return;
+    var months = ['Enero 2026', 'Febrero 2026', 'Marzo 2026', 'Abril 2026', 'Mayo 2026', 'Junio 2026', 'Julio 2026'];
+    function s(n) { return 'S/ ' + n.toLocaleString('en-US', { minimumFractionDigits: 2 }); }
+    var tIn = 0, tOut = 0, rows = '';
+    window.PERSONAL_DATA.accounts.forEach(function (acc) {
+      months.forEach(function (mo) {
+        var m = acc.months[mo];
+        if (!m) return;
+        tIn += m.entradas; tOut += m.salidas;
+        rows += '<tr><td class="cell-title">' + mo + '</td>' +
+          '<td><b>' + esc(acc.bank) + '</b> <span class="usd-mini">' + esc(acc.account) + '</span></td>' +
+          '<td style="font-family:JetBrains Mono,monospace;">' + s(m.ant) + '</td>' +
+          '<td class="amt-inc">' + s(m.entradas) + '</td>' +
+          '<td class="amt-exp">' + s(m.salidas) + '</td>' +
+          '<td style="font-family:JetBrains Mono,monospace;font-weight:700;color:var(--text-title);">' + s(m.fin) + '</td></tr>';
+      });
+    });
+    tb.innerHTML = rows;
+    if (tot) tot.textContent = 'Entradas totales: ' + s(tIn) + ' \u00B7 Salidas totales: ' + s(tOut);
   }
 
   function renderWeekActions() {
@@ -554,7 +566,7 @@
       var acum = 0, sumIng = 0, sumGas = 0, sumSal = 0;
       fullMonths.forEach(function (m) {
         var hm = hotmartFor(m);
-        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
+        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) 
         var s = (m.revenueUSD + hm) - g;
         sumIng += m.revenueUSD + hm; sumGas += g; sumSal += s; acum += s;
         rows += '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
@@ -597,7 +609,7 @@
     var tIng = 0, tGas = 0, tSal = 0, tRoas = 0, tHm = 0, best = null, bestC = null, bestCRev = 0;
     fullMonths.forEach(function (m) {
       var hm = hotmartFor(m);
-      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) 
       var s = (m.revenueUSD + hm) - g;
       tIng += m.revenueUSD + hm; tGas += g; tSal += s; tRoas += m.roas; tHm += hm;
       if (!best || s > best.s) best = { m: m.month, s: s };
@@ -606,7 +618,7 @@
     var promRoas = fullMonths.length ? tRoas / fullMonths.length : 0;
     tb.innerHTML = fullMonths.map(function (m) {
       var hm = hotmartFor(m);
-      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) 
       var s = (m.revenueUSD + hm) - g;
       var ok = s >= 0;
       return '<tr><td class="cell-title">' + esc(m.month) + '</td>' +
@@ -632,7 +644,7 @@
     if (detail) {
       detail.innerHTML = fullMonths.map(function (m) {
         var hm = hotmartFor(m);
-        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0);
+        var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) 
         var s = (m.revenueUSD + hm) - g;
         var ok = s >= 0;
         var ctry = (m.countries || []).map(function (c) {
@@ -666,8 +678,8 @@
     ingresos: 'Ingresos',
     gastos: 'Gastos',
     deudas: 'Deudas',
-    pagos: 'Pagos',
     negocio: 'Negocio',
+    personal: 'Personal',
     metas: 'Metas',
     reportes: 'Reportes'
   };
@@ -683,8 +695,8 @@
     else if (target === 'ingresos') renderIngresos();
     else if (target === 'gastos') renderGastos();
     else if (target === 'deudas') renderDeudas();
-    else if (target === 'pagos') renderPagos();
     else if (target === 'negocio') renderNegocio();
+    else if (target === 'personal') renderPersonal();
     else if (target === 'metas') renderMetas();
     else if (target === 'reportes') renderReportes();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -928,7 +940,7 @@
       downloadCsv('stark_ingresos.csv', rows);
     } else if (target === 'reportes') {
       rows = [['Mes', 'Ingresos', 'Gastos', 'Saldo', 'ROAS']];
-      comboMonths.forEach(function (m) { var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0) + (m.gastosUSD || 0); rows.push([m.month, m.revenueUSD, g, m.revenueUSD - g, m.roas]); });
+      comboMonths.forEach(function (m) { var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0); rows.push([m.month, m.revenueUSD, g, m.revenueUSD - g, m.roas]); });
       downloadCsv('stark_reportes.csv', rows);
     } else {
       rows = [['Movimiento', 'Categor\u00EDa', 'Fecha', 'Monto USD', 'Tipo']];

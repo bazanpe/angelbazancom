@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>STARK HUD — Resumen Financiero</title>
-  <link rel="stylesheet" href="css/dashboard.css?v=32">
+  <link rel="stylesheet" href="css/dashboard.css?v=33">
 </head>
 <body>
 
@@ -44,8 +44,8 @@
         <a class="nav-item" data-target="ingresos"><span class="nav-icon"><svg class="ico"><use href="#i-cash"/></svg></span> Ingresos</a>
         <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
         <a class="nav-item" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
-        <a class="nav-item" data-target="pagos"><span class="nav-icon"><svg class="ico"><use href="#i-download"/></svg></span> Pagos</a>
 <a class="nav-item" data-target="negocio"><span class="nav-icon"><svg class="ico"><use href="#i-sync"/></svg></span> Negocio</a>
+<a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-download"/></svg></span> Personal</a>
         <a class="nav-item" data-target="metas"><span class="nav-icon"><svg class="ico"><use href="#i-target"/></svg></span> Metas</a>
         <a class="nav-item" data-target="reportes"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Reportes</a>
       </nav>
@@ -198,6 +198,24 @@
               </table>
             </div>
           </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
+            <div class="day-form">
+              <input type="date" id="pf-fecha" value="2026-07-27">
+              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
+              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
+              <button class="btn-add" id="pf-add">Registrar pago</button>
+            </div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Historial de pagos &amp; ganancias</h3><span class="legend-sub" id="payments-total"></span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Fecha</th><th>Concepto</th><th>Monto</th></tr></thead>
+                <tbody id="payments-tbody"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
 
         <!-- ============ DEUDAS ============ -->
@@ -221,23 +239,14 @@
           </div>
         </div>
 
-        <!-- ============ PAGOS (diario) ============ -->
-        <div id="view-pagos" class="view" style="display:none;">
-          <div class="panel" style="margin-bottom:16px;">
-            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Diario de pagos · también puedes decírselo al agente IA</span></div>
-            <div class="day-form">
-              <input type="date" id="pf-fecha" value="2026-07-27">
-              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
-              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
-              <button class="btn-add" id="pf-add">Registrar pago</button>
-            </div>
-          </div>
+        <!-- ============ PERSONAL ============ -->
+        <div id="view-personal" class="view" style="display:none;">
           <div class="panel">
-            <div class="panel-head"><h3>Historial de pagos &amp; ganancias</h3><span class="legend-sub" id="payments-total"></span></div>
+            <div class="panel-head"><h3>Ahorros personales (BCP + Scotiabank Soles)</h3><span class="legend-sub" id="personal-total"></span></div>
             <div class="table-scroll">
               <table class="tbl">
-                <thead><tr><th>Fecha</th><th>Concepto</th><th>Monto</th></tr></thead>
-                <tbody id="payments-tbody"></tbody>
+                <thead><tr><th>Mes</th><th>Banco / Cuenta</th><th>Saldo inicial</th><th>Entradas (abonos)</th><th>Salidas (cargos)</th><th>Saldo final</th></tr></thead>
+                <tbody id="personal-tbody"></tbody>
               </table>
             </div>
           </div>
@@ -352,15 +361,15 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=32"></script>
-  <script src="js/data2.js?v=32"></script>
-  <script src="js/expenses_data.js?v=32"></script>
-  <script src="js/combo_ia_data.js?v=32"></script>
-  <script src="js/debts_data.js?v=32"></script>
-  <script src="js/payments_data.js?v=32"></script>
-  <script src="js/business_data.js?v=32"></script>
-  <script src="js/hotmart_data.js?v=32"></script>
-  <script src="js/bank_data.js?v=32"></script>
-  <script src="js/dashboard.js?v=32"></script>
+  <script src="js/data.js?v=33"></script>
+  <script src="js/data2.js?v=33"></script>
+  <script src="js/expenses_data.js?v=33"></script>
+  <script src="js/combo_ia_data.js?v=33"></script>
+  <script src="js/debts_data.js?v=33"></script>
+  <script src="js/payments_data.js?v=33"></script>
+  <script src="js/business_data.js?v=33"></script>
+  <script src="js/hotmart_data.js?v=33"></script>
+  <script src="js/personal_data.js?v=33"></script>
+  <script src="js/dashboard.js?v=33"></script>
 </body>
 </html>
