@@ -513,6 +513,31 @@
   // ============================================================
   // VISTAS SECUNDARIAS
   // ============================================================
+  function renderReporteKpis() {
+    var kpi = document.getElementById('reporte-kpis');
+    if (!kpi) return;
+    var tIng = 0, tGas = 0, tSal = 0, tRoas = 0, best = null, bestC = null, bestCRev = 0;
+    fullMonths.forEach(function (m) {
+      var hm = hotmartFor(m);
+      var g = (m.adsUSD || 0) + (m.toolsUSD || 0) + (m.withdrawalsUSD || 0);
+      var s = (m.revenueUSD + hm) - g;
+      tIng += m.revenueUSD + hm; tGas += g; tSal += s; tRoas += m.roas;
+      if (!best || s > best.s) best = { m: m.month, s: s };
+      (m.countries || []).forEach(function (c) { if (c.revenue > bestCRev) { bestCRev = c.revenue; bestC = c.country; } });
+    });
+    var promRoas = fullMonths.length ? tRoas / fullMonths.length : 0;
+    kpi.innerHTML = [
+      ['Ingresos totales', fmtUSD(tIng)],
+      ['Gastos totales', '−' + fmtUSD(tGas)],
+      ['Saldo acumulado', fmtUSD(tSal)],
+      ['ROAS promedio', promRoas.toFixed(2) + 'x'],
+      ['Mejor mes', best ? best.m : '—'],
+      ['Mejor país', bestC || '—']
+    ].map(function (k) {
+      return '<div class="rk-card"><span class="rk-label">' + k[0] + '</span><span class="rk-value">' + k[1] + '</span></div>';
+    }).join('');
+  }
+
   function renderIngresos() {
     var tb = document.getElementById('ingresos-tbody');
     var detail = document.getElementById('ingresos-detail');
@@ -580,6 +605,7 @@
       if (badM.length) alertHtml += ' ⚠️ En revisión: ' + badM.map(function (m) { return '<b>' + esc(m.month) + '</b>'; }).join(', ') + ' (ganancia < 0 o ROAS < 1x).';
     }
     setAlert('ingresos-alert', !badM.length, alertHtml);
+    renderReporteKpis();
   }
 
   function renderGastos() {
@@ -924,8 +950,6 @@
     tarjetas: 'Tarjetas',
     negocio: 'Negocio',
     personal: 'Personal',
-    metas: 'Metas',
-    reportes: 'Reportes',
     ancla: 'Puntos ancla',
     notas: 'Notas'
   };
@@ -940,12 +964,9 @@
     if (target === 'resumen') renderResumen();
     else if (target === 'ingresos') renderIngresos();
     else if (target === 'gastos') renderGastos();
-    else if (target === 'deudas') renderDeudas();
-    else if (target === 'tarjetas') renderTarjetas();
+    else if (target === 'deudas') { renderDeudas(); renderTarjetas(); }
     else if (target === 'negocio') renderNegocio();
     else if (target === 'personal') renderPersonal();
-    else if (target === 'metas') renderMetas();
-    else if (target === 'reportes') renderReportes();
     else if (target === 'ancla') renderAnchors();
     else if (target === 'notas') renderNotas();
     var sb = document.getElementById('sidebar');

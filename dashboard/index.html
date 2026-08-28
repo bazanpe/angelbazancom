@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Angel Bazan - Dashboard</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070A09'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='900' fill='%2355F58A' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/dashboard.css?v=49">
+  <link rel="stylesheet" href="css/dashboard.css?v=50">
 </head>
 <body>
 
@@ -49,11 +49,8 @@
         <a class="nav-item" data-target="ingresos"><span class="nav-icon"><svg class="ico"><use href="#i-cash"/></svg></span> Ingresos</a>
         <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
         <a class="nav-item" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
-        <a class="nav-item" data-target="tarjetas"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Tarjetas</a>
-<a class="nav-item" data-target="negocio"><span class="nav-icon"><svg class="ico"><use href="#i-sync"/></svg></span> Negocio</a>
-<a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-download"/></svg></span> Personal</a>
-        <a class="nav-item" data-target="metas"><span class="nav-icon"><svg class="ico"><use href="#i-target"/></svg></span> Metas</a>
-        <a class="nav-item" data-target="reportes"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Reportes</a>
+        <a class="nav-item" data-target="negocio"><span class="nav-icon"><svg class="ico"><use href="#i-sync"/></svg></span> Negocio</a>
+        <a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-download"/></svg></span> Personal</a>
       </nav>
 
       <div class="sidebar-foot">
@@ -141,6 +138,7 @@
         <!-- ============ INGRESOS ============ -->
         <div id="view-ingresos" class="view" style="display:none;">
           <div class="sec-alert ok" id="ingresos-alert"></div>
+          <div class="reporte-kpis" id="reporte-kpis"></div>
           <div class="panel">
             <div class="panel-head">
               <h3>Ingresos por mes</h3>
@@ -244,13 +242,9 @@
               </table>
             </div>
           </div>
-        </div>
-
-        <!-- ============ TARJETAS ============ -->
-        <div id="view-tarjetas" class="view" style="display:none;">
-          <div class="sec-alert ok" id="tarjetas-alert"></div>
-          <div class="panel" style="margin-bottom:16px;">
-            <div class="panel-head"><h3>Tarjetas de crédito</h3><span class="legend-sub">FA = facturación · PA = fecha de pago</span></div>
+          <div class="sec-alert ok" id="tarjetas-alert" style="margin-top:16px;"></div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Tarjetas de crédito — fechas de pago</h3><span class="legend-sub">FA = facturación · PA = fecha de pago</span></div>
             <div class="table-scroll">
               <table class="tbl">
                 <thead><tr><th>Tarjeta</th><th>Titular</th><th>Facturación</th><th>Fecha de pago</th><th>Línea</th><th>Días para pagar</th></tr></thead>
@@ -258,8 +252,8 @@
               </table>
             </div>
           </div>
-          <div class="panel">
-            <div class="panel-head"><h3>Calendario de pagos</h3><span class="legend-sub">Ordenados por urgencia · gráfico interactivo</span></div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Calendario de pagos de tarjetas</h3><span class="legend-sub">Ordenados por urgencia</span></div>
             <div class="cards-graph" id="cards-graph"></div>
           </div>
         </div>
@@ -309,29 +303,6 @@
             <div class="panel-head"><h3>Próximos pagos</h3><span class="legend-sub">Qué tan cerca está la fecha de pago de cada herramienta</span></div>
             <div class="negocio-graph" id="negocio-graph"></div>
           </div>
-        </div>
-
-        <!-- ============ METAS ============ -->
-        <div id="view-metas" class="view" style="display:none;">
-          <div class="sec-alert ok" id="metas-alert"></div>
-          <div class="meta-cards" id="metas-grid"></div>
-          <div class="metas-detail" id="metas-detail"></div>
-        </div>
-
-        <!-- ============ REPORTES ============ -->
-        <div id="view-reportes" class="view" style="display:none;">
-          <div class="sec-alert ok" id="reportes-alert"></div>
-          <div class="panel">
-            <div class="panel-head"><h3>Reporte mensual consolidado</h3><span class="legend-sub">Evolución del trimestre</span></div>
-            <div class="table-scroll">
-              <table class="tbl">
-                <thead><tr><th>Mes</th><th>Ingresos</th><th>Gastos</th><th>Saldo</th><th>ROAS</th><th>Estado</th></tr></thead>
-                <tbody id="reportes-tbody"></tbody>
-              </table>
-            </div>
-          </div>
-          <div class="reporte-kpis" id="reporte-kpis"></div>
-          <div class="reportes-detail" id="reportes-detail"></div>
         </div>
 
         <!-- ============ NOTAS ============ -->
@@ -427,17 +398,17 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=49"></script>
-  <script src="js/data2.js?v=49"></script>
-  <script src="js/expenses_data.js?v=49"></script>
-  <script src="js/combo_ia_data.js?v=49"></script>
-  <script src="js/debts_data.js?v=49"></script>
-  <script src="js/payments_data.js?v=49"></script>
-  <script src="js/business_data.js?v=49"></script>
-  <script src="js/hotmart_data.js?v=49"></script>
-  <script src="js/cards_data.js?v=49"></script>
-  <script src="js/anchors_data.js?v=49"></script>
-  <script src="js/personal_data.js?v=49"></script>
-  <script src="js/dashboard.js?v=49"></script>
+  <script src="js/data.js?v=50"></script>
+  <script src="js/data2.js?v=50"></script>
+  <script src="js/expenses_data.js?v=50"></script>
+  <script src="js/combo_ia_data.js?v=50"></script>
+  <script src="js/debts_data.js?v=50"></script>
+  <script src="js/payments_data.js?v=50"></script>
+  <script src="js/business_data.js?v=50"></script>
+  <script src="js/hotmart_data.js?v=50"></script>
+  <script src="js/cards_data.js?v=50"></script>
+  <script src="js/anchors_data.js?v=50"></script>
+  <script src="js/personal_data.js?v=50"></script>
+  <script src="js/dashboard.js?v=50"></script>
 </body>
 </html>
