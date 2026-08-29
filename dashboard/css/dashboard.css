@@ -61,7 +61,7 @@ body {
 .sidebar {
   width: 232px;
   flex-shrink: 0;
-  background-color: #06111D;
+  background-color: #08131F;
   background-image:
     linear-gradient(rgba(32, 107, 255, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(32, 107, 255, 0.045) 1px, transparent 1px);
@@ -145,7 +145,7 @@ body {
   gap: 16px;
   padding: 18px 28px;
   border-bottom: 1px solid var(--border);
-  background-color: #06111D;
+  background-color: #08131F;
   background-image:
     linear-gradient(rgba(32, 107, 255, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(32, 107, 255, 0.045) 1px, transparent 1px);
