@@ -61,10 +61,10 @@ body {
 .sidebar {
   width: 232px;
   flex-shrink: 0;
-  background-color: #0C1B30;
+  background-color: #06111D;
   background-image:
-    linear-gradient(rgba(39, 169, 255, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(39, 169, 255, 0.09) 1px, transparent 1px);
+    linear-gradient(rgba(32, 107, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 107, 255, 0.045) 1px, transparent 1px);
   background-size: 44px 44px;
   border-right: 1px solid var(--border);
   padding: 22px 14px;
@@ -145,10 +145,10 @@ body {
   gap: 16px;
   padding: 18px 28px;
   border-bottom: 1px solid var(--border);
-  background-color: #0C1B30;
+  background-color: #06111D;
   background-image:
-    linear-gradient(rgba(39, 169, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(39, 169, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(32, 107, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 107, 255, 0.045) 1px, transparent 1px);
   background-size: 44px 44px;
   position: sticky;
   top: 0;
