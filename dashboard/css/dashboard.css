@@ -62,10 +62,6 @@ body {
   width: 232px;
   flex-shrink: 0;
   background-color: #08131F;
-  background-image:
-    linear-gradient(rgba(32, 107, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(32, 107, 255, 0.045) 1px, transparent 1px);
-  background-size: 44px 44px;
   border-right: 1px solid var(--border);
   padding: 22px 14px;
   display: flex;
@@ -146,10 +142,6 @@ body {
   padding: 18px 28px;
   border-bottom: 1px solid var(--border);
   background-color: #08131F;
-  background-image:
-    linear-gradient(rgba(32, 107, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(32, 107, 255, 0.045) 1px, transparent 1px);
-  background-size: 44px 44px;
   position: sticky;
   top: 0;
   z-index: 50;
