@@ -3,12 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff, Loader2, MessageCircle, Zap, Bot, Rocket, ShieldCheck } from "lucide-react";
+import { Eye, EyeOff, Loader2, MessageCircle, Zap, Bot, Rocket, ShieldCheck, Sparkles } from "lucide-react";
+
+const DEMO_EMAIL = "demo@vende.com";
+const DEMO_PASS = "vende2026";
 
 export default function LoginPage() {
   const router = useRouter();
   const [show, setShow] = useState(false);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(DEMO_EMAIL);
   const [pass, setPass] = useState("");
   const [remember, setRemember] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -18,6 +21,10 @@ export default function LoginPage() {
     e.preventDefault();
     if (!email || !pass) {
       setError("Ingresa tu correo y contraseña.");
+      return;
+    }
+    if (email.trim().toLowerCase() !== DEMO_EMAIL || pass !== DEMO_PASS) {
+      setError("Credenciales incorrectas. Usa el acceso demo: demo@vende.com / vende2026");
       return;
     }
     setLoading(true);
@@ -91,6 +98,20 @@ export default function LoginPage() {
 
           <h2 className="text-2xl font-black text-[#F8FAFC]">Bienvenido de vuelta</h2>
           <p className="mt-1 text-[13.5px] text-[#94A3B8]">Ingresa para continuar donde lo dejaste.</p>
+
+          <div className="mt-5 rounded-xl border border-[#35E981]/25 bg-[#35E981]/[0.06] p-3.5">
+            <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-widest text-[#35E981]">
+              <Sparkles size={13} /> Acceso demo
+            </div>
+            <div className="mt-1.5 space-y-0.5 text-[12.5px] text-[#94A3B8]">
+              <div>
+                <b className="text-[#F8FAFC]">Correo:</b> demo@vende.com
+              </div>
+              <div>
+                <b className="text-[#F8FAFC]">Contraseña:</b> vende2026
+              </div>
+            </div>
+          </div>
 
           <form onSubmit={submit} className="mt-7 space-y-4">
             <div>
