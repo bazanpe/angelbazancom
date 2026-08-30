@@ -15,23 +15,23 @@ export default function BonosPage() {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         {BONOS.map((b) => (
-          <div key={b.id} className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0A1117]">
-            <div className={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b ${b.grad}`} />
-            <div className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
-              <div className="flex items-start gap-4">
-                <span className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${b.grad} text-lg text-[#05090D]`}>
-                  {b.nombre[0]}
-                </span>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="text-[17px] font-extrabold text-[#F8FAFC]">{b.nombre}</h2>
-                    <Badge tone="green">{b.dias}</Badge>
-                  </div>
-                  <p className="mt-1 max-w-2xl text-[13.5px] leading-relaxed text-[#94A3B8]">{b.desc}</p>
-                </div>
+          <div key={b.id} className="group overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0A1117]">
+            {/* Imagen del bono */}
+            <div className="relative aspect-[16/7] overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={b.img} alt={b.nombre} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#05090D] via-transparent to-transparent" />
+              <div className="absolute left-4 top-4">
+                <Badge tone="green">{b.dias}</Badge>
               </div>
+              <div className="absolute bottom-3 left-4">
+                <h2 className="text-[22px] font-black text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)]">{b.nombre}</h2>
+              </div>
+            </div>
+            <div className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
+              <p className="max-w-2xl text-[13.5px] leading-relaxed text-[#94A3B8]">{b.desc}</p>
               <button className="flex shrink-0 items-center justify-center gap-2 rounded-lg bg-white/10 px-5 py-3 text-[13px] font-extrabold text-[#F8FAFC] transition hover:bg-white/20 md:w-[150px]">
                 Activar bono <ExternalLink size={14} />
               </button>

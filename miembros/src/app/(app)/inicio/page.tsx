@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { Play, Info, Clock } from "lucide-react";
-import { DEMO_USER, COURSE, LIBRARY, EVENTS } from "@/lib/data";
+import { DEMO_USER, COURSE, LIBRARY, BONOS } from "@/lib/data";
 import { Carousel, ModuleCard, ContinueCard, LibraryRowCard } from "@/components/course-card";
-import { Poster, PosterSkeleton } from "@/components/posters";
+import { Poster } from "@/components/posters";
 
 export default function InicioPage() {
   const modulos = COURSE.modules;
@@ -70,36 +70,31 @@ export default function InicioPage() {
         <ContinueCard mod={modulos[2]} lessonIndex={0} at="1:05" />
       </Carousel>
 
-      <Carousel title="Empieza por aquí" sub="Los primeros pasos del sistema.">
-        <ModuleCard mod={modulos[0]} />
-      </Carousel>
-
       <Carousel title="Sistema Vende en Automático" sub="Todos los módulos del programa.">
         {modulos.map((m) => (
           <ModuleCard key={m.id} mod={m} />
         ))}
       </Carousel>
 
-      <Carousel title="Biblioteca infinita" sub="Recursos listos para usar.">
-        {LIBRARY.slice(0, 6).map((r) => (
-          <LibraryRowCard key={r.id} title={r.title} category={r.category} format={r.format} />
+      <Carousel title="Bonos" sub="Herramientas premium incluidas en tu acceso.">
+        {BONOS.map((b) => (
+          <Link key={b.id} href="/bonos" className="group w-[260px] shrink-0 snap-start">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={b.img} alt={b.nombre} className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#05090D]/90 via-transparent to-transparent" />
+              <div className="absolute bottom-2.5 left-3 right-3">
+                <div className="text-[14px] font-black text-white">{b.nombre}</div>
+                <div className="text-[10.5px] font-bold text-[#35E981]">{b.dias}</div>
+              </div>
+            </div>
+          </Link>
         ))}
       </Carousel>
 
-      <Carousel title="Mentorías y clases en vivo">
-        {EVENTS.map((ev) => (
-          <div key={ev.id} className="w-[300px] shrink-0 snap-start">
-            <div className="relative">
-              <Poster id="m13" title={ev.title} variant="horizontal" />
-              <div className="absolute left-2.5 top-2.5 rounded-md bg-[#EF4444] px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-white">
-                {ev.type}
-              </div>
-            </div>
-            <div className="flex items-center justify-between px-1 pt-2 text-[11.5px] text-[#94A3B8]">
-              <span className="font-bold text-[#159DFF]">{ev.date} · {ev.time}</span>
-              <span>{ev.duration}</span>
-            </div>
-          </div>
+      <Carousel title="Biblioteca infinita" sub="Recursos listos para usar.">
+        {LIBRARY.slice(0, 6).map((r) => (
+          <LibraryRowCard key={r.id} title={r.title} category={r.category} format={r.format} />
         ))}
       </Carousel>
     </div>

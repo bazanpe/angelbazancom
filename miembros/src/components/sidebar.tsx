@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Home,
-  Search,
   PlayCircle,
   Library,
   Users,
@@ -21,7 +20,6 @@ type Item = { href?: string; external?: string; label: string; icon: typeof Home
 
 const ITEMS: Item[] = [
   { href: "/inicio", label: "Inicio", icon: Home },
-  { href: "/buscar", label: "Buscar", icon: Search },
   { href: "/clases", label: "Clases", icon: PlayCircle },
   { href: "/bonos", label: "Bonos", icon: Gift },
   { href: "/biblioteca", label: "Biblioteca", icon: Library },

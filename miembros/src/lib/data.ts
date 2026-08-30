@@ -368,6 +368,7 @@ export type Bono = {
   dias: string;
   desc: string;
   grad: string;
+  img: string;
 };
 
 export const BONOS: Bono[] = [
@@ -377,6 +378,7 @@ export const BONOS: Bono[] = [
     dias: "30 días GRATIS",
     desc: "Automatiza tu WhatsApp con seguimientos y activa Agentes IA dentro de tus flujos para atender clientes y llevarlos a comprar.",
     grad: "from-[#159DFF] to-[#0878F9]",
+    img: "https://assets.skool.com/f/1f1675b568fa4055b3523da387b19c3a/5694c0ed5a9d4fa8ba655cfc795ed62e4b1f428d7dea44c783df12ff2fb48c68.jpg",
   },
   {
     id: "vendespy",
@@ -384,6 +386,7 @@ export const BONOS: Bono[] = [
     dias: "30 días GRATIS",
     desc: "Encuentra productos y anuncios activos para investigar qué se está moviendo en el mercado antes de invertir tiempo y dinero en una idea.",
     grad: "from-[#35E981] to-[#0E7A46]",
+    img: "https://assets.skool.com/f/1f1675b568fa4055b3523da387b19c3a/9f2c8edce3d2432993c94aab9e906b026bb0616458154c72a5ee0eea685faceb.jpg",
   },
   {
     id: "vendelytics",
@@ -391,6 +394,7 @@ export const BONOS: Bono[] = [
     dias: "30 días GRATIS",
     desc: "Analiza páginas, titulares, ofertas, creativos y VSLs para modelar la estructura de funnels que ya están diseñados para convertir.",
     grad: "from-[#2ED9C3] to-[#0A5E63]",
+    img: "https://assets.skool.com/f/1f1675b568fa4055b3523da387b19c3a/000529f7768d4e0da9e94aef1cfc2b61422fe687eaf24f57bd97209e4563bcc7.jpg",
   },
 ];
 
