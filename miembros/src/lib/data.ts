@@ -5,6 +5,7 @@ export type Lesson = {
   desc: string;
   resource?: string;
   type?: "video" | "recurso" | "checklist";
+  img?: string;
 };
 
 export type Module = {

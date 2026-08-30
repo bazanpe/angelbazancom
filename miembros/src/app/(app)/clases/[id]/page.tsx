@@ -73,7 +73,7 @@ export default function ClasePage() {
                     <div className="flex max-w-xl flex-col items-center gap-4 p-6 text-center">
                       <div className="text-[12px] font-black uppercase tracking-[0.2em] text-[#35E981]">Siguiente lección</div>
                       <div className="w-full max-w-[380px]">
-                        <Poster id={m.id} title={next.title} variant="horizontal" />
+                        <Poster id={m.id} title={next.title} variant="horizontal" img={next.img} />
                       </div>
                       <div className="text-lg font-extrabold text-[#F8FAFC]">{next.title}</div>
                       <div className="flex gap-3">
@@ -252,7 +252,7 @@ export default function ClasePage() {
                       }`}
                     >
                       <div className="relative aspect-video w-[104px] shrink-0 overflow-hidden rounded-md">
-                        <Poster id={m.id} title="" variant="horizontal" />
+                        <Poster id={m.id} title="" variant="horizontal" img={x.img} />
                         {active && (
                           <span className="absolute inset-0 flex items-center justify-center bg-black/40">
                             <Play size={12} className="text-white" fill="currentColor" />

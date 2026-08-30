@@ -55,7 +55,7 @@ export default function ClasesPage() {
                         className="group flex items-center gap-3 rounded-lg px-2 py-2.5 transition hover:bg-white/[0.04]"
                       >
                         <span className="relative aspect-video w-[132px] shrink-0 overflow-hidden rounded-md sm:w-[176px]">
-                          <Poster id={m.id} title="" variant="horizontal" />
+                          <Poster id={m.id} title="" variant="horizontal" img={l.img} />
                           <span className="absolute inset-0 flex items-center justify-center">
                             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#159DFF]/90 text-white opacity-0 transition group-hover:opacity-100">
                               <Play size={12} className="ml-0.5 fill-current" />

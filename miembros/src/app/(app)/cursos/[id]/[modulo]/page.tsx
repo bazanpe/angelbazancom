@@ -103,7 +103,7 @@ export default function ModuloDetailPage() {
               >
                 {/* miniatura episodio */}
                 <div className="relative aspect-video w-[220px] shrink-0 overflow-hidden rounded-lg sm:w-[280px]">
-                  <Poster id={mod.id} title={l.title} variant="horizontal" />
+                  <Poster id={mod.id} title={l.title} variant="horizontal" img={l.img} />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#159DFF] text-white opacity-0 shadow-lg shadow-[#159DFF]/40 transition group-hover:opacity-100">
                       <Play size={14} className="ml-0.5 fill-current" />

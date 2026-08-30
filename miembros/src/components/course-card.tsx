@@ -14,12 +14,12 @@ export function Carousel({ title, sub, children }: { title: string; sub?: string
   }
   return (
     <section className="relative mt-7">
-      <div className="mb-2.5 flex items-center justify-between">
+      <div className="mb-2.5 flex flex-wrap items-center gap-2">
         <h2 className="text-[16.5px] font-extrabold tracking-tight text-[#F8FAFC]">{title}</h2>
+        <Link href="/cursos" className="text-[12px] font-bold text-[#94A3B8] transition hover:text-[#F8FAFC]">
+          Ver todo
+        </Link>
         <div className="flex items-center gap-1">
-          <Link href="/cursos" className="mr-2 text-[12px] font-bold text-[#94A3B8] hover:text-[#F8FAFC]">
-            Ver todo
-          </Link>
           <button
             onClick={() => scroll(-1)}
             aria-label="Anterior"
@@ -36,7 +36,7 @@ export function Carousel({ title, sub, children }: { title: string; sub?: string
           </button>
         </div>
       </div>
-      {sub && <p className="-mt-1.5 mb-2.5 text-[12px] text-[#94A3B8]">{sub}</p>}
+      {sub && <p className="mt-1 mb-2.5 text-[12px] text-[#94A3B8]">{sub}</p>}
       <div ref={ref} className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-3 md:-mx-6 md:px-6">
         {children}
       </div>
@@ -86,7 +86,7 @@ export function ContinueCard({ mod, lessonIndex, at }: { mod: Module; lessonInde
   return (
     <Link href={`/clases/${lesson.id}`} className="group w-[300px] shrink-0 snap-start sm:w-[360px]">
       <div className="relative">
-        <Poster id={mod.id} title={lesson.title} numero={mod.numero} variant="horizontal" />
+        <Poster id={mod.id} title={lesson.title} numero={mod.numero} variant="horizontal" img={lesson.img} />
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#159DFF] text-white opacity-0 shadow-xl shadow-[#159DFF]/40 transition duration-200 group-hover:scale-110 group-hover:opacity-100">
             <Play size={18} className="ml-0.5 fill-current" />

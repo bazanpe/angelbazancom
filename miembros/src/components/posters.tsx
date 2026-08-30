@@ -50,6 +50,7 @@ export function Poster({
   variant = "vertical",
   locked,
   done,
+  img,
 }: {
   id: string;
   title: string;
@@ -57,6 +58,7 @@ export function Poster({
   variant?: PosterVariant;
   locked?: boolean;
   done?: boolean;
+  img?: string;
 }) {
   const theme = MODULE_THEME[id] ?? { accent: "blue", symbol: "◆" };
   const a = ACCENTS[theme.accent] ?? ACCENTS.blue;
@@ -66,7 +68,10 @@ export function Poster({
 
   return (
     <div className={`relative overflow-hidden ${isV ? "aspect-[2/3]" : "aspect-video"} rounded-xl bg-[#0A1117]`}>
-      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full">
+      {img ? (
+        <img src={img} alt={title} className="absolute inset-0 h-full w-full object-cover" />
+      ) : (
+        <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full">
         <defs>
           <linearGradient id={`bg-${id}`} x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="#0A1117" />
@@ -126,6 +131,8 @@ export function Poster({
           {theme.symbol}
         </text>
       </svg>
+      )}
+      {img && <div className="absolute inset-0 bg-gradient-to-t from-[#020507]/80 via-transparent to-transparent" />}
 
       {/* capa inferior de texto */}
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#020507] via-[#020507]/70 to-transparent px-3.5 pb-3.5 pt-10">
