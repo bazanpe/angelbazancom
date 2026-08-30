@@ -362,6 +362,40 @@ export const NOTIFICATIONS: Notif[] = [
   { id: "n4", title: "Mentoría próxima", desc: "Mentoría: primeros lanzamientos — 3 sep 7PM.", time: "Hace 2 días", unread: false, type: "event" },
 ];
 
+export type Bono = {
+  id: string;
+  nombre: string;
+  dias: string;
+  desc: string;
+  grad: string;
+};
+
+export const BONOS: Bono[] = [
+  {
+    id: "vendechat",
+    nombre: "VendeChat Pro",
+    dias: "30 días GRATIS",
+    desc: "Automatiza tu WhatsApp con seguimientos y activa Agentes IA dentro de tus flujos para atender clientes y llevarlos a comprar.",
+    grad: "from-[#159DFF] to-[#0878F9]",
+  },
+  {
+    id: "vendespy",
+    nombre: "VendeSpy",
+    dias: "30 días GRATIS",
+    desc: "Encuentra productos y anuncios activos para investigar qué se está moviendo en el mercado antes de invertir tiempo y dinero en una idea.",
+    grad: "from-[#35E981] to-[#0E7A46]",
+  },
+  {
+    id: "vendelytics",
+    nombre: "Vendelytics",
+    dias: "30 días GRATIS",
+    desc: "Analiza páginas, titulares, ofertas, creativos y VSLs para modelar la estructura de funnels que ya están diseñados para convertir.",
+    grad: "from-[#2ED9C3] to-[#0A5E63]",
+  },
+];
+
+export const WHATSAPP_COMMUNITY = "https://chat.whatsapp.com/LsqPgKcWIrxJWSiZLfMpiO";
+
 export const DEMO_USER = {
   name: "Alumno VIP",
   email: "demo-progreso@vende.com",

@@ -71,37 +71,11 @@ export default function InicioPage() {
       </Carousel>
 
       <Carousel title="Empieza por aquí" sub="Los primeros pasos del sistema.">
-        {modulos.slice(0, 4).map((m) => (
-          <ModuleCard key={m.id} mod={m} />
-        ))}
+        <ModuleCard mod={modulos[0]} />
       </Carousel>
 
       <Carousel title="Sistema Vende en Automático" sub="Todos los módulos del programa.">
         {modulos.map((m) => (
-          <ModuleCard key={m.id} mod={m} />
-        ))}
-      </Carousel>
-
-      <Carousel title="WhatsApp Funnel Pro">
-        {modulos.filter((m) => [6, 7].includes(m.numero)).map((m) => (
-          <ModuleCard key={m.id} mod={m} />
-        ))}
-      </Carousel>
-
-      <Carousel title="Creativos y anuncios que venden">
-        {modulos.filter((m) => [8, 9].includes(m.numero)).map((m) => (
-          <ModuleCard key={m.id} mod={m} />
-        ))}
-      </Carousel>
-
-      <Carousel title="Automatización con IA">
-        {modulos.filter((m) => [7, 12].includes(m.numero)).map((m) => (
-          <ModuleCard key={m.id} mod={m} />
-        ))}
-      </Carousel>
-
-      <Carousel title="Clases nuevas" sub="Contenido publicado recientemente.">
-        {modulos.slice(1, 4).map((m) => (
           <ModuleCard key={m.id} mod={m} />
         ))}
       </Carousel>

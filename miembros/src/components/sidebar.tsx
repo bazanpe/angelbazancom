@@ -13,15 +13,19 @@ import {
   ChevronsLeft,
   ChevronsRight,
   LogOut,
+  Gift,
 } from "lucide-react";
-import { DEMO_USER } from "@/lib/data";
+import { DEMO_USER, WHATSAPP_COMMUNITY } from "@/lib/data";
 
-const ITEMS = [
+type Item = { href?: string; external?: string; label: string; icon: typeof Home };
+
+const ITEMS: Item[] = [
   { href: "/inicio", label: "Inicio", icon: Home },
   { href: "/buscar", label: "Buscar", icon: Search },
-  { href: "/mi-aprendizaje", label: "Mi aprendizaje", icon: PlayCircle },
+  { href: "/clases", label: "Clases", icon: PlayCircle },
+  { href: "/bonos", label: "Bonos", icon: Gift },
   { href: "/biblioteca", label: "Biblioteca", icon: Library },
-  { href: "/comunidad", label: "Comunidad", icon: Users },
+  { external: WHATSAPP_COMMUNITY, label: "Comunidad", icon: Users },
   { href: "/calendario", label: "Calendario", icon: Calendar },
   { href: "/mi-cuenta", label: "Mi cuenta", icon: UserRound },
 ];
@@ -52,20 +56,24 @@ export function Sidebar({ collapsed, onToggle, onNavigate }: { collapsed?: boole
 
       <nav className="flex-1 space-y-1">
         {ITEMS.map((it) => {
-          const active = isActive(it.href);
-          return (
-            <Link
-              key={it.href}
-              href={it.href}
-              onClick={onNavigate}
-              title={collapsed ? it.label : undefined}
-              className={`relative flex items-center gap-3 rounded-lg py-2.5 text-[13px] font-semibold transition ${
-                collapsed ? "justify-center px-0" : "px-3"
-              } ${active ? "text-[#F8FAFC]" : "text-[#94A3B8] hover:text-[#F8FAFC]"}`}
-            >
+          const active = it.href ? isActive(it.href) : false;
+          const cls = `relative flex items-center gap-3 rounded-lg py-2.5 text-[13px] font-semibold transition ${
+            collapsed ? "justify-center px-0" : "px-3"
+          } ${active ? "text-[#F8FAFC]" : "text-[#94A3B8] hover:text-[#F8FAFC]"}`;
+          const inner = (
+            <>
               {active && <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-full bg-[#159DFF]" />}
               <it.icon size={19} className={active ? "text-[#159DFF]" : ""} />
               {!collapsed && it.label}
+            </>
+          );
+          return it.external ? (
+            <a key={it.label} href={it.external} target="_blank" rel="noopener noreferrer" title={collapsed ? it.label : undefined} className={cls}>
+              {inner}
+            </a>
+          ) : (
+            <Link key={it.href} href={it.href!} onClick={onNavigate} title={collapsed ? it.label : undefined} className={cls}>
+              {inner}
             </Link>
           );
         })}
