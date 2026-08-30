@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Angel Bazan - Dashboard</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070A09'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='900' fill='%2355F58A' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/dashboard.css?v=67">
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+      <symbol id="i-up" viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+      <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></symbol>
+      <symbol id="i-chart" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></symbol>
+      <symbol id="i-cash" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
+      <symbol id="i-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+      <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+      <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+      <symbol id="i-sync" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.36 6.36L3 16"/><path d="M3 12a9 9 0 0 1 15.36-6.36L21 8"/><polyline points="3 16 3 21 8 21"/><polyline points="21 8 21 3 16 3"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+      <symbol id="i-vault" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="3"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="8" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="16"/><line x1="7" y1="3" x2="7" y2="6"/><line x1="17" y1="3" x2="17" y2="6"/></symbol>
+      <symbol id="i-trend-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+      <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v3"/><path d="M22 7v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M15 12h6v3h-6a1.5 1.5 0 0 1 0-3z"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app-shell app-blur">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">A</div>
+        <div>
+          <div class="brand-name">ANGEL BAZAN</div>
+          <div class="brand-sub">Dashboard</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen</a>
+        <a class="nav-item" data-target="notas"><span class="nav-icon"><svg class="ico"><use href="#i-send"/></svg></span> Notas</a>
+        <a class="nav-item" data-target="ancla"><span class="nav-icon"><svg class="ico"><use href="#i-info"/></svg></span> Puntos ancla</a>
+        <a class="nav-item" data-target="ingresos"><span class="nav-icon"><svg class="ico"><use href="#i-cash"/></svg></span> Ingresos</a>
+        <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
+        <a class="nav-item" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
+        <a class="nav-item" data-target="negocio"><span class="nav-icon"><svg class="ico"><use href="#i-sync"/></svg></span> Negocio</a>
+        <a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-vault"/></svg></span> Ahorros</a>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="sync-card">
+          <div class="sync-row"><span class="sync-dot"></span><b>Datos actualizados</b></div>
+          <div class="sync-time" id="sync-time">Hoy</div>
+        </div>
+        <div class="lock-chip">
+          <span class="dot"></span>
+          <span id="lock-status-text">Sesión privada activa</span>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="topbar-title">Resumen financiero</h1>
+          <p id="topbar-period">Vista general de tu dinero</p>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn menu-btn" id="menu-btn" title="Menú"><svg class="ico"><use href="#i-menu"/></svg></button>
+          <div class="month-picker">
+            <span class="ps-label">Mes</span>
+            <select id="sel-month" aria-label="Mes"></select>
+          </div>
+          <button class="btn-add" id="add-mov-btn" title="Agregar movimiento">+ Agregar</button>
+          <button class="icon-btn" id="sync-btn" title="Sincronizar Google Sheets"><svg class="ico"><use href="#i-sync"/></svg></button>
+          <button class="icon-btn" id="export-btn" title="Exportar a Excel / Sheets"><svg class="ico"><use href="#i-download"/></svg></button>
+          <button class="icon-btn notify-btn" id="notify-btn" title="Recordatorio"><svg class="ico"><use href="#i-bell"/></svg><span class="notify-dot" id="notify-dot"></span></button>
+          <button class="icon-btn" id="lock-btn" title="Bloquear panel"><svg class="ico"><use href="#i-lock"/></svg></button>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <!-- ============ RESUMEN ============ -->
+        <div id="view-resumen" class="view active">
+          <div class="sec-alert ok" id="resumen-alert"></div>
+
+          <section class="hero-card">
+            <div class="hero-left">
+              <div class="hero-eyebrow">SALDO NETO DEL MES</div>
+              <div class="hero-value" id="hero-saldo">US$ 0</div>
+              <div class="hero-growth up" id="hero-growth">Disponible en cuentas</div>
+              <svg class="hero-curve" viewBox="0 0 560 130" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="hcg" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#25E77A"/><stop offset="100%" stop-color="#27A9FF"/>
+                  </linearGradient>
+                  <linearGradient id="hcf" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#25E77A" stop-opacity="0.22"/><stop offset="100%" stop-color="#25E77A" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,104 C70,92 120,78 170,84 C230,92 280,60 340,52 C400,44 470,30 560,16" fill="none" stroke="url(#hcg)" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M0,104 C70,92 120,78 170,84 C230,92 280,60 340,52 C400,44 470,30 560,16 L560,130 L0,130 Z" fill="url(#hcf)"/>
+              </svg>
+            </div>
+            <div class="hero-meta">
+              <svg viewBox="0 0 120 120" width="152" height="152" id="meta-ring" aria-label="Progreso de meta">
+                <defs>
+                  <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#25E77A"/><stop offset="100%" stop-color="#27A9FF"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(39,169,255,0.14)" stroke-width="9"/>
+                <circle id="meta-ring-fill" cx="60" cy="60" r="50" fill="none" stroke="url(#ringGrad)" stroke-width="9" stroke-linecap="round" stroke-dasharray="314" stroke-dashoffset="314" transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="meta-ring-text">
+                <div class="meta-label">META MENSUAL</div>
+                <div class="meta-pct" id="meta-pct">0%</div>
+                <div class="meta-sub" id="meta-sub">de US$ 7,600</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="mini-cards">
+            <div class="mini-card green">
+              <div class="mini-head"><span class="mini-label">INGRESOS</span><span class="mini-icon" data-popup="ingresos" title="Ver desglose"><svg class="ico"><use href="#i-trend-up"/></svg></span></div>
+              <div class="mini-value" id="mini-ingresos">US$ 0</div>
+              <div class="mini-var" id="mini-var-ingresos"></div>
+              <div class="mini-sub">Combo + Low Ticket</div>
+            </div>
+            <div class="mini-card amber">
+              <div class="mini-head"><span class="mini-label">GASTOS</span><span class="mini-icon" data-popup="gastos" title="Ver desglose"><svg class="ico"><use href="#i-wallet"/></svg></span></div>
+              <div class="mini-value" id="mini-gastos">US$ 0</div>
+              <div class="mini-var" id="mini-var-gastos"></div>
+              <div class="mini-sub">Pauta + Herramientas + Retiros</div>
+            </div>
+            <div class="mini-card red">
+              <div class="mini-head"><span class="mini-label">DEUDAS DEL MES</span><span class="mini-icon" data-popup="deudas" title="Ver desglose"><svg class="ico"><use href="#i-card"/></svg></span></div>
+              <div class="mini-value" id="mini-deudas">US$ 0</div>
+              <div class="mini-var" id="mini-var-deudas">Septiembre crítico: aparta S/ 9,221</div>
+              <div class="mini-sub">S/ 9,221 · créditos + junta + papá</div>
+            </div>
+          </section>
+
+          <section class="quick-grid">
+            <div class="quick-card" data-quick="pago" title="Ir a Deudas">
+              <span class="quick-label">PRÓXIMO PAGO</span>
+              <span class="quick-value" id="quick-pago">—</span>
+              <span class="quick-sub" id="quick-pago-sub">Fecha de pago más cercana</span>
+            </div>
+            <div class="quick-card" data-quick="brecha" title="Ver Puntos ancla">
+              <span class="quick-label">BRECHA DEL MES</span>
+              <span class="quick-value" id="quick-brecha">—</span>
+              <span class="quick-sub" id="quick-brecha-sub">Profit vs compromiso</span>
+            </div>
+            <div class="quick-card" data-quick="septiembre" title="Ver Puntos ancla">
+              <span class="quick-label">SEPTIEMBRE CRÍTICO</span>
+              <span class="quick-value" id="quick-sept">S/ 9,221</span>
+              <span class="quick-sub" id="quick-sept-sub">Aparta el dinero del mes crítico</span>
+            </div>
+            <div class="quick-card" data-quick="fugas" title="Ir a Gastos">
+              <span class="quick-label">FUGAS</span>
+              <span class="quick-value" id="quick-fugas">+$134</span>
+              <span class="quick-sub">Suscripciones duplicadas por cancelar</span>
+            </div>
+          </section>
+
+          <section class="mid-grid">
+            <div class="panel actions-panel">
+              <div class="panel-head"><h3>Esta semana</h3><span class="legend-sub">Acciones de decisión</span></div>
+              <div class="week-actions" id="week-actions"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Resumen</h3><span class="legend-sub">Desglose de ingresos del mes</span></div>
+              <div class="chart-body" id="chart-flow"></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>Gastos</h3><span class="legend-sub">Desglose de gastos del mes</span></div>
+              <div class="chart-body" id="chart-cat"></div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- ============ INGRESOS ============ -->
+        <div id="view-ingresos" class="view" style="display:none;">
+          <div class="sec-alert ok" id="ingresos-alert"></div>
+          <div class="reporte-kpis" id="reporte-kpis"></div>
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Ingresos por mes</h3>
+              <span class="legend-sub">
+                <span class="ps-label" style="margin-right:6px;">Mes</span>
+                <select id="sel-month-ingresos" aria-label="Mes de ingresos">
+                  <option value="all">Todos los meses</option>
+                </select>
+              </span>
+            </div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Mes</th><th>Ingresos Combo</th><th>Retiros Hotmart</th><th>Total</th><th>Gasto pauta</th><th>Ganancia neta</th><th>ROAS</th></tr></thead>
+                <tbody id="ingresos-tbody"></tbody>
+                <tfoot id="ingresos-tfoot"></tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ GASTOS ============ -->
+        <div id="view-gastos" class="view" style="display:none;">
+          <div class="sec-alert ok" id="gastos-alert"></div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Gastos por día</h3><span class="legend-sub">Registra tus gastos día a día</span></div>
+            <div class="day-form">
+              <input type="date" id="gf-fecha" value="2026-07-27">
+              <input type="text" id="gf-desc" placeholder="Descripción del gasto">
+              <select id="gf-cat">
+                <option>Marketing &amp; Ads</option>
+                <option>Inteligencia Artificial</option>
+                <option>Infraestructura &amp; SaaS</option>
+                <option>Educación &amp; Comunidades</option>
+                <option>Alimentación &amp; Delivery</option>
+                <option>Entretenimiento &amp; Ocio</option>
+                <option>Compras &amp; Retail</option>
+                <option>Transporte &amp; Viajes</option>
+                <option>Otros</option>
+              </select>
+              <select id="gf-tipo"><option>Negocio</option><option>Personal</option></select>
+              <input type="number" id="gf-usd" placeholder="Monto USD" step="0.01">
+              <button class="btn-add" id="gf-add">Registrar gasto</button>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
+            <div class="day-form">
+              <input type="date" id="pf-fecha" value="2026-07-27">
+              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
+              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
+              <button class="btn-add" id="pf-add">Registrar pago</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Gastos auditados — Julio 2026</h3><span class="legend-sub" id="gastos-total"></span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Fecha</th><th>Fuente</th><th>Descripción</th><th>Categoría</th><th>Tipo</th><th>USD</th><th>PEN</th><th>Estado</th></tr></thead>
+                <tbody id="exp-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Historial de pagos &amp; ganancias</h3><span class="legend-sub" id="payments-total"></span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Fecha</th><th>Concepto</th><th>Monto</th></tr></thead>
+                <tbody id="payments-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ DEUDAS ============ -->
+        <div id="view-deudas" class="view" style="display:none;">
+          <div class="debt-alert-banner" id="debt-banner"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Créditos formales — avance de pagos</h3>
+              <span style="display:flex;align-items:center;gap:10px;"><span class="legend-sub" id="debt-total"></span>
+              <button class="icon-btn" id="notify-debt-btn" title="Recordatorio de pagos"><svg class="ico"><use href="#i-bell"/></svg></button></span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Crédito</th><th>Cuota mensual</th><th>Vencimiento</th><th>Días para pagar</th><th>Cuotas</th><th>Periodo</th><th>Saldo pendiente</th><th>Avance</th></tr></thead>
+                <tbody id="debt-formal-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Pagos pendientes — avance</h3><span class="legend-sub">Cuota en curso / total · cuotas por pagar</span></div>
+            <div class="debt-charts">
+              <div class="chart-donut" id="debt-donut"></div>
+              <div class="chart-bars" id="debt-bars"></div>
+            </div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Deudas informales y familiares</h3><span class="legend-sub" id="debt-informal-total"></span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Acreedor</th><th>Monto</th><th>Nota</th><th>Prioridad</th></tr></thead>
+                <tbody id="debt-informal-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="sec-alert ok" id="tarjetas-alert" style="margin-top:16px;"></div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Tarjetas de crédito — fechas de pago</h3><span class="legend-sub">FA = facturación · PA = fecha de pago</span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Tarjeta</th><th>Titular</th><th>Facturación</th><th>Fecha de pago</th><th>Línea</th><th>Días para pagar</th></tr></thead>
+                <tbody id="cards-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Calendario de pagos de tarjetas</h3><span class="legend-sub">Ordenados por urgencia</span></div>
+            <div class="cards-graph" id="cards-graph"></div>
+          </div>
+        </div>
+
+        <!-- ============ PERSONAL ============ -->
+        <div id="view-personal" class="view" style="display:none;">
+          <div class="sec-alert ok" id="personal-alert"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Ahorros personales (BCP + Scotiabank Soles)</h3><span class="legend-sub" id="personal-total"></span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Mes</th><th>Banco / Cuenta</th><th>Saldo inicial</th><th>Entradas (abonos)</th><th>Salidas (cargos)</th><th>Saldo final</th></tr></thead>
+                <tbody id="personal-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ NEGOCIO ============ -->
+        <div id="view-negocio" class="view" style="display:none;">
+          <div class="negocio-alert ok" id="negocio-alert"></div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Agregar herramienta o dato</h3><span class="legend-sub">Se guarda en tu dispositivo · útil para fechas de pago o renovaciones</span></div>
+            <div class="day-form">
+              <input type="text" id="nf-nombre" placeholder="Nombre (ej: Canva Pro)">
+              <input type="date" id="nf-fecha" value="2026-06-01">
+              <input type="number" id="nf-usd" placeholder="Monto USD" step="0.01">
+              <button class="btn-add" id="nf-add">+ Agregar</button>
+            </div>
+          </div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>GASTOS NEGOCIO (2026) · Herramientas</h3><span class="legend-sub" id="negocio-total"></span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Herramienta</th><th>Fecha de pago</th><th>Días para pagar</th><th>Monto</th></tr></thead>
+                <tbody id="negocio-tbody"></tbody>
+                <tfoot>
+                  <tr style="border-top:2px solid var(--border);">
+                    <td colspan="3"><b>TOTAL GASTOS NEGOCIO</b></td>
+                    <td class="amt-exp" id="negocio-tfoot-total"><b>US$ 0.00</b></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Próximos pagos</h3><span class="legend-sub">Qué tan cerca está la fecha de pago de cada herramienta</span></div>
+            <div class="negocio-graph" id="negocio-graph"></div>
+          </div>
+        </div>
+
+        <!-- ============ NOTAS ============ -->
+        <div id="view-notas" class="view" style="display:none;">
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Agregar nota</h3><span class="legend-sub">Se guarda automáticamente en tu dispositivo · tipo tasker</span></div>
+            <div class="day-form">
+              <input type="text" id="nt-text" placeholder="Escribe tu nota o tarea...">
+              <button class="btn-add" id="nt-add">+ Guardar nota</button>
+            </div>
+          </div>
+          <div class="nota-ia hidden" id="notas-ia"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Mis notas</h3><span class="legend-sub" id="notas-total"></span></div>
+            <div class="notas-list" id="notas-list"></div>
+          </div>
+        </div>
+
+        <!-- ============ PUNTOS ANCLA ============ -->
+        <div id="view-ancla" class="view" style="display:none;">
+          <div class="sec-alert ok" id="ancla-alert"></div>
+          <div class="ancla-hero" id="ancla-hero"></div>
+          <div class="ancla-grid" id="ancla-list"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Resumen accionable — este mes</h3><span class="legend-sub">Ejecuta una por una</span></div>
+            <div class="ancla-plan" id="ancla-plan"></div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <div class="side-backdrop" id="side-backdrop"></div>
+
+  <div class="chart-tip" id="chart-tip"></div>
+  <button class="to-top" id="to-top" aria-label="Volver arriba"><svg class="ico"><use href="#i-up"/></svg></button>
+
+  <!-- CHAT AGENTE IA -->
+  <div class="agent-chat" id="agent-chat">
+    <button class="agent-fab" id="agent-fab" aria-label="Agente IA">
+      <svg class="ico" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v1h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V7a5 5 0 0 1 5-5z" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="#070A09"/><circle cx="15" cy="12" r="1" fill="#070A09"/></svg>
+    </button>
+    <div class="agent-panel" id="agent-panel">
+      <div class="agent-head">
+        <span class="agent-title">Agente Stark · IA financiera</span>
+        <button class="agent-close" id="agent-close" aria-label="Cerrar">×</button>
+      </div>
+      <div class="agent-body" id="agent-body">
+        <div class="agent-msg bot">Hola, soy tu agente financiero. Pregúntame cómo vas, cuánto debes, tus gastos, fugas o ingresos. ⚡</div>
+      </div>
+      <div class="agent-chips">
+        <button class="agent-chip" data-q="¿Cómo voy hoy?">¿Cómo voy hoy?</button>
+        <button class="agent-chip" data-q="¿Cuánto debo?">¿Cuánto debo?</button>
+        <button class="agent-chip" data-q="registrar pago">📥 Registrar pago</button>
+        <button class="agent-chip" data-q="registrar gasto">💸 Registrar gasto</button>
+        <button class="agent-chip" data-q="¿Gastos del mes?">¿Gastos del mes?</button>
+        <button class="agent-chip" data-q="¿Puntos de fuga?">¿Puntos de fuga?</button>
+      </div>
+      <form class="agent-input-row" id="agent-form">
+        <input type="text" id="agent-input" placeholder="Escribe tu pregunta..." autocomplete="off">
+        <button type="submit" class="agent-send" aria-label="Enviar"><svg class="ico"><use href="#i-send"/></svg></button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toast-wrap"></div>
+
+  <div class="modal" id="month-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" id="month-modal-close" aria-label="Cerrar">×</button>
+      <div id="month-modal-body"></div>
+    </div>
+  </div>
+
+  <div class="gate" id="gate">
+    <div class="gate-card" id="gate-card">
+      <div class="gate-lock"><svg class="ico"><use href="#i-lock"/></svg></div>
+      <h2>Angel Bazan - Dashboard</h2>
+      <p class="sub">Ingresa tu usuario y contraseña para desbloquear la sesión.</p>
+      <div class="gate-input">
+        <input type="email" id="gate-email" placeholder="Usuario (correo)" autocomplete="username" inputmode="email">
+      </div>
+      <div class="gate-input">
+        <input type="password" id="gate-input" placeholder="Contraseña" autocomplete="current-password">
+        <button class="eye" id="gate-eye" type="button" aria-label="Mostrar contraseña">
+          <svg class="ico eye-on"><use href="#i-eye"/></svg>
+          <svg class="ico eye-off"><use href="#i-eye-off"/></svg>
+        </button>
+      </div>
+      <button class="gate-btn" id="gate-btn" type="button">Ingresar a Stark HUD</button>
+      <div class="gate-error" id="gate-error"></div>
+    </div>
+  </div>
+
+  <script src="js/data.js?v=67"></script>
+  <script src="js/data2.js?v=67"></script>
+  <script src="js/expenses_data.js?v=67"></script>
+  <script src="js/combo_ia_data.js?v=67"></script>
+  <script src="js/debts_data.js?v=67"></script>
+  <script src="js/payments_data.js?v=67"></script>
+  <script src="js/business_data.js?v=67"></script>
+  <script src="js/hotmart_data.js?v=67"></script>
+  <script src="js/cards_data.js?v=67"></script>
+  <script src="js/anchors_data.js?v=67"></script>
+  <script src="js/personal_data.js?v=67"></script>
+  <script src="js/dashboard.js?v=67"></script>
+</body>
+</html>

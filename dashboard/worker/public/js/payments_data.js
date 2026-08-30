@@ -1,0 +1,43 @@
+(function () {
+  'use strict';
+
+  window.PAYMENTS_HISTORY = [
+    { fecha: '12/05', desc: 'Banco Santander - Cuota 4 - 11 may - S/.2.722', usd: 800.59 },
+    { fecha: '12/05', desc: 'Banco Compartamos (S/20,000) Cuota 9 - 14 may - S/.2.003', usd: 589.00 },
+    { fecha: '15/05', desc: 'Tarjetas + sandra casa / MAYO (URGENTE)', usd: 647.00 },
+    { fecha: '17/05', desc: 'Tarjeta OH! MAYO S/2300 soles - $1470 USD (URGENTE)', usd: 676.00 },
+    { fecha: '28/05', desc: 'Respiro GG - Marcos Bazan', usd: 290.00 },
+    { fecha: '29/05', desc: 'Compra 3 Bancas Nequi COL', usd: 120.00 },
+    { fecha: '03/06', desc: 'Pago Didcloack Mayo + Scotiabank Tarjeta', usd: 300.00 },
+    { fecha: '03/06', desc: 'CASA - Internet y Luz Junio (S/255)', usd: 75.00 },
+    { fecha: '03/06', desc: 'CASA - Comida Semana (S/300)', usd: 88.00 },
+    { fecha: '03/06', desc: 'Combo - Herramientas Sell', usd: 23.00 },
+    { fecha: '03/06', desc: 'Combo - Herramientas Suka claude', usd: 35.00 },
+    { fecha: '04/06', desc: 'Pago ADS Publicidad Angel PUB 2025', usd: 127.00 },
+    { fecha: '05/06', desc: 'Mandos PS4 + Arreglo Iphone', usd: 150.00 },
+    { fecha: '05/06', desc: 'Comprar Sistema Cashflow Whastapp', usd: 35.00 },
+    { fecha: '06/06', desc: 'Renovacion Dominios Namecheap', usd: 56.00 },
+    { fecha: '05/06', desc: 'Compra x10 Cuentas Chatgpt - Suka', usd: 63.00 },
+    { fecha: '05/06', desc: 'Compra x10 Cuentas Super Grok - Suka', usd: 115.00 },
+    { fecha: '03/06', desc: 'Pago Claude X10 y Chatgpt Plus X10', usd: 210.00 },
+    { fecha: '12/06', desc: 'Banco Santander - Cuota 5 - 11 jun', usd: 800.00 },
+    { fecha: '14/06', desc: 'Banco Compartamos - Cuota 10 - 14 jun', usd: 589.00 },
+    { fecha: '19/06', desc: 'Pago Miguel Ardiles 1/4 Mentoria', usd: 250.00 },
+    { fecha: '21/06', desc: 'Pago Miguel Ardiles 2/4 Mentoria', usd: 250.00 },
+    { fecha: '21/06', desc: 'Pago Aaron  CRM Chatfly', usd: 300.00 },
+    { fecha: '21/06', desc: 'Pension Mama Arly (JUNIO)', usd: 240.00 },
+    { fecha: '22/06', desc: 'Pago Fede Editor 22/06', usd: 90.00 },
+    { fecha: '26/06', desc: 'Pago Aaron 2 CRM Vendechat', usd: 100.00 },
+    { fecha: '26/06', desc: 'Pago Herramientas JUNIO-JULIO', usd: 150.00 },
+    { fecha: '27/06', desc: 'Pago Miguel Ardiles 3/4 Mentoria', usd: 250.00 },
+    { fecha: '24/06', desc: 'Ahorro Plazo Fijo BCP - S/500', usd: 170.00 },
+    { fecha: '29/06', desc: 'Pago Aaron 3 CRM Vendechat', usd: 300.00 },
+    { fecha: '02/07', desc: 'Pago Aaron 4 CRM Vendechat', usd: 50.00 },
+    { fecha: '02/07', desc: 'Pasaje Avion Lima - Cix', usd: 140.00 },
+    { fecha: '02/07', desc: 'Compra 30 Chips Negocio', usd: 70.00 },
+    { fecha: '07/07', desc: 'Renovacion Mes Dicloack $149 usd', usd: 149.00 },
+    { fecha: '08/07', desc: 'Pago Proxicheap Combo Dicloack', usd: 30.00 },
+    { fecha: '08/07', desc: 'Pago Proxicheap Julio #2', usd: 60.00 },
+    { fecha: '14/07', desc: 'Compra Perfiles FB / ADS', usd: 150.00 }
+  ];
+})();
