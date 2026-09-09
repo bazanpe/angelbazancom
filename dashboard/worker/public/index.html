@@ -5,8 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Angel Bazan - Dashboard</title>
+  <script>
+    (function () {
+      if (location.hostname === 'dashboard.angelbazan.com' || location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+      var done = false;
+      function block() {
+        if (done) return; done = true;
+        var el = document.createElement('div');
+        el.style.cssText = 'position:fixed;inset:0;z-index:99999;background:#06111D;display:flex;align-items:center;justify-content:center;padding:30px;text-align:center;font-family:Inter,Arial,sans-serif;color:#F4F8FF;font-size:16px;line-height:1.7;';
+        el.innerHTML = '⚠️ Este dashboard solo funciona en <b style="color:#20E87B">https://dashboard.angelbazan.com/</b><br><br><a href="https://dashboard.angelbazan.com/" style="display:inline-block;background:linear-gradient(135deg,#206BFF,#22A7F0);color:#fff;font-weight:800;text-decoration:none;padding:12px 22px;border-radius:12px;">Ir al dashboard →</a>';
+        document.body.appendChild(el);
+      }
+      if (document.body) block(); else document.addEventListener('DOMContentLoaded', block);
+    })();
+  </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070A09'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='900' fill='%2355F58A' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/dashboard.css?v=67">
+  <link rel="stylesheet" href="css/dashboard.css?v=110">
 </head>
 <body>
 
@@ -30,8 +44,17 @@
       <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
       <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
       <symbol id="i-vault" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="3"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="8" x2="12" y2="10"/><line x1="12" y1="14" x2="12" y2="16"/><line x1="7" y1="3" x2="7" y2="6"/><line x1="17" y1="3" x2="17" y2="6"/></symbol>
+      <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
       <symbol id="i-trend-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
       <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2v3"/><path d="M22 7v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M15 12h6v3h-6a1.5 1.5 0 0 1 0-3z"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v5l2.2 2.2a1 1 0 0 1 .3.7V14a1 1 0 0 1-1 1h-3v5l-1.5 2-1.5-2v-5H7a1 1 0 0 1-1-1v-2.1a1 1 0 0 1 .3-.7L9 9V4z" fill="currentColor"/></symbol>
+      <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4l11-11-4-4L4 16v4z" fill="currentColor"/><path d="M13.5 6.5l4 4" stroke="#0B1722" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 13l4 4 10-11" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-pomo" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 9v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="3.5" cy="6" r="1.3" fill="currentColor"/><circle cx="3.5" cy="12" r="1.3" fill="currentColor"/><circle cx="3.5" cy="18" r="1.3" fill="currentColor"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></symbol>
     </defs>
   </svg>
 
@@ -46,12 +69,16 @@
       </div>
 
       <nav class="sidebar-nav">
-        <a class="nav-item active" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen</a>
+        <a class="nav-item active" data-target="inicio"><span class="nav-icon"><svg class="ico"><use href="#i-target"/></svg></span> Inicio</a>
+        <a class="nav-item" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen</a>
         <a class="nav-item" data-target="notas"><span class="nav-icon"><svg class="ico"><use href="#i-send"/></svg></span> Notas</a>
         <a class="nav-item" data-target="ancla"><span class="nav-icon"><svg class="ico"><use href="#i-info"/></svg></span> Puntos ancla</a>
         <a class="nav-item" data-target="ingresos"><span class="nav-icon"><svg class="ico"><use href="#i-cash"/></svg></span> Ingresos</a>
-        <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
+        <a class="nav-item" data-target="gastos-diarios"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos Diarios</a>
+        <a class="nav-item" data-target="gastos-mensuales"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Gastos Mensuales</a>
         <a class="nav-item" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
+        <a class="nav-item" data-target="total"><span class="nav-icon"><svg class="ico"><use href="#i-wallet"/></svg></span> TOTAL</a>
+        <a class="nav-item" data-target="fechas"><span class="nav-icon"><svg class="ico"><use href="#i-cal"/></svg></span> Fechas de pago</a>
         <a class="nav-item" data-target="negocio"><span class="nav-icon"><svg class="ico"><use href="#i-sync"/></svg></span> Negocio</a>
         <a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-vault"/></svg></span> Ahorros</a>
       </nav>
@@ -81,8 +108,7 @@
             <select id="sel-month" aria-label="Mes"></select>
           </div>
           <button class="btn-add" id="add-mov-btn" title="Agregar movimiento">+ Agregar</button>
-          <button class="icon-btn" id="sync-btn" title="Sincronizar Google Sheets"><svg class="ico"><use href="#i-sync"/></svg></button>
-          <button class="icon-btn" id="export-btn" title="Exportar a Excel / Sheets"><svg class="ico"><use href="#i-download"/></svg></button>
+          <button class="icon-btn" id="export-btn" title="Descargar lo que estás viendo"><svg class="ico"><use href="#i-download"/></svg></button>
           <button class="icon-btn notify-btn" id="notify-btn" title="Recordatorio"><svg class="ico"><use href="#i-bell"/></svg><span class="notify-dot" id="notify-dot"></span></button>
           <button class="icon-btn" id="lock-btn" title="Bloquear panel"><svg class="ico"><use href="#i-lock"/></svg></button>
         </div>
@@ -90,8 +116,80 @@
 
       <main class="content">
 
+        <!-- ============ INICIO · PROYECTOS ============ -->
+        <div id="view-inicio" class="view" style="display:none;">
+          <div class="proy-tabs">
+            <div class="proy-tabs-left">
+              <button class="proy-tab active" data-sub="cards"><svg class="ico"><use href="#i-list"/></svg> Mis proyectos</button>
+              <button class="proy-tab" data-sub="daily"><svg class="ico"><use href="#i-target"/></svg> Daily · Enfoque de hoy</button>
+              <button class="proy-tab" data-sub="nuevo"><svg class="ico"><use href="#i-plus"/></svg> Nuevo proyecto</button>
+            </div>
+            <div class="proy-center">
+              <div class="proy-countdown" id="proy-countdown">
+                <div class="cd-label">⏳ Quedan pocos días · <b>ENFÓCATE</b> 🔥</div>
+                <div class="cd-timer"><span id="cd-d">0</span>d <span id="cd-h">00</span>:<span id="cd-m">00</span>:<span id="cd-s">00</span></div>
+                <div class="cd-sub"><b id="cd-mondays">0</b> lunes de acción · para entrar a 2027 sin deudas</div>
+              </div>
+              <span class="owala-now" id="owala-now"></span>
+            </div>
+            <div class="owala-right" id="owala-row">
+              <span class="owala-label">💧 Toma agua todo el día</span>
+              <button class="owala" data-i="0" title="Owala 1 · bebe agua"><svg class="owala-svg" viewBox="0 0 44 84" id="owala-svg-0"></svg><span class="owala-count" id="owala-count-0">0/10</span></button>
+              <button class="owala" data-i="1" title="Owala 2 · bebe agua"><svg class="owala-svg" viewBox="0 0 44 84" id="owala-svg-1"></svg><span class="owala-count" id="owala-count-1">0/10</span></button>
+              <button class="owala" data-i="2" title="Owala 3 · bebe agua"><svg class="owala-svg" viewBox="0 0 44 84" id="owala-svg-2"></svg><span class="owala-count" id="owala-count-2">0/10</span></button>
+            </div>
+          </div>
+
+          <div class="proy-sub" id="proy-sub-cards">
+            <div class="proy-daily-bar" id="proy-daily-bar"></div>
+            <div class="proy-grid" id="proy-cards"></div>
+            <div class="proy-inactivos hidden" id="proy-inactivos">
+              <div class="panel-head" style="margin:20px 0 12px;"><h3>Pausados / Completados</h3><span class="legend-sub">Se mueven aquí para no distraerte</span></div>
+              <div class="proy-grid" id="proy-cards-inactivos"></div>
+            </div>
+          </div>
+
+          <div class="proy-sub hidden" id="proy-sub-daily">
+            <div class="panel">
+              <div class="panel-head"><h3>Enfoque de hoy</h3><span class="legend-sub" id="proy-daily-total"></span></div>
+              <div class="proy-daily" id="proy-daily"></div>
+            </div>
+            <div class="panel" style="margin-top:16px;">
+              <div class="panel-head"><h3>Racha y métricas</h3><span class="legend-sub">Días productivos consecutivos</span></div>
+              <div class="proy-streak" id="proy-streak"></div>
+            </div>
+          </div>
+
+          <div class="proy-sub hidden" id="proy-sub-nuevo">
+            <div class="panel">
+              <div class="panel-head"><h3>Nuevo proyecto</h3><span class="legend-sub">El sistema calcula meta diaria, fechas y semáforo solo</span></div>
+              <div class="day-form">
+                <input type="text" id="pf-nombre" placeholder="Nombre (ej: VendeChat)">
+                <input type="text" id="pf-objetivo" placeholder="Objetivo principal">
+              </div>
+              <div class="day-form" style="margin-top:10px;">
+                <select id="pf-prioridad">
+                  <option value="max">🔴 Prioridad máxima</option>
+                  <option value="imp">🟡 Importante</option>
+                  <option value="control">🟢 En control</option>
+                  <option value="pausado">⚪ Pausado</option>
+                </select>
+                <input type="date" id="pf-fechalimite">
+                <input type="number" id="pf-horas" placeholder="Horas estimadas" step="0.5" min="0">
+                <input type="number" id="pf-dias" placeholder="Días/semana" step="1" min="1" max="7">
+              </div>
+              <div class="day-form" style="margin-top:10px;">
+                <input type="number" id="pf-ingresos" placeholder="Ingresos USD generados" step="0.01" min="0">
+                <input type="number" id="pf-gastos" placeholder="Gastos USD del proyecto" step="0.01" min="0">
+                <input type="text" id="pf-accion" placeholder="Próxima acción concreta">
+                <button class="btn-add" id="pf-crear">+ Crear proyecto</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- ============ RESUMEN ============ -->
-        <div id="view-resumen" class="view active">
+        <div id="view-resumen" class="view" style="display:none;">
           <div class="sec-alert ok" id="resumen-alert"></div>
 
           <section class="hero-card">
@@ -158,19 +256,19 @@
               <span class="quick-sub" id="quick-pago-sub">Fecha de pago más cercana</span>
             </div>
             <div class="quick-card" data-quick="brecha" title="Ver Puntos ancla">
-              <span class="quick-label">BRECHA DEL MES</span>
+              <span class="quick-label">CAPITAL POR CUBRIR</span>
               <span class="quick-value" id="quick-brecha">—</span>
-              <span class="quick-sub" id="quick-brecha-sub">Profit vs compromiso</span>
+              <span class="quick-sub" id="quick-brecha-sub">Profit vs compromiso del mes</span>
             </div>
             <div class="quick-card" data-quick="septiembre" title="Ver Puntos ancla">
-              <span class="quick-label">SEPTIEMBRE CRÍTICO</span>
+              <span class="quick-label">RESERVA PARA SEPTIEMBRE</span>
               <span class="quick-value" id="quick-sept">S/ 9,221</span>
               <span class="quick-sub" id="quick-sept-sub">Aparta el dinero del mes crítico</span>
             </div>
-            <div class="quick-card" data-quick="fugas" title="Ir a Gastos">
-              <span class="quick-label">FUGAS</span>
+            <div class="quick-card" data-quick="fugas" title="Ver Gastos Mensuales">
+              <span class="quick-label">DINERO RECUPERABLE</span>
               <span class="quick-value" id="quick-fugas">+$134</span>
-              <span class="quick-sub">Suscripciones duplicadas por cancelar</span>
+              <span class="quick-sub">Cancela duplicados y recuperas $134/mes</span>
             </div>
           </section>
 
@@ -215,11 +313,11 @@
           </div>
         </div>
 
-        <!-- ============ GASTOS ============ -->
-        <div id="view-gastos" class="view" style="display:none;">
-          <div class="sec-alert ok" id="gastos-alert"></div>
+        <!-- ============ GASTOS DIARIOS ============ -->
+        <div id="view-gastos-diarios" class="view" style="display:none;">
+          <div class="sec-alert ok" id="gastos-diarios-alert"></div>
           <div class="panel" style="margin-bottom:16px;">
-            <div class="panel-head"><h3>Gastos por día</h3><span class="legend-sub">Registra tus gastos día a día</span></div>
+            <div class="panel-head"><h3>Gastos Diarios</h3><span class="legend-sub">Registra en USD o Soles · te da el equivalente automáticamente</span></div>
             <div class="day-form">
               <input type="date" id="gf-fecha" value="2026-07-27">
               <input type="text" id="gf-desc" placeholder="Descripción del gasto">
@@ -235,34 +333,38 @@
                 <option>Otros</option>
               </select>
               <select id="gf-tipo"><option>Negocio</option><option>Personal</option></select>
-              <input type="number" id="gf-usd" placeholder="Monto USD" step="0.01">
+            </div>
+            <div class="day-form" style="margin-top:10px;">
+              <select id="gf-mone"><option value="USD">USD $</option><option value="SOL">Soles S/</option></select>
+              <input type="number" id="gf-monto" placeholder="Monto" step="0.01">
+              <span class="gf-equiv" id="gf-equiv"></span>
               <button class="btn-add" id="gf-add">Registrar gasto</button>
             </div>
           </div>
           <div class="panel" style="margin-bottom:16px;">
-            <div class="panel-head"><h3>Registrar pago</h3><span class="legend-sub">Pagos de deudas · también puedes decírselo al agente IA</span></div>
-            <div class="day-form">
-              <input type="date" id="pf-fecha" value="2026-07-27">
-              <input type="text" id="pf-desc" placeholder="Concepto del pago (ej: Santander cuota 6)">
-              <input type="number" id="pf-usd" placeholder="Monto USD" step="0.01">
-              <button class="btn-add" id="pf-add">Registrar pago</button>
+            <div class="panel-head"><h3>Historial de Gasto</h3><span class="legend-sub" id="gastos-diarios-total">Todos tus gastos y pagos</span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Fecha</th><th>Descripción</th><th>Categoría</th><th>Tipo</th><th>USD</th><th>PEN</th><th></th></tr></thead>
+                <tbody id="gastos-diarios-tbody"></tbody>
+              </table>
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><h3>Gastos auditados — Julio 2026</h3><span class="legend-sub" id="gastos-total"></span></div>
+            <div class="panel-head"><h3>Análisis de gastos</h3><span class="legend-sub">En qué se va tu dinero · fugas e insights</span></div>
+            <div class="gasto-analisis" id="gastos-analisis"></div>
+          </div>
+        </div>
+
+        <!-- ============ GASTOS MENSUALES ============ -->
+        <div id="view-gastos-mensuales" class="view" style="display:none;">
+          <div class="sec-alert ok" id="gastos-alert"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Gastos Mensuales — auditados</h3><span class="legend-sub" id="gastos-total"></span></div>
             <div class="table-scroll">
               <table class="tbl">
                 <thead><tr><th>Fecha</th><th>Fuente</th><th>Descripción</th><th>Categoría</th><th>Tipo</th><th>USD</th><th>PEN</th><th>Estado</th></tr></thead>
                 <tbody id="exp-table-body"></tbody>
-              </table>
-            </div>
-          </div>
-          <div class="panel" style="margin-top:16px;">
-            <div class="panel-head"><h3>Historial de pagos &amp; ganancias</h3><span class="legend-sub" id="payments-total"></span></div>
-            <div class="table-scroll">
-              <table class="tbl">
-                <thead><tr><th>Fecha</th><th>Concepto</th><th>Monto</th></tr></thead>
-                <tbody id="payments-tbody"></tbody>
               </table>
             </div>
           </div>
@@ -272,13 +374,22 @@
         <div id="view-deudas" class="view" style="display:none;">
           <div class="debt-alert-banner" id="debt-banner"></div>
           <div class="panel">
-            <div class="panel-head"><h3>Créditos formales — avance de pagos</h3>
+            <div class="panel-head"><h3>Créditos Mensuales</h3>
               <span style="display:flex;align-items:center;gap:10px;"><span class="legend-sub" id="debt-total"></span>
               <button class="icon-btn" id="notify-debt-btn" title="Recordatorio de pagos"><svg class="ico"><use href="#i-bell"/></svg></button></span></div>
             <div class="table-scroll">
               <table class="tbl">
                 <thead><tr><th>Crédito</th><th>Cuota mensual</th><th>Vencimiento</th><th>Días para pagar</th><th>Cuotas</th><th>Periodo</th><th>Saldo pendiente</th><th>Avance</th></tr></thead>
                 <tbody id="debt-formal-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Pagos Semanales</h3><span class="legend-sub">Todos los domingos · Junta Sandra y Colab Marcos</span></div>
+            <div class="table-scroll">
+              <table class="tbl">
+                <thead><tr><th>Compromiso</th><th>Cuota mensual</th><th>Vencimiento</th><th>Días para pagar</th><th>Cuotas</th><th>Periodo</th><th>Saldo pendiente</th><th>Avance</th></tr></thead>
+                <tbody id="debt-weekly-tbody"></tbody>
               </table>
             </div>
           </div>
@@ -314,17 +425,51 @@
           </div>
         </div>
 
+        <!-- ============ TOTAL ============ -->
+        <div id="view-total" class="view" style="display:none;">
+          <div class="total-hero">
+            <div class="total-eyebrow">⚖️ TODO LO QUE DEBES · SIN FILTROS</div>
+            <div class="total-val" id="total-val">—</div>
+            <div class="total-sub" id="total-sub"></div>
+          </div>
+          <div class="total-moti" id="total-moti"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Desglose completo</h3><span class="legend-sub">Cada deuda sin esconder nada</span></div>
+            <div class="total-groups" id="total-groups"></div>
+          </div>
+        </div>
+
+        <!-- ============ FECHAS DE PAGO ============ -->
+        <div id="view-fechas" class="view" style="display:none;">
+          <div class="sec-alert ok" id="fechas-alert"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>Calendario de pagos</h3><span class="legend-sub" id="fechas-total"></span></div>
+            <div class="fechas-prox" id="fechas-prox"></div>
+            <div class="table-scroll" style="margin-top:14px;">
+              <table class="tbl">
+                <thead><tr><th>Fecha</th><th>Días</th><th>Concepto</th><th>Tipo</th><th>Monto</th></tr></thead>
+                <tbody id="fechas-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <!-- ============ PERSONAL ============ -->
         <div id="view-personal" class="view" style="display:none;">
           <div class="sec-alert ok" id="personal-alert"></div>
           <div class="panel">
-            <div class="panel-head"><h3>Ahorros personales (BCP + Scotiabank Soles)</h3><span class="legend-sub" id="personal-total"></span></div>
+            <div class="panel-head"><h3>Ahorros por mes</h3><span class="legend-sub" id="personal-total"></span></div>
             <div class="table-scroll">
               <table class="tbl">
-                <thead><tr><th>Mes</th><th>Banco / Cuenta</th><th>Saldo inicial</th><th>Entradas (abonos)</th><th>Salidas (cargos)</th><th>Saldo final</th></tr></thead>
+                <thead><tr><th>Mes</th><th>BCP inicial</th><th>BCP entradas</th><th>BCP salidas</th><th>BCP final</th><th>SCOT inicial</th><th>SCOT entradas</th><th>SCOT salidas</th><th>SCOT final</th><th>Saldo final total</th></tr></thead>
                 <tbody id="personal-tbody"></tbody>
               </table>
             </div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>Análisis de ahorro</h3><span class="legend-sub">Entradas vs salidas y evolución del saldo</span></div>
+            <div class="reporte-kpis" id="personal-kpis"></div>
+            <div class="personal-charts" id="personal-charts"></div>
           </div>
         </div>
 
@@ -364,16 +509,25 @@
         <!-- ============ NOTAS ============ -->
         <div id="view-notas" class="view" style="display:none;">
           <div class="panel" style="margin-bottom:16px;">
-            <div class="panel-head"><h3>Agregar nota</h3><span class="legend-sub">Se guarda automáticamente en tu dispositivo · tipo tasker</span></div>
+            <div class="panel-head"><h3>Agregar nota</h3><span style="display:flex;align-items:center;gap:10px;"><span class="legend-sub">Se guarda automáticamente en tu dispositivo · tu diario</span><button class="icon-btn" id="nt-download" title="Descargar diario (notas del día a día)"><svg class="ico"><use href="#i-download"/></svg></button></span></div>
             <div class="day-form">
-              <input type="text" id="nt-text" placeholder="Escribe tu nota o tarea...">
+              <textarea id="nt-text" placeholder="Escribe en tu diario: qué hiciste hoy, avances, pendientes, ideas, montos... (Ctrl+Enter guarda)"></textarea>
               <button class="btn-add" id="nt-add">+ Guardar nota</button>
             </div>
           </div>
-          <div class="nota-ia hidden" id="notas-ia"></div>
+          <div class="nota-focus hidden" id="nota-focus"></div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Insights · Resumen del día</h3><span class="legend-sub">Cómo vas hoy · foco, racha, pagos y balance</span></div>
+            <div class="reporte-kpis" id="insights-kpis"></div>
+            <div class="gasto-insights" id="insights-diario"></div>
+          </div>
           <div class="panel">
             <div class="panel-head"><h3>Mis notas</h3><span class="legend-sub" id="notas-total"></span></div>
             <div class="notas-list" id="notas-list"></div>
+          </div>
+          <div class="panel" style="margin-top:16px;">
+            <div class="panel-head"><h3>NOTAS RADAR</h3><span class="legend-sub">Se construye solo con tus notas · palabras clave cortas</span></div>
+            <div class="mindmap" id="time-graph"></div>
           </div>
         </div>
 
@@ -400,11 +554,27 @@
   <!-- CHAT AGENTE IA -->
   <div class="agent-chat" id="agent-chat">
     <button class="agent-fab" id="agent-fab" aria-label="Agente IA">
-      <svg class="ico" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v1h1a3 3 0 0 1 3 3v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3v-6a3 3 0 0 1 3-3h1V7a5 5 0 0 1 5-5z" fill="currentColor"/><circle cx="9" cy="12" r="1" fill="#070A09"/><circle cx="15" cy="12" r="1" fill="#070A09"/></svg>
+      <svg class="ico robot" viewBox="0 0 24 24">
+        <g class="robot-antenna">
+          <line x1="12" y1="2" x2="12" y2="5.5" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round"/>
+          <circle class="robot-ant-dot" cx="12" cy="1.8" r="1.2" fill="#F5B942"/>
+        </g>
+        <g class="robot-head">
+          <rect class="robot-ear" x="3.6" y="8.6" width="1.6" height="4.6" rx="0.8" fill="#FFFFFF"/>
+          <rect class="robot-ear" x="18.8" y="8.6" width="1.6" height="4.6" rx="0.8" fill="#FFFFFF"/>
+          <rect class="robot-face" x="5.2" y="5.6" width="13.6" height="11.6" rx="3" fill="#FFFFFF"/>
+          <circle class="robot-eye l" cx="9.4" cy="10.2" r="1.35" fill="#0B4F2C"/>
+          <circle class="robot-eye r" cx="14.6" cy="10.2" r="1.35" fill="#0B4F2C"/>
+          <rect class="robot-mouth" x="9.4" y="13.8" width="5.2" height="1.5" rx="0.75" fill="#0B4F2C"/>
+        </g>
+        <g class="robot-scan">
+          <line class="scan-line" x1="6" y1="16.8" x2="18" y2="16.8" stroke="#0B4F2C" stroke-width="0.7" opacity="0.5"/>
+        </g>
+      </svg>
     </button>
     <div class="agent-panel" id="agent-panel">
       <div class="agent-head">
-        <span class="agent-title">Agente Stark · IA financiera</span>
+        <span class="agent-title"><span class="agent-status"></span> Agente Stark · IA financiera</span>
         <button class="agent-close" id="agent-close" aria-label="Cerrar">×</button>
       </div>
       <div class="agent-body" id="agent-body">
@@ -426,6 +596,59 @@
   </div>
 
   <div class="toast-wrap" id="toast-wrap"></div>
+
+  <!-- MODAL EDITAR PROYECTO -->
+  <div class="modal proy-modal" id="proy-edit-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" id="proy-edit-close" aria-label="Cerrar">×</button>
+      <h3 style="color:var(--text-title);">✏️ Editar proyecto</h3>
+      <p class="sub" style="color:var(--text-count);font-size:13.5px;margin-top:4px;">Edita cualquier campo y pulsa <b style="color:var(--green)">Guardar</b>. La rentabilidad <b>💵 $/hora</b> se recalcula sola con tus ingresos y horas.</p>
+      <div style="margin-top:12px;">
+        <label class="pe-label" for="pe-nombre">Nombre del proyecto</label>
+        <div class="day-form"><input type="text" id="pe-nombre" placeholder="Ej: Venta Local Contra Entrega"></div>
+        <label class="pe-label" for="pe-objetivo">Objetivo principal</label>
+        <div class="day-form"><input type="text" id="pe-objetivo" placeholder="¿Qué quieres lograr con este proyecto?"></div>
+        <label class="pe-label" for="pe-prioridad">Prioridad (semáforo)</label>
+        <div class="day-form">
+          <select id="pe-prioridad">
+            <option value="max">🔴 Prioridad máxima</option>
+            <option value="imp">🟡 Importante</option>
+            <option value="control">🟢 En control</option>
+            <option value="pausado">⚪ Pausado</option>
+            <option value="completado">🔵 Completado</option>
+          </select>
+          <input type="date" id="pe-fechalimite" title="Fecha límite">
+          <input type="number" id="pe-horas" placeholder="Horas estimadas" step="0.5" min="0" title="Horas estimadas totales">
+          <input type="number" id="pe-dias" placeholder="Días/semana" step="1" min="1" max="7" title="Días de trabajo por semana">
+        </div>
+        <label class="pe-label" for="pe-ingresos">Dinero generado por el proyecto (USD)</label>
+        <div class="day-form">
+          <input type="number" id="pe-ingresos" placeholder="Ej: 1240" step="0.01" min="0" title="Ventas/ingresos que ya generó el proyecto">
+          <input type="number" id="pe-gastos" placeholder="Gastos USD del proyecto" step="0.01" min="0" title="Cuánto inviertes en este proyecto">
+        </div>
+        <label class="pe-label" for="pe-accion">Próxima acción concreta</label>
+        <div class="day-form"><input type="text" id="pe-accion" placeholder="Ej: Cerrar 3 pedidos hoy" style="flex:1;"></div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;">
+          <button class="proy-q" id="pe-cancel">Cancelar</button>
+          <button class="btn-add" id="pe-save">💾 Guardar cambios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ENFOQUE PROYECTO -->
+  <div class="modal proy-modal" id="proy-modal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" id="proy-modal-close" aria-label="Cerrar">×</button>
+      <h3 style="color:var(--text-title);">▶ Empezar enfoque</h3>
+      <p class="sub" id="proy-modal-title" style="color:var(--text-count);font-size:14px;margin-top:6px;">¿Qué vas a hacer?</p>
+      <textarea id="proy-modal-nota" placeholder="Escribe qué vas a avanzar... se guardará en tu diario con el tiempo dedicado 🍅" style="width:100%;min-height:88px;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:11px 13px;color:var(--text-title);font-family:var(--font);font-size:14px;line-height:1.5;resize:vertical;outline:none;margin:12px 0 14px;"></textarea>
+      <div style="display:flex;gap:10px;justify-content:flex-end;align-items:center;">
+        <button class="proy-q" id="proy-modal-cancel">Cancelar</button>
+        <button class="btn-add" id="proy-modal-start">Empezar 🚀</button>
+      </div>
+    </div>
+  </div>
 
   <div class="modal" id="month-modal" style="display:none;">
     <div class="modal-card">
@@ -454,17 +677,17 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=67"></script>
-  <script src="js/data2.js?v=67"></script>
-  <script src="js/expenses_data.js?v=67"></script>
-  <script src="js/combo_ia_data.js?v=67"></script>
-  <script src="js/debts_data.js?v=67"></script>
-  <script src="js/payments_data.js?v=67"></script>
-  <script src="js/business_data.js?v=67"></script>
-  <script src="js/hotmart_data.js?v=67"></script>
-  <script src="js/cards_data.js?v=67"></script>
-  <script src="js/anchors_data.js?v=67"></script>
-  <script src="js/personal_data.js?v=67"></script>
-  <script src="js/dashboard.js?v=67"></script>
+  <script src="js/data.js?v=110"></script>
+  <script src="js/data2.js?v=110"></script>
+  <script src="js/expenses_data.js?v=110"></script>
+  <script src="js/combo_ia_data.js?v=110"></script>
+  <script src="js/debts_data.js?v=110"></script>
+  <script src="js/payments_data.js?v=110"></script>
+  <script src="js/business_data.js?v=110"></script>
+  <script src="js/hotmart_data.js?v=110"></script>
+  <script src="js/cards_data.js?v=110"></script>
+  <script src="js/anchors_data.js?v=110"></script>
+  <script src="js/personal_data.js?v=110"></script>
+  <script src="js/dashboard.js?v=110"></script>
 </body>
 </html>

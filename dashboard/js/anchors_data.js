@@ -27,6 +27,16 @@
       { task: 'Transferir el 20% de cada ingreso a ahorro el día 1', when: 'Cada mes' },
       { task: 'Revisión semanal de ROAS y próximos pagos', when: 'Cada lunes' },
       { task: 'Pagar tarjetas Scotiabank antes que cuotas de crédito', when: 'Este mes' }
+    ],
+    timeFocus: [
+      { name: 'Pauta y optimización Meta Ads', h: 3 },
+      { name: 'Producción de contenido / VSL', h: 2.5 },
+      { name: 'Ventas y seguimiento WhatsApp', h: 2 },
+      { name: 'Creación de embudos / landing', h: 1.5 },
+      { name: 'Finanzas y deudas (dashboard)', h: 1 },
+      { name: 'Estudio y formación', h: 1 },
+      { name: 'Administración / herramientas', h: 0.5 },
+      { name: 'Descanso / personal', h: 1.5 }
     ]
   };
 })();

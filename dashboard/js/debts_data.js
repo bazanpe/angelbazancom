@@ -17,6 +17,7 @@
       { name: 'Santander Arly (S/ 25,000)', monthlyFeePEN: 2722, dueDateDay: 11, remainingQuota: 5, totalQuotas: 12, currentQuota: 8, range: 'sep 2026 → ene 2027', pendingBalancePEN: 13610, status: 'Cuota 8 de 12 · 11 sept' },
       { name: 'Santander Michel (S/ 5,000)', monthlyFeePEN: 575, dueDateDay: 19, remainingQuota: 12, totalQuotas: 12, range: 'ago 2026 → jul 2027', pendingBalancePEN: 6898, status: 'Activo' },
       { name: 'Alfin Arly (S/ 7,954)', monthlyFeePEN: 785, dueDateDay: 19, remainingQuota: 14, totalQuotas: 14, range: 'ago 2026 → sep 2027', pendingBalancePEN: 10993, status: 'Activo' },
+      { name: 'Préstamo Crédito BCP Sandra', monthlyFeePEN: 1000, dueDateDay: 20, remainingQuota: 0, totalQuotas: 0, range: '20 de cada mes · BCP', pendingBalancePEN: 1000, status: 'Activo' },
       { name: 'Préstamo Papá Amigo (S/ 5,000)', monthlyFeePEN: 250, dueDateDay: 24, remainingQuota: 0, totalQuotas: 0, interestOnly: true, range: 'Mensual · solo intereses', pendingBalancePEN: 5000, status: 'URGENTE — Liquidar' }
     ],
     informalDebts: [
@@ -34,9 +35,8 @@
       { card: 'Reporte SBS (Cierre Junio)', balancePEN: 9727, note: 'InFinance + Scotiabank', status: 'Normal' }
     ],
     weeklyCommitments: [
-      { name: 'Junta con Sandra (novia)', weeklyFeePEN: 500, note: 'S/ 500/semana = S/ 2,000/mes · sin fecha de fin, se usa para pagar otras deudas', status: 'Activo · S/ 2,000/mes' },
-      { name: 'Comida Sandra', weeklyFeePEN: 250, status: 'Detenido (S/ 0 desde mediados de agosto)' },
-      { name: 'Colaboración Marcos', weeklyFeePEN: 300, status: 'Detenido (S/ 0 desde mediados de agosto)' }
+      { name: 'Junta Sandra', weeklyFeePEN: 500, dueDay: 'Todos los domingos', startDate: '2026-06-07', totalQuotas: 20, endDate: '2026-10-18', status: 'Activo · junta 13 de 20 · hasta 18/10' },
+      { name: 'Pago Colab Marcos', weeklyFeePEN: 300, dueDay: 'Todos los domingos', endDate: '2026-12-31', status: 'Activo · todos los domingos · hasta 31/12' }
     ],
     assetsAndGuarantees: [
       { concept: 'Plazo Fijo Scotiabank', amountPEN: 1000, type: 'Inversión' },
