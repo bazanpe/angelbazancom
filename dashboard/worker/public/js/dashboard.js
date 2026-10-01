@@ -1303,38 +1303,65 @@
     if (!debts || !groups) return;
     var formal = debts.formalCredits || [];
     var informal = debts.informalDebts || [];
-    var cards = debts.creditCards || [];
-    var fTot = 0, iTot = 0, cTot = 0;
+    var cards = (debts.creditCards || []).filter(function (c) { return !/^Reporte/i.test(c.card); });
+    var assets = debts.assetsAndGuarantees || [];
+    var weekly = debts.weeklyCommitments || [];
+    var summary = debts.summary || {};
+    var fTot = 0, iTot = 0, cTot = 0, aTot = 0;
+    function row(name, detail, amt) {
+      return '<div class="total-row"><div class="total-info"><span class="total-name">' + name + '</span>' + (detail ? '<span class="total-detail">' + detail + '</span>' : '') + '</div><span class="total-amt">S/ ' + amt.toLocaleString() + '</span></div>';
+    }
     var fRows = formal.map(function (c) {
-      var amt = c.pendingBalancePEN || (c.interestOnly ? (c.monthlyFeePEN || 0) : 0);
+      var amt = c.pendingBalancePEN || 0;
       fTot += amt;
-      return '<div class="total-row"><span class="total-name">' + esc(c.name) + (c.status ? ' <em class="usd-mini">' + esc(c.status) + '</em>' : '') + '</span><span class="total-amt">S/ ' + amt.toLocaleString() + '</span></div>';
+      var det = c.interestOnly
+        ? 'Solo intereses · S/ ' + c.monthlyFeePEN.toLocaleString() + '/mes · vence día ' + c.dueDateDay
+        : 'Cuota S/ ' + c.monthlyFeePEN.toLocaleString() + '/mes · vence día ' + c.dueDateDay + ' · ' + c.remainingQuota + '/' + c.totalQuotas + ' cuotas · ' + c.range;
+      return row(esc(c.name), det, amt);
     }).join('');
     var iRows = informal.map(function (d) {
       iTot += d.amountPEN;
-      return '<div class="total-row"><span class="total-name">' + esc(d.creditor) + (d.note ? ' <em class="usd-mini">' + esc(d.note.split('·')[0].trim()) + '</em>' : '') + '</span><span class="total-amt">S/ ' + d.amountPEN.toLocaleString() + '</span></div>';
+      return row(esc(d.creditor), esc(d.priority || '') + (d.note ? ' · ' + esc(d.note) : ''), d.amountPEN);
     }).join('');
     var cRows = cards.filter(function (c) { return (c.balancePEN || 0) > 0 || (c.balanceUSD || 0) > 0; }).map(function (c) {
-      var amt = c.balancePEN || Math.round((c.balanceUSD || 0) * FX);
+      var amt = c.balancePEN || 0;
       cTot += amt;
-      return '<div class="total-row"><span class="total-name">' + esc(c.card) + (c.note ? ' <em class="usd-mini">' + esc(c.note.split('·')[0].trim()) + '</em>' : '') + '</span><span class="total-amt">S/ ' + amt.toLocaleString() + '</span></div>';
+      var det = [];
+      if (c.status) det.push(esc(c.status));
+      if (c.balanceUSD) det.push('US$ ' + c.balanceUSD);
+      if (c.guaranteePEN) det.push('garantía S/ ' + c.guaranteePEN);
+      if (c.note) det.push(esc(c.note));
+      return row(esc(c.card), det.join(' · '), amt);
+    }).join('');
+    var aRows = assets.map(function (a) {
+      aTot += a.amountPEN;
+      return row(esc(a.concept), esc(a.type), a.amountPEN);
     }).join('');
     var grand = fTot + iTot + cTot;
     var usd = Math.round(grand / FX);
     if (hero) hero.textContent = fmtPEN(grand);
-    if (heroSub) heroSub.textContent = '≈ ' + fmtUSD(usd) + ' USD · todo lo que debes, sin filtros';
+    if (heroSub) heroSub.textContent = '≈ ' + fmtUSD(usd) + ' USD · todo lo que debes, sin filtros · deuda neta ' + fmtPEN(grand - aTot);
     var mentoria = grand / 60;
     if (moti) {
       moti.innerHTML = '🔥 <b>Tu plan:</b> Vendechat.io (tu CRM) + tu curso en TikTok Live 24/7. Con <b>60 mentorías de ≈ S/ ' + Math.round(mentoria).toLocaleString() + ' (~' + fmtUSD(mentoria) + ')</b> cierras TODO. <b style="color:var(--green)">Nadie te para.</b>';
     }
-    function block(title, total, rows) {
-      return '<div class="total-block"><div class="total-block-head"><span>' + title + '</span><b>S/ ' + total.toLocaleString() + '</b></div>' + rows + '</div>';
+    var monthlyRows =
+      row('Cuotas de créditos formales', 'días 2, 11 y 19 de cada mes', summary.monthlyFixedCommitmentPEN || 6971) +
+      row('Junta Sandra (semanal)', 'S/ 500 × 4 semanas = S/ 2,000/mes · hasta 18/10', 2000) +
+      row('Préstamo Papá', 'Día 24 · solo intereses', 250) +
+      row('Colab Marcos (semanal)', 'S/ 300 × 4 semanas = S/ 1,200/mes · hasta 31/12', 1200);
+    var monthlyTot = 6971 + 2000 + 250 + 1200;
+    function block(title, total, rowsHtml) {
+      return '<div class="total-block"><div class="total-block-head"><span>' + title + '</span><b>S/ ' + total.toLocaleString() + '</b></div>' + rowsHtml + '</div>';
     }
     groups.innerHTML =
-      block('🏦 Créditos formales', fTot, fRows) +
+      block('🏦 Créditos formales (bancos)', fTot, fRows) +
       block('👥 Deudas informales y familiares', iTot, iRows) +
       block('💳 Tarjetas de crédito', cTot, cRows) +
-      '<div class="total-grand">TOTAL QUE DEBES <span>' + fmtPEN(grand) + ' ≈ ' + fmtUSD(usd) + ' USD</span></div>';
+      block('📅 Compromisos del mes (flujo, no capital)', monthlyTot, monthlyRows) +
+      block('🏦 Activos y garantías a tu favor', aTot, aRows) +
+      '<div class="total-grand">TOTAL QUE DEBES <span>' + fmtPEN(grand) + ' ≈ ' + fmtUSD(usd) + ' USD</span></div>' +
+      '<div class="total-net">Deuda neta (total − activos/garantías): <b>' + fmtPEN(grand - aTot) + '</b> · ' + cards.length + ' tarjetas · ' + formal.length + ' créditos · ' + informal.length + ' deudas informales</div>';
   }
 
   function renderMetas() {
@@ -1508,15 +1535,12 @@
     inicio: 'Inicio · Mis proyectos',
     resumen: 'Resumen financiero',
     ingresos: 'Ingresos',
-    'gastos-diarios': 'Gastos Diarios',
-    'gastos-mensuales': 'Gastos Mensuales',
+    'gastos': 'Gastos',
     deudas: 'Deudas',
-    total: 'TOTAL',
     fechas: 'Fechas de pago',
     tarjetas: 'Tarjetas',
     negocio: 'Negocio',
     personal: 'Ahorros',
-    ancla: 'Puntos ancla',
     notas: 'Notas'
   };
 
@@ -1527,17 +1551,14 @@
     var t = document.getElementById('topbar-title');
     if (t && NAV_TITLES[target]) t.textContent = NAV_TITLES[target];
 
-    if (target === 'resumen') renderResumen();
+    if (target === 'resumen') { renderResumen(); renderAnchors(); }
     else if (target === 'inicio') renderProyectos();
     else if (target === 'ingresos') renderIngresos();
-    else if (target === 'gastos-diarios') renderGastosDiarios();
-    else if (target === 'gastos-mensuales') renderGastosMensuales();
-    else if (target === 'deudas') { renderDeudas(); renderTarjetas(); }
-    else if (target === 'total') renderTotal();
+    else if (target === 'gastos') { renderGastosDiarios(); renderGastosMensuales(); }
+    else if (target === 'deudas') { renderTotal(); renderDeudas(); renderTarjetas(); }
     else if (target === 'fechas') renderFechas();
     else if (target === 'negocio') renderNegocio();
     else if (target === 'personal') renderPersonal();
-    else if (target === 'ancla') renderAnchors();
     else if (target === 'notas') renderNotas();
     var sb = document.getElementById('sidebar');
     var sback = document.getElementById('side-backdrop');
@@ -1649,7 +1670,7 @@
       '<button class="btn-add" id="am-nota" style="background:linear-gradient(135deg,#11223A,#0C1B30);border:1px solid var(--border);box-shadow:none;color:var(--text-title);">📝 Agregar Nota</button>' +
       '</div>');
     var b1 = document.getElementById('am-gasto');
-    if (b1) b1.addEventListener('click', function () { closeMonthModal(); switchTab('gastos-diarios'); var f = document.getElementById('gf-desc'); if (f) setTimeout(function () { f.focus(); }, 200); });
+    if (b1) b1.addEventListener('click', function () { closeMonthModal(); switchTab('gastos'); var f = document.getElementById('gf-desc'); if (f) setTimeout(function () { f.focus(); }, 200); });
     var b3 = document.getElementById('am-nota');
     if (b3) b3.addEventListener('click', function () { closeMonthModal(); switchTab('notas'); var t = document.getElementById('nt-text'); if (t) setTimeout(function () { t.focus(); }, 200); });
   });
@@ -1716,7 +1737,7 @@
       return 'En resumen: ingresos ' + fmtUSD(ingresos) + ', gastos ' + fmtUSD(gastos) + ' y saldo neto de ' + fmtUSD(saldo) + '. Deudas del mes ' + fmtPEN(deudasMes) + ' y ' + fmtPEN(disponible) + ' disponibles.';
     }
     if (has('deuda')) {
-      if (has('pendiente', 'total')) return 'Deudas pendientes estimadas: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '. Créditos formales: S/ 71,169 + préstamo familiar S/ 56,860 + informales.';
+      if (has('pendiente', 'total')) return 'Deudas pendientes estimadas: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '. Créditos formales: S/ 72,169 + informales + tarjetas.';
       if (has('mes', 'mensual')) return 'Tus deudas del mes suman ' + fmtPEN(deudasMes) + ': S/ 6,971 créditos + S/ 2,000 junta + S/ 250 préstamo papá.';
       return 'Deudas del mes: ' + fmtPEN(deudasMes) + '. Pendientes: ' + fmtPEN(deudaMin) + ' – ' + fmtPEN(deudaMax) + '.';
     }
@@ -1909,6 +1930,17 @@
     rows.push(['Movimiento', 'Categor\u00EDa', 'Fecha', 'Monto USD', 'Tipo']);
     buildMovementsList();
     movAll.forEach(function (r) { rows.push([r.name, r.cat, r.date, r.usd, r.type]); });
+    // PUNTOS ANCLA
+    var ad = window.ANCHORS_DATA || {};
+    if ((ad.anchors || []).length) {
+      rows.push([]);
+      rows.push(['=== PUNTOS ANCLA ===']);
+      rows.push(['#', 'Punto ancla', 'Etiqueta', 'Qu\u00E9 es', 'Acci\u00F3n']);
+      ad.anchors.forEach(function (a) { rows.push([a.n, a.title, a.tag || '', a.desc || '', a.action || '']); });
+      rows.push([]);
+      rows.push(['Plan de acci\u00F3n', 'Cu\u00E1ndo']);
+      (ad.actionPlan || []).forEach(function (p) { rows.push([p.task, p.when]); });
+    }
     downloadCsv('stark_resumen_completo.csv', rows);
     showToast('Exportado', 'Resumen completo descargado (todas las secciones).');
   }
@@ -1917,12 +1949,22 @@
     document.querySelectorAll('.view').forEach(function (v) { if (v.style.display === 'block') target = v.id.replace('view-', ''); });
     var rows = [];
     if (target === 'deudas') {
-      rows = [['Cr\u00E9dito', 'Cuota mensual (S/)', 'Vencimiento', 'Cuotas', 'Periodo', 'Saldo pendiente (S/)', 'Pagos registrados']];
+      var fT = 0, iT = 0, cT = 0;
+      (debts.formalCredits || []).forEach(function (c) { fT += c.pendingBalancePEN || 0; });
+      (debts.informalDebts || []).forEach(function (d) { iT += d.amountPEN || 0; });
+      (debts.creditCards || []).filter(function (c) { return !/^Reporte/i.test(c.card); }).forEach(function (c) { cT += c.balancePEN || 0; });
+      var gT = fT + iT + cT;
+      rows = [['=== TOTAL QUE DEBES ===', '', '', '', '', '', ''], ['Créditos formales', fT, '', '', '', '', ''], ['Deudas informales', iT, '', '', '', '', ''], ['Tarjetas de crédito', cT, '', '', '', '', ''], ['TOTAL', gT, '', '', '', 'USD ' + Math.round(gT / FX), ''], []];
+      rows.push(['Crédito', 'Cuota mensual (S/)', 'Vencimiento', 'Cuotas', 'Periodo', 'Saldo pendiente (S/)', 'Pagos registrados']);
       var pendTotal = 0;
       formalCredits.forEach(function (c) { pendTotal += c.pendingBalancePEN; rows.push([c.name, c.monthlyFeePEN, 'D\u00EDa ' + c.dueDateDay, c.remainingQuota, c.range, c.pendingBalancePEN, payCount(c.name)]); });
-      rows.push(['TOTAL', '', '', '', '', pendTotal, '']);
+      rows.push(['TOTAL CR\u00C9DITOS', '', '', '', '', pendTotal, '']);
+      rows.push([]);
+      rows.push(['Deuda informal', 'Monto (S/)', 'Prioridad', 'Nota', '', '', '']);
+      (debts.informalDebts || []).forEach(function (d) { rows.push([d.creditor, d.amountPEN, d.priority || '', d.note || '', '', '', '']); });
+      rows.push(['TOTAL INFORMAL', iT, '', '', '', '', '']);
       downloadCsv('stark_deudas.csv', rows);
-    } else if (target === 'gastos' || target === 'gastos-diarios' || target === 'gastos-mensuales') {
+    } else if (target === 'gastos') {
       rows = [['Fecha', 'Fuente', 'Descripci\u00F3n', 'Categor\u00EDa', 'Tipo', 'USD', 'PEN', 'Estado']];
       var gUSD = 0, gPEN = 0;
       expItems.forEach(function (it) { gUSD += it.usd; gPEN += it.pen; rows.push([it.date, it.source, it.desc, it.cat, it.type, it.usd.toFixed(2), it.pen.toFixed(2), it.status]); });
@@ -3492,9 +3534,9 @@
     qc.addEventListener('click', function () {
       var t = qc.getAttribute('data-quick');
       if (t === 'pago') switchTab('deudas');
-      else if (t === 'brecha') switchTab('ancla');
-      else if (t === 'septiembre') switchTab('ancla');
-      else if (t === 'fugas') switchTab('gastos-mensuales');
+      else if (t === 'brecha') switchTab('resumen');
+      else if (t === 'septiembre') switchTab('resumen');
+      else if (t === 'fugas') switchTab('gastos');
     });
   });
   var itb = document.getElementById('ingresos-tbody');

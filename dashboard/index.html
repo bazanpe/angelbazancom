@@ -20,7 +20,7 @@
     })();
   </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23070A09'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='900' fill='%2355F58A' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/dashboard.css?v=110">
+  <link rel="stylesheet" href="css/dashboard.css?v=113">
 </head>
 <body>
 
@@ -72,12 +72,9 @@
         <a class="nav-item active" data-target="inicio"><span class="nav-icon"><svg class="ico"><use href="#i-target"/></svg></span> Inicio</a>
         <a class="nav-item" data-target="resumen"><span class="nav-icon"><svg class="ico"><use href="#i-chart"/></svg></span> Resumen</a>
         <a class="nav-item" data-target="notas"><span class="nav-icon"><svg class="ico"><use href="#i-send"/></svg></span> Notas</a>
-        <a class="nav-item" data-target="ancla"><span class="nav-icon"><svg class="ico"><use href="#i-info"/></svg></span> Puntos ancla</a>
         <a class="nav-item" data-target="ingresos"><span class="nav-icon"><svg class="ico"><use href="#i-cash"/></svg></span> Ingresos</a>
-        <a class="nav-item" data-target="gastos-diarios"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos Diarios</a>
-        <a class="nav-item" data-target="gastos-mensuales"><span class="nav-icon"><svg class="ico"><use href="#i-receipt"/></svg></span> Gastos Mensuales</a>
+        <a class="nav-item" data-target="gastos"><span class="nav-icon"><svg class="ico"><use href="#i-card"/></svg></span> Gastos</a>
         <a class="nav-item" data-target="deudas"><span class="nav-icon"><svg class="ico"><use href="#i-shield"/></svg></span> Deudas</a>
-        <a class="nav-item" data-target="total"><span class="nav-icon"><svg class="ico"><use href="#i-wallet"/></svg></span> TOTAL</a>
         <a class="nav-item" data-target="fechas"><span class="nav-icon"><svg class="ico"><use href="#i-cal"/></svg></span> Fechas de pago</a>
         <a class="nav-item" data-target="negocio"><span class="nav-icon"><svg class="ico"><use href="#i-sync"/></svg></span> Negocio</a>
         <a class="nav-item" data-target="personal"><span class="nav-icon"><svg class="ico"><use href="#i-vault"/></svg></span> Ahorros</a>
@@ -287,6 +284,14 @@
             </div>
           </section>
 
+          <div class="sec-alert ok" id="ancla-alert" style="margin-top:16px;"></div>
+          <div class="ancla-hero" id="ancla-hero"></div>
+          <div class="ancla-grid" id="ancla-list"></div>
+          <div class="panel">
+            <div class="panel-head"><h3>🎯 Puntos ancla · Resumen accionable</h3><span class="legend-sub">Ejecuta una por una</span></div>
+            <div class="ancla-plan" id="ancla-plan"></div>
+          </div>
+
         </div>
 
         <!-- ============ INGRESOS ============ -->
@@ -313,8 +318,8 @@
           </div>
         </div>
 
-        <!-- ============ GASTOS DIARIOS ============ -->
-        <div id="view-gastos-diarios" class="view" style="display:none;">
+        <!-- ============ GASTOS ============ -->
+        <div id="view-gastos" class="view" style="display:none;">
           <div class="sec-alert ok" id="gastos-diarios-alert"></div>
           <div class="panel" style="margin-bottom:16px;">
             <div class="panel-head"><h3>Gastos Diarios</h3><span class="legend-sub">Registra en USD o Soles · te da el equivalente automáticamente</span></div>
@@ -354,10 +359,6 @@
             <div class="panel-head"><h3>Análisis de gastos</h3><span class="legend-sub">En qué se va tu dinero · fugas e insights</span></div>
             <div class="gasto-analisis" id="gastos-analisis"></div>
           </div>
-        </div>
-
-        <!-- ============ GASTOS MENSUALES ============ -->
-        <div id="view-gastos-mensuales" class="view" style="display:none;">
           <div class="sec-alert ok" id="gastos-alert"></div>
           <div class="panel">
             <div class="panel-head"><h3>Gastos Mensuales — auditados</h3><span class="legend-sub" id="gastos-total"></span></div>
@@ -372,6 +373,16 @@
 
         <!-- ============ DEUDAS ============ -->
         <div id="view-deudas" class="view" style="display:none;">
+          <div class="total-hero">
+            <div class="total-eyebrow">⚖️ TODO LO QUE DEBES · SIN FILTROS</div>
+            <div class="total-val" id="total-val">—</div>
+            <div class="total-sub" id="total-sub"></div>
+          </div>
+          <div class="total-moti" id="total-moti"></div>
+          <div class="panel" style="margin-bottom:16px;">
+            <div class="panel-head"><h3>Desglose completo de deudas</h3><span class="legend-sub">Cada deuda sin esconder nada</span></div>
+            <div class="total-groups" id="total-groups"></div>
+          </div>
           <div class="debt-alert-banner" id="debt-banner"></div>
           <div class="panel">
             <div class="panel-head"><h3>Créditos Mensuales</h3>
@@ -422,20 +433,6 @@
           <div class="panel" style="margin-top:16px;">
             <div class="panel-head"><h3>Calendario de pagos de tarjetas</h3><span class="legend-sub">Ordenados por urgencia</span></div>
             <div class="cards-graph" id="cards-graph"></div>
-          </div>
-        </div>
-
-        <!-- ============ TOTAL ============ -->
-        <div id="view-total" class="view" style="display:none;">
-          <div class="total-hero">
-            <div class="total-eyebrow">⚖️ TODO LO QUE DEBES · SIN FILTROS</div>
-            <div class="total-val" id="total-val">—</div>
-            <div class="total-sub" id="total-sub"></div>
-          </div>
-          <div class="total-moti" id="total-moti"></div>
-          <div class="panel">
-            <div class="panel-head"><h3>Desglose completo</h3><span class="legend-sub">Cada deuda sin esconder nada</span></div>
-            <div class="total-groups" id="total-groups"></div>
           </div>
         </div>
 
@@ -531,16 +528,7 @@
           </div>
         </div>
 
-        <!-- ============ PUNTOS ANCLA ============ -->
-        <div id="view-ancla" class="view" style="display:none;">
-          <div class="sec-alert ok" id="ancla-alert"></div>
-          <div class="ancla-hero" id="ancla-hero"></div>
-          <div class="ancla-grid" id="ancla-list"></div>
-          <div class="panel">
-            <div class="panel-head"><h3>Resumen accionable — este mes</h3><span class="legend-sub">Ejecuta una por una</span></div>
-            <div class="ancla-plan" id="ancla-plan"></div>
-          </div>
-        </div>
+        <!-- ============ PUNTOS ANCLA (integrado en Resumen) ============ -->
 
       </main>
     </div>
@@ -677,17 +665,17 @@
     </div>
   </div>
 
-  <script src="js/data.js?v=110"></script>
-  <script src="js/data2.js?v=110"></script>
-  <script src="js/expenses_data.js?v=110"></script>
-  <script src="js/combo_ia_data.js?v=110"></script>
-  <script src="js/debts_data.js?v=110"></script>
-  <script src="js/payments_data.js?v=110"></script>
-  <script src="js/business_data.js?v=110"></script>
-  <script src="js/hotmart_data.js?v=110"></script>
-  <script src="js/cards_data.js?v=110"></script>
-  <script src="js/anchors_data.js?v=110"></script>
-  <script src="js/personal_data.js?v=110"></script>
-  <script src="js/dashboard.js?v=110"></script>
+  <script src="js/data.js?v=113"></script>
+  <script src="js/data2.js?v=113"></script>
+  <script src="js/expenses_data.js?v=113"></script>
+  <script src="js/combo_ia_data.js?v=113"></script>
+  <script src="js/debts_data.js?v=113"></script>
+  <script src="js/payments_data.js?v=113"></script>
+  <script src="js/business_data.js?v=113"></script>
+  <script src="js/hotmart_data.js?v=113"></script>
+  <script src="js/cards_data.js?v=113"></script>
+  <script src="js/anchors_data.js?v=113"></script>
+  <script src="js/personal_data.js?v=113"></script>
+  <script src="js/dashboard.js?v=113"></script>
 </body>
 </html>

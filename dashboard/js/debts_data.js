@@ -3,8 +3,8 @@
 
   window.DEBTS_DATA = {
     summary: {
-      totalDebtEstimatedMinPEN: 212860,
-      totalDebtEstimatedMaxPEN: 232860,
+      totalDebtEstimatedMinPEN: 156000,
+      totalDebtEstimatedMaxPEN: 176000,
       monthlyFixedCommitmentPEN: 6971,
       weeklyJuntaCommitmentPEN: 2000,
       totalMonthlyCommitmentCurrentPEN: 9221,
@@ -22,7 +22,6 @@
     ],
     informalDebts: [
       { creditor: 'TC Sandra', amountPEN: 60000, note: 'Nota: Hoja registra Tarjeta BCP S/35k + BBVA S/35k + Qore S/10k = S/80,000', priority: 'Alta - Acordar plazos' },
-      { creditor: 'Préstamo familiares (Julio 2026)', amountPEN: 56860, note: 'Depositado en Scotiabank Ahorros en julio para pagar deudas pendientes (TC OH! S/ 9,000+ y otros). Acordar plan de pago.', priority: 'Alta - Acordar plazos' },
       { creditor: 'Mamá Eva', amountPEN: 20000, note: 'Préstamo familiar sin cuota fija', priority: 'Media - Familiar' },
       { creditor: 'Jessica', amountPEN: 15000, note: 'Préstamo personal sin cuota fija', priority: 'Media - Negociar' }
     ],

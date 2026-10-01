@@ -838,10 +838,13 @@ select:focus { border-color: var(--green); }
 .total-block { border: 1px solid rgba(24, 48, 68, 0.8); border-radius: 14px; overflow: hidden; background: rgba(14, 42, 68, 0.2); }
 .total-block-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(24, 48, 68, 0.5); font-weight: 800; font-size: 13px; color: var(--text-title); }
 .total-block-head b { font-family: var(--font-mono); color: var(--amber); }
-.total-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 9px 16px; border-top: 1px solid rgba(24, 48, 68, 0.5); font-size: 13.5px; }
-.total-name { color: var(--text); font-weight: 600; }
-.total-name em { color: var(--text-count); font-weight: 500; }
-.total-amt { font-family: var(--font-mono); font-weight: 700; color: var(--text-title); white-space: nowrap; }
+.total-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 9px 16px; border-top: 1px solid rgba(24, 48, 68, 0.5); font-size: 13.5px; }
+.total-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.total-name { color: var(--text); font-weight: 700; }
+.total-detail { font-size: 11.5px; color: var(--text-count); line-height: 1.45; }
+.total-amt { font-family: var(--font-mono); font-weight: 700; color: var(--text-title); white-space: nowrap; padding-top: 1px; }
+.total-net { font-size: 12.5px; color: var(--text-count); margin-top: 10px; text-align: right; line-height: 1.5; }
+.total-net b { color: var(--green); font-family: var(--font-mono); }
 .total-grand {
   display: flex;
   justify-content: space-between;
