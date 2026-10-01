@@ -5,9 +5,9 @@
     summary: {
       totalDebtEstimatedMinPEN: 156000,
       totalDebtEstimatedMaxPEN: 176000,
-      monthlyFixedCommitmentPEN: 6971,
+      monthlyFixedCommitmentPEN: 7280.23,
       weeklyJuntaCommitmentPEN: 2000,
-      totalMonthlyCommitmentCurrentPEN: 9221,
+      totalMonthlyCommitmentCurrentPEN: 9530.23,
       septemberAlertText: '🚨 Septiembre 2026 es el mes crítico: Coinciden las 4 cuotas de créditos formales (días 2, 11 y 19) por S/ 6,971 + S/ 2,000 de junta + S/ 250 préstamo papá (Total S/ 9,221).',
       liquidAssetsPEN: 4000,
       cardGuaranteesPEN: 1205
@@ -18,7 +18,8 @@
       { name: 'Santander Michel (S/ 5,000)', monthlyFeePEN: 575, dueDateDay: 19, remainingQuota: 12, totalQuotas: 12, range: 'ago 2026 → jul 2027', pendingBalancePEN: 6898, status: 'Activo' },
       { name: 'Alfin Arly (S/ 7,954)', monthlyFeePEN: 785, dueDateDay: 19, remainingQuota: 14, totalQuotas: 14, range: 'ago 2026 → sep 2027', pendingBalancePEN: 10993, status: 'Activo' },
       { name: 'Préstamo Crédito BCP Sandra', monthlyFeePEN: 1000, dueDateDay: 20, remainingQuota: 0, totalQuotas: 0, range: '20 de cada mes · BCP', pendingBalancePEN: 1000, status: 'Activo' },
-      { name: 'Préstamo Papá Amigo (S/ 5,000)', monthlyFeePEN: 250, dueDateDay: 24, remainingQuota: 0, totalQuotas: 0, interestOnly: true, range: 'Mensual · solo intereses', pendingBalancePEN: 5000, status: 'URGENTE — Liquidar' }
+      { name: 'Préstamo Papá Amigo (S/ 5,000)', monthlyFeePEN: 250, dueDateDay: 24, remainingQuota: 0, totalQuotas: 0, interestOnly: true, range: 'Mensual · solo intereses', pendingBalancePEN: 5000, status: 'URGENTE — Liquidar' },
+      { name: 'Préstamo BCP Angel (S/ 1,500)', monthlyFeePEN: 309.23, dueDateDay: 28, remainingQuota: 6, totalQuotas: 6, range: '28 nov 2026 → abr 2027 · BCP', pendingBalancePEN: 1855, tcea: 78.96, status: 'Activo — 6 cuotas · TCEA 78.96%' }
     ],
     informalDebts: [
       { creditor: 'TC Sandra', amountPEN: 60000, note: 'Nota: Hoja registra Tarjeta BCP S/35k + BBVA S/35k + Qore S/10k = S/80,000', priority: 'Alta - Acordar plazos' },

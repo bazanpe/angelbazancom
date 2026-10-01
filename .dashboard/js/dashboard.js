@@ -1345,12 +1345,13 @@
     if (moti) {
       moti.innerHTML = '🔥 <b>Tu plan:</b> Vendechat.io (tu CRM) + tu curso en TikTok Live 24/7. Con <b>60 mentorías de ≈ S/ ' + Math.round(mentoria).toLocaleString() + ' (~' + fmtUSD(mentoria) + ')</b> cierras TODO. <b style="color:var(--green)">Nadie te para.</b>';
     }
+    var monthlyFixed = summary.monthlyFixedCommitmentPEN || 6971;
     var monthlyRows =
-      row('Cuotas de créditos formales', 'días 2, 11 y 19 de cada mes', summary.monthlyFixedCommitmentPEN || 6971) +
+      row('Cuotas de créditos formales', 'días 2, 11, 19 y 28 de cada mes', monthlyFixed) +
       row('Junta Sandra (semanal)', 'S/ 500 × 4 semanas = S/ 2,000/mes · hasta 18/10', 2000) +
       row('Préstamo Papá', 'Día 24 · solo intereses', 250) +
       row('Colab Marcos (semanal)', 'S/ 300 × 4 semanas = S/ 1,200/mes · hasta 31/12', 1200);
-    var monthlyTot = 6971 + 2000 + 250 + 1200;
+    var monthlyTot = monthlyFixed + 2000 + 250 + 1200;
     function block(title, total, rowsHtml) {
       return '<div class="total-block"><div class="total-block-head"><span>' + title + '</span><b>S/ ' + total.toLocaleString() + '</b></div>' + rowsHtml + '</div>';
     }
